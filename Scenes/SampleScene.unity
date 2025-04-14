@@ -372,7 +372,13 @@ MonoBehaviour:
   x: 128
   y: 128
   TileSprites:
+  - {fileID: -5793039431324145778, guid: 5108097a87f96ef4e83c56082567ed4f, type: 3}
   - {fileID: 3435491804879947130, guid: a46e293fe5983b44db0484807f061de4, type: 3}
+  lakeCount: 13
+  lakeIntensityMin: 190
+  lakeIntensityMax: 200
+  lakeLengthMin: 90
+  lakeLengthMax: 100
 --- !u!4 &1562538649
 Transform:
   m_ObjectHideFlags: 0
