@@ -7,7 +7,8 @@ public class GenerateMap : MonoBehaviour
     [SerializeField] int y;
     public List<Sprite> TileSprites = new List<Sprite>();
 
-    [SerializeField] int lakeCount;
+    [SerializeField] int lakeCountMin;
+    [SerializeField] int lakeCountMax;
     [SerializeField] int lakeIntensityMin;
     [SerializeField] int lakeIntensityMax;
     [SerializeField] int lakeLengthMin;
@@ -44,9 +45,11 @@ public class GenerateMap : MonoBehaviour
             }
         }
 
-        //Lake generation algorhytm: Slow but Simple and easily modifiable
-        for(int i = 0; i < lakeCount; i++)
-        {
+        
+
+        //Lake generation algorithm: Slow but Simple and easily modifiable
+        for(int i = 0; i < Random.Range(lakeCountMin, lakeCountMax); i++)
+        {    
             Vector2 startingPos = new Vector2(Random.Range(0, x), Random.Range(0, y)); //Get starting pos for lake
 
             GameObject startingTile = grid[(int)startingPos.x, (int)startingPos.y];
