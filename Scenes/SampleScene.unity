@@ -375,11 +375,12 @@ MonoBehaviour:
   - {fileID: -9041787662252013088, guid: 8a80d5616082f8c4ba056277313e7737, type: 3}
   - {fileID: 3435491804879947130, guid: a46e293fe5983b44db0484807f061de4, type: 3}
   - {fileID: 6579724798270529873, guid: d3b8a03017a401544a38342420ebd65c, type: 3}
-  lakeCount: 8
-  lakeIntensityMin: 190
-  lakeIntensityMax: 200
-  lakeLengthMin: 40
-  lakeLengthMax: 50
+  lakeCountMin: 4
+  lakeCountMax: 16
+  lakeIntensityMin: 80
+  lakeIntensityMax: 100
+  lakeLengthMin: 10
+  lakeLengthMax: 110
 --- !u!4 &1562538649
 Transform:
   m_ObjectHideFlags: 0
