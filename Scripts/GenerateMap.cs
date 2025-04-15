@@ -65,6 +65,10 @@ public class GenerateMap : MonoBehaviour
                             currentTile.GetComponent<SpriteRenderer>().sprite = TileSprites[0];
                             currentTile.GetComponent<Tile>().type = 0;
                         }
+                        if (currentPos.y < y - 1 && grid[(int)currentPos.x, (int)currentPos.y + 1].GetComponent<Tile>().type == 1)
+                        {
+                            grid[(int)currentPos.x, (int)currentPos.y + 1].GetComponent<SpriteRenderer>().sprite = TileSprites[2];
+                        }
                     }
                     catch
                     {
@@ -77,6 +81,8 @@ public class GenerateMap : MonoBehaviour
                 }
             }
         }
+
+        
     }
     
 }

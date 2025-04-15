@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: a46e293fe5983b44db0484807f061de4
+guid: d3b8a03017a401544a38342420ebd65c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3435491804879947130
-    second: grass_01_0
+      213: 6579724798270529873
+    second: grass_02_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,7 +126,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: grass_01_0
+      name: grass_02_0
       rect:
         serializedVersion: 2
         x: 0
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a7582a238915daf20800000000000000
-      internalID: 3435491804879947130
+      spriteID: 1516eb8d7d0ef4b50800000000000000
+      internalID: 6579724798270529873
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      grass_01_0: 3435491804879947130
+      grass_02_0: 6579724798270529873
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
