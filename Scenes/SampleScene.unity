@@ -369,18 +369,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e4030015fd2ccc478199c141f680034, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  x: 128
-  y: 128
+  x: 192
+  y: 192
   TileSprites:
   - {fileID: -9041787662252013088, guid: 8a80d5616082f8c4ba056277313e7737, type: 3}
   - {fileID: 3435491804879947130, guid: a46e293fe5983b44db0484807f061de4, type: 3}
   - {fileID: 6579724798270529873, guid: d3b8a03017a401544a38342420ebd65c, type: 3}
-  lakeCountMin: 4
+  lakeCountMin: 2
   lakeCountMax: 16
-  lakeIntensityMin: 80
-  lakeIntensityMax: 100
-  lakeLengthMin: 10
-  lakeLengthMax: 110
+  lakeIntensityMin: 190
+  lakeIntensityMax: 200
+  lakeLengthMin: 2
+  lakeLengthMax: 4
 --- !u!4 &1562538649
 Transform:
   m_ObjectHideFlags: 0

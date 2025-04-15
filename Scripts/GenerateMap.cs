@@ -57,7 +57,7 @@ public class GenerateMap : MonoBehaviour
             for (int j = 0; j < Random.Range(lakeIntensityMin, lakeIntensityMax); j++) //Iterate a few times in random directions to get the circular effect of a lake
             {
                 Vector2 currentPos = startingPos;
-                for (int k = 0; k < Random.Range(lakeLengthMin, lakeLengthMax); k++) //Iterate here too
+                for (int k = 0; k < Mathf.Pow(20, Random.Range(lakeLengthMin, lakeLengthMax)); k++) //Iterate here too
                 {
                     try
                     {
