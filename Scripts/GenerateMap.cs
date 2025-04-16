@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class GenerateMap : MonoBehaviour
 {
-    [SerializeField] int x;
-    [SerializeField] int y;
+    public int x;
+    public int y;
     public List<Sprite> TileSprites = new List<Sprite>();
     public List<Sprite> StructureSprites = new List<Sprite>();
 
