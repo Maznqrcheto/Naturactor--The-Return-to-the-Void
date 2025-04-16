@@ -20,7 +20,7 @@ public class GenerateMap : MonoBehaviour
     {
         grid = new GameObject[x, y];
         GenerateMapFromScratch();
-    }
+    } 
     public void GenerateMapFromScratch()
     {
         GameObject mapParent = new GameObject();
