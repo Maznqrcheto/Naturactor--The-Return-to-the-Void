@@ -20,6 +20,7 @@ public class GenerateMap : MonoBehaviour
     [SerializeField] int forestIntensityMax;
     [SerializeField] int forestLengthMin;
     [SerializeField] int forestLengthMax;
+    [SerializeField] int reactorCount;
 
     public GameObject[,] grid; //Gameobject.Find() is extremely slow so this is an optimisation technique (put all tiles in a matrix beforehand)
     public GameObject[,] structureGrid; // Grid for the structures like forests, mountains and others.
@@ -93,21 +94,24 @@ public class GenerateMap : MonoBehaviour
         }
 
     }
-    public void GenerateStructuresFromScratch()
+    public void GenerateForestStructure()
     {
         GameObject forestParent = new GameObject();
         forestParent.name = "ForestParent";
-
+        int forestRandomCount = Random.Range(forestCountMin, forestCountMax);
+        int forestRandomIntensity = Random.Range(forestIntensityMin, forestIntensityMax);
+        int forestRandomLength = Random.Range(forestLengthMin, forestLengthMax);
+        
         //Forest generation algorithm, similiar to the lake one
-        for (int i = 0; i < Random.Range(forestCountMin, forestCountMax); i++)
+        for (int i = 0; i < forestRandomCount; i++)
         {
             Vector2 startingPos = new Vector2(Random.Range(0, x), Random.Range(0, y)); //Get starting pos for forest
             GameObject startingTile = grid[(int)startingPos.x, (int)startingPos.y];
 
-            for (int j = 0; j < Random.Range(forestIntensityMin, forestIntensityMax); j++) //Iterate a few times in random directions
+            for (int j = 0; j < forestRandomIntensity; j++) //Iterate a few times in random directions
             {
                 Vector2 currentPos = startingPos;
-                for (int k = 0; k < Random.Range(forestLengthMin, forestLengthMax); k++) //Iterate here too
+                for (int k = 0; k < forestRandomLength; k++) //Iterate here too
                 {
                     try
                     {
@@ -143,6 +147,25 @@ public class GenerateMap : MonoBehaviour
         Vector3 treeOffset = forestParent.transform.position;
         treeOffset.y = .8f;
         forestParent.transform.position = treeOffset;
+        }
+
+    public void GenerateReactor()
+    {
+        Vector2 reactorPosition = new Vector2(Random.Range(0, x), Random.Range(0, y));
+        GameObject reactor = new GameObject();
+        reactor.AddComponent<SpriteRenderer>();
+        reactor.AddComponent<Tile>();
+       /*  reactor.GetComponent<Tile>().type = 4;
+        reactor.GetComponent<SpriteRenderer>().sprite = TileSprites[4];
+        reactor.transform.position = reactorPosition;
+        structureGrid[(int)reactorPosition.x, (int)reactorPosition.y] = reactor; */
+        UpdateSortingOrderForStructures();
+    }
+    
+    public void GenerateStructuresFromScratch()
+    {
+        GenerateForestStructure();
+        GenerateReactor();
     }
     public void UpdateSortingOrderForStructures()
     {
