@@ -6,6 +6,7 @@ public class GenerateMap : MonoBehaviour
     [SerializeField] int x;
     [SerializeField] int y;
     public List<Sprite> TileSprites = new List<Sprite>();
+    public List<Sprite> StructureSprites = new List<Sprite>();
 
     [SerializeField] int lakeCountMin;
     [SerializeField] int lakeCountMax;
@@ -21,7 +22,7 @@ public class GenerateMap : MonoBehaviour
     [SerializeField] int forestLengthMin;
     [SerializeField] int forestLengthMax;
     [SerializeField] int reactorCount;
-
+    
     public GameObject[,] grid; //Gameobject.Find() is extremely slow so this is an optimisation technique (put all tiles in a matrix beforehand)
     public GameObject[,] structureGrid; // Grid for the structures like forests, mountains and others.
     void Start()
@@ -32,6 +33,7 @@ public class GenerateMap : MonoBehaviour
         GenerateStructuresFromScratch();
         UpdateSortingOrderForStructures();
     }
+
     public void GenerateMapFromScratch()
     {
         GameObject mapParent = new GameObject();
@@ -94,6 +96,11 @@ public class GenerateMap : MonoBehaviour
         }
 
     }
+    public void GenerateStructuresFromScratch()
+    {
+        GenerateForestStructure();
+        GenerateReactor();
+    }
     public void GenerateForestStructure()
     {
         GameObject forestParent = new GameObject();
@@ -128,7 +135,7 @@ public class GenerateMap : MonoBehaviour
                             currentTree.name = $"{currentPos.x},{currentPos.y}";
 
                             currentTree.GetComponent<Structure>().type = 0;
-                            currentTree.GetComponent<SpriteRenderer>().sprite = TileSprites[3];
+                            currentTree.GetComponent<SpriteRenderer>().sprite = StructureSprites[0];
                             structureGrid[(int)currentPos.x, (int)currentPos.y] = currentTree;
                         }
                     }
@@ -148,24 +155,30 @@ public class GenerateMap : MonoBehaviour
         treeOffset.y = .8f;
         forestParent.transform.position = treeOffset;
         }
-
     public void GenerateReactor()
     {
         Vector2 reactorPosition = new Vector2(Random.Range(0, x), Random.Range(0, y));
-        GameObject reactor = new GameObject();
+        while (true)
+        {
+            if (CanPlaceReactor(reactorPosition)) break;
+            else reactorPosition = new Vector2(Random.Range(0, x), Random.Range(0, y));
+
+        }
+        GameObject reactor = new GameObject("reactor");
         reactor.AddComponent<SpriteRenderer>();
-        reactor.AddComponent<Tile>();
-       /*  reactor.GetComponent<Tile>().type = 4;
-        reactor.GetComponent<SpriteRenderer>().sprite = TileSprites[4];
-        reactor.transform.position = reactorPosition;
-        structureGrid[(int)reactorPosition.x, (int)reactorPosition.y] = reactor; */
+        reactor.AddComponent<Structure>();
+        reactor.GetComponent<Structure>().type = 1;
+        reactor.GetComponent<SpriteRenderer>().sprite = StructureSprites[1];
+        reactor.transform.position = reactorPosition; 
+        structureGrid[(int)reactorPosition.x, (int)reactorPosition.y] = reactor;
         UpdateSortingOrderForStructures();
     }
-    
-    public void GenerateStructuresFromScratch()
+    public bool CanPlaceReactor(Vector2 reactorPosition)
     {
-        GenerateForestStructure();
-        GenerateReactor();
+        if (grid[(int)reactorPosition.x, (int)reactorPosition.y].GetComponent<Tile>().type == 0) return false;
+        if (structureGrid[(int)reactorPosition.x, (int)reactorPosition.y] != null) return false;
+
+        return true;
     }
     public void UpdateSortingOrderForStructures()
     {
