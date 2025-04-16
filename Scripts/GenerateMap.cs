@@ -28,9 +28,13 @@ public class GenerateMap : MonoBehaviour
         grid = new GameObject[x, y];
         structureGrid = new GameObject[x, y];
         GenerateMapFromScratch();
+<<<<<<< HEAD
         GenerateStructuresFromScratch();
         UpdateSortingOrderForStructures();
     }
+=======
+    } 
+>>>>>>> 3868c43b7b19f82cb879972d8a2599182eaf61e5
     public void GenerateMapFromScratch()
     {
         GameObject mapParent = new GameObject();
