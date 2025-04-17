@@ -435,8 +435,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   genMap: {fileID: 1562538648}
-  machineSprite: {fileID: -1363610248638860192, guid: 60f442c6e5e412b42a4a92c5188a1042, type: 3}
   currentMachineHologram: {fileID: 0}
+  factorySprites:
+  - {fileID: -3010401151903113755, guid: 682e44e162aa01943b60d1d5931bb6df, type: 3}
+  selectedSprite: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

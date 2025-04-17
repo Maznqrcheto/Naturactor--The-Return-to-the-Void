@@ -1,18 +1,29 @@
 using UnityEngine;
-
+using System.Collections.Generic;
 public class PlaceMachine : MonoBehaviour
 {
     public GenerateMap genMap;
-    public Sprite machineSprite;
     public GameObject currentMachineHologram;
+
+    public List<Factory> factoryTypes;
+    public List<Sprite> factorySprites;
+    public int selectedSprite = 0;
+    private void Start()
+    {
+        factoryTypes = new List<Factory>();
+        factoryTypes.Add(new Factory(factorySprites[0], 2));
+        //factoryTypes.Add(new Factory(factorySprites[1]));
+        //factoryTypes.Add(new Factory(factorySprites[2]));
+    }
     void Update()
     {
+
         //Create/Destroy hologram
         if(currentMachineHologram == null && Input.GetMouseButtonDown(1))
         {
             currentMachineHologram = new GameObject("machineHologram");
             currentMachineHologram.AddComponent<SpriteRenderer>();
-            currentMachineHologram.GetComponent<SpriteRenderer>().sprite = machineSprite;
+            currentMachineHologram.GetComponent<SpriteRenderer>().sprite = factoryTypes[selectedSprite].Sprite;
             currentMachineHologram.GetComponent<SpriteRenderer>().sortingOrder = 1;
         }
         else if(currentMachineHologram != null && Input.GetKeyDown(KeyCode.Escape))
@@ -24,7 +35,7 @@ public class PlaceMachine : MonoBehaviour
         //Update position of hologram (malko tupa matematika, otne mi 3 chasa iskam da se samoubiq)
         Vector2 positionOfMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         positionOfMouse.x = Mathf.Round(positionOfMouse.x); positionOfMouse.y = Mathf.Round(positionOfMouse.y);
-        Vector2 scale = new Vector2(machineSprite.texture.width / 32, machineSprite.texture.height / 32);
+        Vector2 scale = new Vector2(factoryTypes[selectedSprite].Sprite.texture.width / 32, factoryTypes[selectedSprite].Sprite.texture.height / 32);
         Vector2 offsetPositionOfMouse = new Vector2(positionOfMouse.x + (scale.x / 2) - 0.5f, positionOfMouse.y + (scale.y / 2) - 0.5f);
         if (currentMachineHologram != null)
             currentMachineHologram.transform.position = offsetPositionOfMouse;
@@ -40,10 +51,10 @@ public class PlaceMachine : MonoBehaviour
         {
             GameObject building = new GameObject("building");
             building.AddComponent<SpriteRenderer>();
-            building.GetComponent<SpriteRenderer>().sprite = machineSprite;
+            building.GetComponent<SpriteRenderer>().sprite = factoryTypes[selectedSprite].Sprite;
 
             building.AddComponent<Structure>();
-            building.GetComponent<Structure>().type = 3;
+            building.GetComponent<Structure>().type = factoryTypes[selectedSprite].Type;
 
             building.transform.position = offsetPositionOfMouse;
 
@@ -81,7 +92,7 @@ public class PlaceMachine : MonoBehaviour
         {
             for (int j = 0; j < ySize; j++)
             {
-                genMap.structureGrid[(int)position.x + xSize, (int)position.y + ySize] = gObj;
+                genMap.structureGrid[(int)position.x + i, (int)position.y + j] = gObj;
             }
         }
     }
