@@ -6,5 +6,4 @@ public class Tile : MonoBehaviour
     //1 - grass
     //2 - stone....
     public int type = 0;
-    public bool isOccupied = false;
 }

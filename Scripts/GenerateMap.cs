@@ -38,7 +38,6 @@ public class GenerateMap : MonoBehaviour
     {
         GameObject mapParent = new GameObject();
         mapParent.name = "TileParent";
-
         //Generate all tiles
         for(int i = 0; i < x; i++)
         {
@@ -56,10 +55,9 @@ public class GenerateMap : MonoBehaviour
                 currentTile.GetComponent<SpriteRenderer>().sprite = TileSprites[1];
                 grid[i, j] = currentTile;
             }
-        }    
-
+        }
         //Lake generation algorithm: Slow but Simple and easily modifiable
-        for(int i = 0; i < Random.Range(lakeCountMin, lakeCountMax); i++)
+        for (int i = 0; i < Random.Range(lakeCountMin, lakeCountMax); i++)
         {    
             Vector2 startingPos = new Vector2(Random.Range(0, x), Random.Range(0, y)); //Get starting pos for lake
             GameObject startingTile = grid[(int)startingPos.x, (int)startingPos.y];
