@@ -21,7 +21,6 @@ public class GenerateMap : MonoBehaviour
     [SerializeField] int forestIntensityMax;
     [SerializeField] int forestLengthMin;
     [SerializeField] int forestLengthMax;
-    [SerializeField] int reactorCount;
     
     public GameObject[,] grid; //Gameobject.Find() is extremely slow so this is an optimisation technique (put all tiles in a matrix beforehand)
     public GameObject[,] structureGrid; // Grid for the structures like forests, mountains and others.
@@ -89,6 +88,24 @@ public class GenerateMap : MonoBehaviour
                     Vector2 directionToGo = new Vector2(Random.Range(-1, 2), Random.Range(-1, 2));
                     currentPos += directionToGo;
 
+                }
+            }
+        }
+        //Remove grass tiles surrounded by water
+        for (int i = 1; i < x - 1; i++)
+        {
+            for (int j = 1; j < y - 1; j++)
+            {
+                if (grid[i, j].GetComponent<Tile>().type == 1)
+                {
+                    if ( grid[i, j + 1].GetComponent<Tile>().type == 0
+                    && grid[i, j - 1].GetComponent<Tile>().type == 0
+                    && grid[i + 1, j].GetComponent<Tile>().type == 0
+                    && grid[i - 1, j].GetComponent<Tile>().type == 0)
+                    {
+                        grid[i, j].GetComponent<Tile>().type = 0;
+                        grid[i, j].GetComponent<SpriteRenderer>().sprite = TileSprites[0];
+                    }
                 }
             }
         }
@@ -165,7 +182,7 @@ public class GenerateMap : MonoBehaviour
         reactor.AddComponent<Structure>();
         reactor.GetComponent<Structure>().type = 1;
         reactor.GetComponent<SpriteRenderer>().sprite = StructureSprites[1];
-        reactor.transform.position = reactorPosition; 
+        reactor.transform.position = new Vector2(reactorPosition.x + 0.5f, reactorPosition.y + 0.5f); 
         structureGrid[(int)reactorPosition.x, (int)reactorPosition.y] = reactor;
         UpdateSortingOrderForStructures();
     }

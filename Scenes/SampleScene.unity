@@ -406,7 +406,6 @@ MonoBehaviour:
   forestIntensityMax: 20
   forestLengthMin: 50
   forestLengthMax: 130
-  reactorCount: 1
 --- !u!4 &1562538649
 Transform:
   m_ObjectHideFlags: 0
@@ -416,7 +415,7 @@ Transform:
   m_GameObject: {fileID: 1562538647}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.020632088, y: 1.4186676, z: -0.03608622}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
