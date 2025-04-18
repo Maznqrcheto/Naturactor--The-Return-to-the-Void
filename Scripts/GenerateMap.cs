@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class GenerateMap : MonoBehaviour
 {
@@ -21,6 +22,16 @@ public class GenerateMap : MonoBehaviour
     [SerializeField] int forestIntensityMax;
     [SerializeField] int forestLengthMin;
     [SerializeField] int forestLengthMax;
+
+    [SerializeField] int coalCountMin;
+    [SerializeField] int coalCountMax;
+    [SerializeField] int coalLengthMin;
+    [SerializeField] int coalLenghtMax;
+    [SerializeField] int coalWidthMin;
+    [SerializeField] int coalWidthMax;
+
+    [SerializeField] int volcanoCountMin;
+    [SerializeField] int volcanoCountMax;
     
     public GameObject[,] grid; //Gameobject.Find() is extremely slow so this is an optimisation technique (put all tiles in a matrix beforehand)
     public GameObject[,] structureGrid; // Grid for the structures like forests, mountains and others.
@@ -51,7 +62,7 @@ public class GenerateMap : MonoBehaviour
                 currentTile.name = $"{i},{j}";
 
                 currentTile.GetComponent<Tile>().type = 1;
-                currentTile.GetComponent<SpriteRenderer>().sprite = TileSprites[1];
+                currentTile.GetComponent<SpriteRenderer>().sprite = TileSprites[Random.Range(1, 4)];
                 grid[i, j] = currentTile;
             }
         }
@@ -77,7 +88,7 @@ public class GenerateMap : MonoBehaviour
                         }
                         if (currentPos.y < y - 1 && grid[(int)currentPos.x, (int)currentPos.y + 1].GetComponent<Tile>().type == 1)
                         {
-                            grid[(int)currentPos.x, (int)currentPos.y + 1].GetComponent<SpriteRenderer>().sprite = TileSprites[2];
+                            grid[(int)currentPos.x, (int)currentPos.y + 1].GetComponent<SpriteRenderer>().sprite = TileSprites[4];
                         }
                     }
                     catch
@@ -109,11 +120,79 @@ public class GenerateMap : MonoBehaviour
                 }
             }
         }
+        //Coal generation
+        for(int i = 0; i < Random.Range(coalCountMin, coalCountMax); i++)
+        {
+            GenerateVein(Random.Range(coalLengthMin, coalLenghtMax), coalWidthMin, coalWidthMax, new Sprite[1]);
+        }
 
+    }
+    public void GenerateVein(int length, int widthMin, int widthMax, Sprite[] sprites) //Sprites are in descending order
+    {
+        Vector2 startingPosOfVein = new Vector2(Random.Range(0, x), Random.Range(0, y));
+        //2 ways to generate a vein, going down and going left
+        int randomAlgorhytm = Random.Range(0, 2);
+
+        //going right
+        if(randomAlgorhytm == 0)
+        {
+            Debug.Log("hi");
+            for (int i = 0; i < length; i++)
+            {
+                try
+                {
+                    grid[i + (int)startingPosOfVein.x, (int)startingPosOfVein.y].GetComponent<Tile>().type = 2;
+                    grid[i + (int)startingPosOfVein.x, (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = TileSprites[5];
+                    int width = Random.Range(widthMin, widthMax);
+                    for (int j = 1; j < width; j++)
+                    {
+                        grid[i + (int)startingPosOfVein.x, j + (int)startingPosOfVein.y].GetComponent<Tile>().type = 2;
+                        grid[i + (int)startingPosOfVein.x, j + (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = TileSprites[5];
+                    }
+                    for (int j = -1; j > -width; j--)
+                    {
+                        grid[i + (int)startingPosOfVein.x, j + (int)startingPosOfVein.y].GetComponent<Tile>().type = 2;
+                        grid[i + (int)startingPosOfVein.x, j + (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = TileSprites[5];
+                    }
+                }
+                catch
+                {
+                    //Out of bounds
+                }
+            }
+        }
+        //Going up
+        else if(randomAlgorhytm == 1)
+        {
+            for (int i = 0; i < length; i++)
+            {
+                try
+                {
+                    grid[(int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<Tile>().type = 2;
+                    grid[(int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = TileSprites[5];
+ ;
+                    for (int j = 1; j < Random.Range(widthMin, widthMax); j++)
+                    {
+                        grid[j + (int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<Tile>().type = 2;
+                        grid[j + (int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = TileSprites[5];
+                    }
+                    for (int j = -1; j > -Random.Range(widthMin, widthMax); j--)
+                    {
+                        grid[j + (int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<Tile>().type = 2;
+                        grid[j + (int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = TileSprites[5];
+                    }
+                }
+                catch
+                {
+                    //Out of bounds
+                }
+            }
+        }
     }
     public void GenerateStructuresFromScratch()
     {
         GenerateForestStructure();
+        GenerateVolcanoes();
         GenerateReactor();
     }
     public void GenerateForestStructure()
@@ -170,6 +249,31 @@ public class GenerateMap : MonoBehaviour
         treeOffset.y = .8f;
         forestParent.transform.position = treeOffset;
         }
+    public void GenerateVolcanoes()
+    {
+        int volcanoCount = Random.Range(volcanoCountMin, volcanoCountMax);
+        for (int i = 0; i < volcanoCount; i++)
+        {
+            Vector2 volcanoPosition = new Vector2();
+            while (!gameObject.GetComponent<PlaceMachine>().CheckIfCanPlace(new Vector2(volcanoPosition.x - 5, volcanoPosition.y - 4), 10, 8))
+            {
+                volcanoPosition = new Vector2(Random.Range(5, x - 5), Random.Range(4, y - 4));
+            }
+            GameObject volcano = new GameObject("volcano");
+            volcano.AddComponent<SpriteRenderer>();
+            volcano.AddComponent<Structure>();
+            volcano.GetComponent<Structure>().type = 5;
+            volcano.GetComponent<SpriteRenderer>().sprite = StructureSprites[2];
+            volcano.transform.position = new Vector2(volcanoPosition.x + 0.5f, volcanoPosition.y + 0.5f);
+            for(int j = (int)volcanoPosition.x - 5; j <= (int)volcanoPosition.x + 5; j++)
+            {
+                for(int k = (int)volcanoPosition.y - 4; k <= (int)volcanoPosition.y + 4; k++)
+                {
+                    structureGrid[j, k] = volcano;
+                }
+            }
+        }
+    }
     public void GenerateReactor()
     {
         Vector2 reactorPosition = new Vector2(Random.Range(0, x), Random.Range(0, y));
@@ -184,6 +288,9 @@ public class GenerateMap : MonoBehaviour
         reactor.GetComponent<SpriteRenderer>().sprite = StructureSprites[1];
         reactor.transform.position = new Vector2(reactorPosition.x + 0.5f, reactorPosition.y + 0.5f); 
         structureGrid[(int)reactorPosition.x, (int)reactorPosition.y] = reactor;
+        structureGrid[(int)reactorPosition.x + 1, (int)reactorPosition.y] = reactor;
+        structureGrid[(int)reactorPosition.x + 1, (int)reactorPosition.y + 1] = reactor;
+        structureGrid[(int)reactorPosition.x, (int)reactorPosition.y + 1] = reactor;
         UpdateSortingOrderForStructures();
     }
     public bool CanPlaceReactor(Vector2 reactorPosition)
