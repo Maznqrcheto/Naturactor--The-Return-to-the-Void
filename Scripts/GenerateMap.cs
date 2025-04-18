@@ -156,11 +156,9 @@ public class GenerateMap : MonoBehaviour
     public void GenerateReactor()
     {
         Vector2 reactorPosition = new Vector2(Random.Range(0, x), Random.Range(0, y));
-        while (true)
+        while (!gameObject.GetComponent<PlaceMachine>().CheckIfCanPlace(new Vector2(reactorPosition.x-5, reactorPosition.y-5), 12, 12))
         {
-            if (CanPlaceReactor(reactorPosition)) break;
-            else reactorPosition = new Vector2(Random.Range(0, x), Random.Range(0, y));
-
+            reactorPosition = new Vector2(Random.Range(0, x), Random.Range(0, y));
         }
         GameObject reactor = new GameObject("reactor");
         reactor.AddComponent<SpriteRenderer>();
