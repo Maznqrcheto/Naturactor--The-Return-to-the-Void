@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 5108097a87f96ef4e83c56082567ed4f
+guid: 75311d9638d0d0d41a3fef78a8385f64
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5793039431324145778
-    second: oceanPH_0
+      213: -427610096721032119
+    second: grass_03_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -126,7 +126,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: oceanPH_0
+      name: grass_03_0
       rect:
         serializedVersion: 2
         x: 0
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e87e71e745dfa9fa0800000000000000
-      internalID: -5793039431324145778
+      spriteID: 94c8292f1e2d01af0800000000000000
+      internalID: -427610096721032119
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      oceanPH_0: -5793039431324145778
+      grass_03_0: -427610096721032119
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
