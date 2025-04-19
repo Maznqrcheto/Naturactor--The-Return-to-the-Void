@@ -249,8 +249,9 @@ public class GenerateMap : MonoBehaviour
                             currentTree.AddComponent<SpriteRenderer>();
                             currentTree.AddComponent<Structure>();
                             currentTree.name = $"{currentPos.x},{currentPos.y}";
-
+                            
                             currentTree.GetComponent<Structure>().type = 0;
+                            currentTree.GetComponent<Structure>().position = new Vector2(currentPos.x, currentPos.y);
                             currentTree.GetComponent<SpriteRenderer>().sprite = StructureSprites[0];
                             structureGrid[(int)currentPos.x, (int)currentPos.y] = currentTree;
                         }
@@ -285,6 +286,7 @@ public class GenerateMap : MonoBehaviour
             volcano.AddComponent<SpriteRenderer>();
             volcano.AddComponent<Structure>();
             volcano.GetComponent<Structure>().type = 5;
+            volcano.GetComponent<Structure>().position = new Vector2(volcanoPosition.x, volcanoPosition.y);
             volcano.GetComponent<SpriteRenderer>().sprite = StructureSprites[2];
             volcano.transform.position = new Vector2(volcanoPosition.x + 0.5f, volcanoPosition.y + 0.5f);
             for(int j = (int)volcanoPosition.x - 5; j <= (int)volcanoPosition.x + 5; j++)
@@ -307,6 +309,7 @@ public class GenerateMap : MonoBehaviour
         reactor.AddComponent<SpriteRenderer>();
         reactor.AddComponent<Structure>();
         reactor.GetComponent<Structure>().type = 1;
+        reactor.GetComponent<Structure>().position = new Vector2(reactorPosition.x, reactorPosition.y);
         reactor.GetComponent<SpriteRenderer>().sprite = StructureSprites[1];
         reactor.transform.position = new Vector2(reactorPosition.x + 0.5f, reactorPosition.y + 0.5f); 
         structureGrid[(int)reactorPosition.x, (int)reactorPosition.y] = reactor;

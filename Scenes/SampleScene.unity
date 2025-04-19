@@ -3268,7 +3268,8 @@ MonoBehaviour:
   - {fileID: -427610096721032119, guid: 75311d9638d0d0d41a3fef78a8385f64, type: 3}
   - {fileID: 5864190604192253700, guid: c67119555fb5c3843868bab95ea99608, type: 3}
   - {fileID: 6579724798270529873, guid: d3b8a03017a401544a38342420ebd65c, type: 3}
-  - {fileID: 9129855123067351441, guid: 0eae56c137e099f4697e3d98914be11c, type: 3}
+  - {fileID: -211774847955004860, guid: 93e483cf6d0662c4d9b30f0c4808cd48, type: 3}
+  - {fileID: 7005946037892912416, guid: c33674dc3e32e0a49bd7138e5d45f878, type: 3}
   StructureSprites:
   - {fileID: 6853316077166303748, guid: 2a18597eff2cb8249b155467aa486332, type: 3}
   - {fileID: -1363610248638860192, guid: 60f442c6e5e412b42a4a92c5188a1042, type: 3}
@@ -3291,6 +3292,12 @@ MonoBehaviour:
   coalLenghtMax: 16
   coalWidthMin: 2
   coalWidthMax: 4
+  ironCountMin: 6
+  ironCountMax: 8
+  ironLengthMin: 11
+  ironLenghtMax: 16
+  ironWidthMin: 2
+  ironWidthMax: 4
   volcanoCountMin: 2
   volcanoCountMax: 4
   progressBarControllerWater: {fileID: 1267850169}

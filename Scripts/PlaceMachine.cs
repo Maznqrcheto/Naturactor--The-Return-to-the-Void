@@ -55,6 +55,7 @@ public class PlaceMachine : MonoBehaviour
 
             building.AddComponent<Structure>();
             building.GetComponent<Structure>().type = factoryTypes[selectedSprite].Type;
+            building.GetComponent<Structure>().position = new Vector2(offsetPositionOfMouse.x, offsetPositionOfMouse.y);
 
             building.transform.position = offsetPositionOfMouse;
 
