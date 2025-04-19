@@ -1,9 +1,11 @@
 using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 public class InfoPanel : MonoBehaviour
 {
     public GenerateMap genMap;
+    public PauseMenu pauseMenu;
     public GameObject Panel;
     public Text coordinates;
     public Text objectName;
@@ -21,6 +23,10 @@ public class InfoPanel : MonoBehaviour
     }
     void Update()
     {
+        if ((pauseMenu != null && pauseMenu.isPaused) || EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);

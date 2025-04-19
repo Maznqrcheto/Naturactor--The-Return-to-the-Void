@@ -42,10 +42,6 @@ public class GenerateMap : MonoBehaviour
     
     public GameObject[,] grid; //Gameobject.Find() is extremely slow so this is an optimisation technique (put all tiles in a matrix beforehand)
     public GameObject[,] structureGrid; // Grid for the structures like forests, mountains and others.
-    public ProgressBarController progressBarControllerWater;
-    public ProgressBarController progressBarControllerFire;
-    public ProgressBarController progressBarControllerEarth;
-    public ProgressBarController progressBarControllerAir;
     private void Awake()
     {
         grid = new GameObject[x, y];
@@ -56,10 +52,6 @@ public class GenerateMap : MonoBehaviour
         GenerateMapFromScratch();
         GenerateStructuresFromScratch();
         UpdateSortingOrderForStructures();
-        progressBarControllerWater.SetProgress(100f);
-        progressBarControllerFire.SetProgress(100f);
-        progressBarControllerEarth.SetProgress(100f);
-        progressBarControllerAir.SetProgress(100f);
     }
 
     public void GenerateMapFromScratch()

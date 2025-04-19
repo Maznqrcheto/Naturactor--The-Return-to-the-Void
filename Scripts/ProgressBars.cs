@@ -8,5 +8,8 @@ public class ProgressBarController : MonoBehaviour
     {
         progressBar.value = Mathf.Clamp(value, 0, 100);
     }
-    //Onstart max value is 100
+    void Start()
+    {
+        progressBar.value = 100f;
+    }
 }

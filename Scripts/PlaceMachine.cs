@@ -1,10 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 public class PlaceMachine : MonoBehaviour
 {
     public GenerateMap genMap;
     public GameObject currentMachineHologram;
-
+    public PauseMenu pauseMenu;
     public List<Factory> factoryTypes;
     public List<Sprite> factorySprites;
     public int selectedSprite = 0;
@@ -17,7 +18,10 @@ public class PlaceMachine : MonoBehaviour
     }
     void Update()
     {
-
+        if ((pauseMenu != null && pauseMenu.isPaused) || EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
         //Create/Destroy hologram
         if(currentMachineHologram == null && Input.GetMouseButtonDown(1))
         {
