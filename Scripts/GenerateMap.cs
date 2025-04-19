@@ -56,10 +56,10 @@ public class GenerateMap : MonoBehaviour
         GenerateMapFromScratch();
         GenerateStructuresFromScratch();
         UpdateSortingOrderForStructures();
-        progressBarControllerWater.SetProgress(10f);
-        progressBarControllerFire.SetProgress(7f);
-        progressBarControllerEarth.SetProgress(5f);
-        progressBarControllerAir.SetProgress(9f);
+        progressBarControllerWater.SetProgress(100f);
+        progressBarControllerFire.SetProgress(100f);
+        progressBarControllerEarth.SetProgress(100f);
+        progressBarControllerAir.SetProgress(100f);
     }
 
     public void GenerateMapFromScratch()
