@@ -2031,7 +2031,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &757809375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2196,7 +2196,7 @@ RectTransform:
   m_Father: {fileID: 98844693}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2644,7 +2644,7 @@ RectTransform:
   m_Father: {fileID: 841385130}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2719,7 +2719,7 @@ RectTransform:
   m_Father: {fileID: 633120567}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3268,9 +3268,11 @@ MonoBehaviour:
   - {fileID: -427610096721032119, guid: 75311d9638d0d0d41a3fef78a8385f64, type: 3}
   - {fileID: 5864190604192253700, guid: c67119555fb5c3843868bab95ea99608, type: 3}
   - {fileID: 6579724798270529873, guid: d3b8a03017a401544a38342420ebd65c, type: 3}
+  - {fileID: 9129855123067351441, guid: 0eae56c137e099f4697e3d98914be11c, type: 3}
   StructureSprites:
   - {fileID: 6853316077166303748, guid: 2a18597eff2cb8249b155467aa486332, type: 3}
   - {fileID: -1363610248638860192, guid: 60f442c6e5e412b42a4a92c5188a1042, type: 3}
+  - {fileID: -1309091486694266011, guid: a25b0237ee0feaa4bba0f5ca1bc9d1dd, type: 3}
   lakeCountMin: 2
   lakeCountMax: 16
   lakeIntensityMin: 190
@@ -3283,14 +3285,14 @@ MonoBehaviour:
   forestIntensityMax: 20
   forestLengthMin: 50
   forestLengthMax: 130
-  coalCountMin: 0
-  coalCountMax: 0
-  coalLengthMin: 0
-  coalLenghtMax: 0
-  coalWidthMin: 0
-  coalWidthMax: 0
-  volcanoCountMin: 0
-  volcanoCountMax: 0
+  coalCountMin: 6
+  coalCountMax: 8
+  coalLengthMin: 11
+  coalLenghtMax: 16
+  coalWidthMin: 2
+  coalWidthMax: 4
+  volcanoCountMin: 2
+  volcanoCountMax: 4
   progressBarControllerWater: {fileID: 1267850169}
   progressBarControllerFire: {fileID: 1123327510}
   progressBarControllerEarth: {fileID: 441166808}
@@ -3589,7 +3591,7 @@ RectTransform:
   m_Father: {fileID: 778842150}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

@@ -30,6 +30,13 @@ public class GenerateMap : MonoBehaviour
     [SerializeField] int coalWidthMin;
     [SerializeField] int coalWidthMax;
 
+    [SerializeField] int ironCountMin;
+    [SerializeField] int ironCountMax;
+    [SerializeField] int ironLengthMin;
+    [SerializeField] int ironLenghtMax;
+    [SerializeField] int ironWidthMin;
+    [SerializeField] int ironWidthMax;
+
     [SerializeField] int volcanoCountMin;
     [SerializeField] int volcanoCountMax;
     
@@ -39,10 +46,13 @@ public class GenerateMap : MonoBehaviour
     public ProgressBarController progressBarControllerFire;
     public ProgressBarController progressBarControllerEarth;
     public ProgressBarController progressBarControllerAir;
-    void Start()
+    private void Awake()
     {
         grid = new GameObject[x, y];
         structureGrid = new GameObject[x, y];
+    }
+    void Start()
+    {
         GenerateMapFromScratch();
         GenerateStructuresFromScratch();
         UpdateSortingOrderForStructures();
@@ -73,6 +83,16 @@ public class GenerateMap : MonoBehaviour
                 currentTile.GetComponent<SpriteRenderer>().sprite = TileSprites[Random.Range(1, 4)];
                 grid[i, j] = currentTile;
             }
+        }
+        //Coal generation
+        for (int i = 0; i < Random.Range(coalCountMin, coalCountMax); i++)
+        {
+            GenerateVein(Random.Range(coalLengthMin, coalLenghtMax), coalWidthMin, coalWidthMax, TileSprites[5], 2);
+        }
+        //Iron generation
+        for (int i = 0; i < Random.Range(ironCountMin, ironCountMax); i++)
+        {
+            GenerateVein(Random.Range(ironLengthMin, ironLenghtMax), ironWidthMin, ironWidthMax, TileSprites[6], 3);
         }
         //Lake generation algorithm: Slow but Simple and easily modifiable
         for (int i = 0; i < Random.Range(lakeCountMin, lakeCountMax); i++)
@@ -128,39 +148,35 @@ public class GenerateMap : MonoBehaviour
                 }
             }
         }
-        //Coal generation
-        for(int i = 0; i < Random.Range(coalCountMin, coalCountMax); i++)
-        {
-            GenerateVein(Random.Range(coalLengthMin, coalLenghtMax), coalWidthMin, coalWidthMax, new Sprite[1]);
-        }
+       
 
     }
-    public void GenerateVein(int length, int widthMin, int widthMax, Sprite[] sprites) //Sprites are in descending order
+    public void GenerateVein(int length, int widthMin, int widthMax, Sprite sprite, int type)
     {
         Vector2 startingPosOfVein = new Vector2(Random.Range(0, x), Random.Range(0, y));
-        //2 ways to generate a vein, going down and going left
+        //2 ways to generate a vein, going up and going right
         int randomAlgorhytm = Random.Range(0, 2);
 
-        //going right
-        if(randomAlgorhytm == 0)
+        for (int i = 0; i < length; i++)
         {
-            Debug.Log("hi");
-            for (int i = 0; i < length; i++)
+            //Going right
+            if (randomAlgorhytm == 0)
             {
+                startingPosOfVein.y += (int)(Random.Range(-20, 21) / 10);
                 try
                 {
-                    grid[i + (int)startingPosOfVein.x, (int)startingPosOfVein.y].GetComponent<Tile>().type = 2;
-                    grid[i + (int)startingPosOfVein.x, (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = TileSprites[5];
+                    grid[i + (int)startingPosOfVein.x, (int)startingPosOfVein.y].GetComponent<Tile>().type = type;
+                    grid[i + (int)startingPosOfVein.x, (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = sprite;
                     int width = Random.Range(widthMin, widthMax);
                     for (int j = 1; j < width; j++)
                     {
-                        grid[i + (int)startingPosOfVein.x, j + (int)startingPosOfVein.y].GetComponent<Tile>().type = 2;
-                        grid[i + (int)startingPosOfVein.x, j + (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = TileSprites[5];
+                        grid[i + (int)startingPosOfVein.x, j + (int)startingPosOfVein.y].GetComponent<Tile>().type = type;
+                        grid[i + (int)startingPosOfVein.x, j + (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = sprite;
                     }
                     for (int j = -1; j > -width; j--)
                     {
-                        grid[i + (int)startingPosOfVein.x, j + (int)startingPosOfVein.y].GetComponent<Tile>().type = 2;
-                        grid[i + (int)startingPosOfVein.x, j + (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = TileSprites[5];
+                        grid[i + (int)startingPosOfVein.x, j + (int)startingPosOfVein.y].GetComponent<Tile>().type = type;
+                        grid[i + (int)startingPosOfVein.x, j + (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = sprite;
                     }
                 }
                 catch
@@ -168,26 +184,23 @@ public class GenerateMap : MonoBehaviour
                     //Out of bounds
                 }
             }
-        }
-        //Going up
-        else if(randomAlgorhytm == 1)
-        {
-            for (int i = 0; i < length; i++)
+            //Going up
+            else if (randomAlgorhytm == 1)
             {
+                startingPosOfVein.x += (int)(Random.Range(-20, 21) / 10);
                 try
                 {
-                    grid[(int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<Tile>().type = 2;
-                    grid[(int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = TileSprites[5];
- ;
+                    grid[(int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<Tile>().type = type;
+                    grid[(int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = sprite;
                     for (int j = 1; j < Random.Range(widthMin, widthMax); j++)
                     {
-                        grid[j + (int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<Tile>().type = 2;
-                        grid[j + (int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = TileSprites[5];
+                        grid[j + (int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<Tile>().type = type;
+                        grid[j + (int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = sprite;
                     }
                     for (int j = -1; j > -Random.Range(widthMin, widthMax); j--)
                     {
-                        grid[j + (int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<Tile>().type = 2;
-                        grid[j + (int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = TileSprites[5];
+                        grid[j + (int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<Tile>().type = type;
+                        grid[j + (int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = sprite;
                     }
                 }
                 catch
@@ -196,6 +209,7 @@ public class GenerateMap : MonoBehaviour
                 }
             }
         }
+
     }
     public void GenerateStructuresFromScratch()
     {
