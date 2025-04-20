@@ -8,16 +8,25 @@ public class PlaceMachine : MonoBehaviour
     public PauseMenu pauseMenu;
     public List<Factory> factoryTypes;
     public List<Sprite> factorySprites;
-    public int selectedSprite = 0;
+    public int selectedfactory = 0;
+    public Transform buildingParent;
     private void Start()
     {
         factoryTypes = new List<Factory>();
-        factoryTypes.Add(new Factory(factorySprites[0], 2));
-        //factoryTypes.Add(new Factory(factorySprites[1]));
-        //factoryTypes.Add(new Factory(factorySprites[2]));
+        factoryTypes.Add(new Factory(factorySprites[0], 0));
+        factoryTypes.Add(new Factory(factorySprites[1], 1));
+        factoryTypes.Add(new Factory(factorySprites[2], 2));
+        factoryTypes.Add(new Factory(factorySprites[3], 4));
+    }
+    private void Awake()
+    {
+        buildingParent = new GameObject("BuildingParent").transform;
     }
     void Update()
     {
+        if(currentMachineHologram == null)
+            SelectSprite();
+
         if ((pauseMenu != null && pauseMenu.isPaused) || EventSystem.current.IsPointerOverGameObject())
         {
             return;
@@ -27,7 +36,7 @@ public class PlaceMachine : MonoBehaviour
         {
             currentMachineHologram = new GameObject("machineHologram");
             currentMachineHologram.AddComponent<SpriteRenderer>();
-            currentMachineHologram.GetComponent<SpriteRenderer>().sprite = factoryTypes[selectedSprite].Sprite;
+            currentMachineHologram.GetComponent<SpriteRenderer>().sprite = factoryTypes[selectedfactory].Sprite;
             currentMachineHologram.GetComponent<SpriteRenderer>().sortingOrder = 1;
         }
         else if(currentMachineHologram != null && Input.GetKeyDown(KeyCode.Escape))
@@ -39,7 +48,7 @@ public class PlaceMachine : MonoBehaviour
         //Update position of hologram (malko tupa matematika, otne mi 3 chasa iskam da se samoubiq)
         Vector2 positionOfMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         positionOfMouse.x = Mathf.Round(positionOfMouse.x); positionOfMouse.y = Mathf.Round(positionOfMouse.y);
-        Vector2 scale = new Vector2(factoryTypes[selectedSprite].Sprite.texture.width / 32, factoryTypes[selectedSprite].Sprite.texture.height / 32);
+        Vector2 scale = new Vector2(factoryTypes[selectedfactory].Sprite.texture.width / 32, factoryTypes[selectedfactory].Sprite.texture.height / 32);
         Vector2 offsetPositionOfMouse = new Vector2(positionOfMouse.x + (scale.x / 2) - 0.5f, positionOfMouse.y + (scale.y / 2) - 0.5f);
         if (currentMachineHologram != null)
             currentMachineHologram.transform.position = offsetPositionOfMouse;
@@ -54,12 +63,29 @@ public class PlaceMachine : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && currentMachineHologram != null && CheckIfCanPlace(positionOfMouse, (int)scale.x, (int)scale.y))
         {
             GameObject building = new GameObject("building");
+            building.transform.parent = buildingParent;
             building.AddComponent<SpriteRenderer>();
-            building.GetComponent<SpriteRenderer>().sprite = factoryTypes[selectedSprite].Sprite;
+            building.GetComponent<SpriteRenderer>().sprite = factoryTypes[selectedfactory].Sprite;
 
             building.AddComponent<Structure>();
-            building.GetComponent<Structure>().type = factoryTypes[selectedSprite].Type;
+            building.GetComponent<Structure>().type = -1;
             building.GetComponent<Structure>().position = new Vector2(offsetPositionOfMouse.x, offsetPositionOfMouse.y);
+
+            building.AddComponent<Machine>();
+            building.GetComponent<Machine>().type = factoryTypes[selectedfactory].Type;
+            switch (building.GetComponent<Machine>().type)
+            {
+                case 0:
+                    building.GetComponent<Machine>().drillSpeed = 30;
+                    break;
+                case 1:
+                    building.GetComponent<Machine>().coalConsumptionSpeed = 30;
+                    break;
+                case 2:
+                    building.GetComponent<Machine>().conveyorSpeed = 30;
+                    break;
+
+            }
 
             building.transform.position = offsetPositionOfMouse;
 
@@ -68,6 +94,17 @@ public class PlaceMachine : MonoBehaviour
             currentMachineHologram = null;
             genMap.UpdateSortingOrderForStructures();
         }
+    }
+    public void SelectSprite()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            selectedfactory = 0;
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+            selectedfactory = 1;
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+            selectedfactory = 2;
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+            selectedfactory = 3;
     }
     public bool CheckIfCanPlace(Vector2 position, int xSize, int ySize) //position vector2 is the bottom right of the gameObject
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 public class TickSystem : MonoBehaviour
 {
     public float tickLength;
-    public ulong tickTime;
+    public ulong tickTime = 1;
     private void Start()
     {
         StartCoroutine(Tick());

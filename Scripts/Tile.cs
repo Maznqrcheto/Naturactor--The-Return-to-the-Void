@@ -9,9 +9,6 @@ public class Tile : MonoBehaviour
     //4 - copper
     public int type = 0;
 
-    //For veins like coal and iron
-    public int material;
-
     public string GetName()
     {
         switch (type)

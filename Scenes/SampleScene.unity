@@ -4495,7 +4495,11 @@ MonoBehaviour:
   pauseMenu: {fileID: 0}
   factorySprites:
   - {fileID: -3010401151903113755, guid: 682e44e162aa01943b60d1d5931bb6df, type: 3}
-  selectedSprite: 0
+  - {fileID: -8011775145534436228, guid: 068935a7dc14c9c46aa980e954bc233c, type: 3}
+  - {fileID: -2171869769579782635, guid: 4295c873a2269d24e8cd66b580c7290c, type: 3}
+  - {fileID: 3184906931786229180, guid: e5299220fdad9b443901c6638df42e42, type: 3}
+  selectedfactory: 0
+  buildingParent: {fileID: 0}
 --- !u!114 &1562538651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4867,8 +4871,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -97.799995, y: 221.4}
-  m_SizeDelta: {x: 100, y: 30}
+  m_AnchoredPosition: {x: -95.2, y: 221.4}
+  m_SizeDelta: {x: 131.0743, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1940705481
 MonoBehaviour:
