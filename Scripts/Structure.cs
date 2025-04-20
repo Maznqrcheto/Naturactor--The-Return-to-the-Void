@@ -10,7 +10,22 @@ public class Structure : MonoBehaviour
     //5 - Volcanos
     public int type = 0;
     public Vector2 position;
+    public Vector2 originPosition;
+    private void Start()
+    {
+        Texture spriteTexture = GetComponent<SpriteRenderer>().sprite.texture;
 
+        //Calculate position of bottom left corner
+        if((spriteTexture.width / 32) % 2 == 0) 
+            originPosition.x = position.x - (spriteTexture.width / 32) / 2 + 0.5f;
+        else
+            originPosition.x = position.x - (spriteTexture.width / 32) / 2;
+
+        if((spriteTexture.height / 32) % 2 == 0)
+            originPosition.y = position.y - (spriteTexture.height / 32) / 2 + 0.5f;
+        else
+            originPosition.y = position.y - (spriteTexture.height / 32) / 2;
+    }
     public string GetName()
     {
         switch (type)

@@ -13,10 +13,10 @@ public class PlaceMachine : MonoBehaviour
     private void Start()
     {
         factoryTypes = new List<Factory>();
-        factoryTypes.Add(new Factory(factorySprites[0], 0));
-        factoryTypes.Add(new Factory(factorySprites[1], 1));
-        factoryTypes.Add(new Factory(factorySprites[2], 2));
-        factoryTypes.Add(new Factory(factorySprites[3], 4));
+        factoryTypes.Add(new Factory(factorySprites[0], new Vector2(-1, -1), new Vector2(1, -1), 0));
+        factoryTypes.Add(new Factory(factorySprites[1], new Vector2(-1, -1), new Vector2(-1, -1), 1));
+        factoryTypes.Add(new Factory(factorySprites[2], new Vector2(0 ,0), new Vector2(1, 0), 2));
+        factoryTypes.Add(new Factory(factorySprites[3], new Vector2(-1, -1), new Vector2(-1, -1), 4));
     }
     private void Awake()
     {
@@ -77,15 +77,23 @@ public class PlaceMachine : MonoBehaviour
             {
                 case 0:
                     building.GetComponent<Machine>().drillSpeed = 30;
+                    building.GetComponent<Machine>().hasInput = false;
+                    building.GetComponent<Machine>().hasOutput = true;
+                    building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
                     break;
                 case 1:
                     building.GetComponent<Machine>().coalConsumptionSpeed = 30;
                     break;
                 case 2:
-                    building.GetComponent<Machine>().conveyorSpeed = 30;
+                    building.GetComponent<Machine>().conveyorSpeed = 4;
+                    building.GetComponent<Machine>().hasInput = true;
+                    building.GetComponent<Machine>().hasOutput = true;
+                    building.GetComponent<Machine>().input = factoryTypes[selectedfactory].Input;
+                    building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
                     break;
 
             }
+            
 
             building.transform.position = offsetPositionOfMouse;
 

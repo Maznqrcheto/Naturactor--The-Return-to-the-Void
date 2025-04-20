@@ -1,12 +1,14 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public class Item
 {
-    //0 - Wood
-    //1 - Coal
-    //2 - Iron
-    //3 - Copper
+    //0 - Coal
+    //1 - Iron
+    //2 - Copper
     public int type;
-    public GameObject boundGameObject;
+
+    public Item(int type)
+    {
+        this.type = type;
+    }
 }
