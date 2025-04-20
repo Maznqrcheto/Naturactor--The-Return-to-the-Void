@@ -37,6 +37,13 @@ public class GenerateMap : MonoBehaviour
     [SerializeField] int ironWidthMin;
     [SerializeField] int ironWidthMax;
 
+    [SerializeField] int copperCountMin;
+    [SerializeField] int copperCountMax;
+    [SerializeField] int copperLengthMin;
+    [SerializeField] int copperLenghtMax;
+    [SerializeField] int copperWidthMin;
+    [SerializeField] int copperWidthMax;
+
     [SerializeField] int volcanoCountMin;
     [SerializeField] int volcanoCountMax;
     
@@ -85,6 +92,11 @@ public class GenerateMap : MonoBehaviour
         for (int i = 0; i < Random.Range(ironCountMin, ironCountMax); i++)
         {
             GenerateVein(Random.Range(ironLengthMin, ironLenghtMax), ironWidthMin, ironWidthMax, TileSprites[6], 3);
+        }
+        //Copper generation
+        for(int i = 0; i < Random.Range(copperCountMin, copperCountMax); i++)
+        {
+            GenerateVein(Random.Range(copperLengthMin, copperLenghtMax), copperWidthMin, copperWidthMax, TileSprites[7], 4);
         }
         //Lake generation algorithm: Slow but Simple and easily modifiable
         for (int i = 0; i < Random.Range(lakeCountMin, lakeCountMax); i++)

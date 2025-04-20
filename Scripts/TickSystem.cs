@@ -4,6 +4,7 @@ using UnityEngine;
 public class TickSystem : MonoBehaviour
 {
     public float tickLength;
+    public ulong tickTime;
     private void Start()
     {
         StartCoroutine(Tick());
@@ -12,6 +13,7 @@ public class TickSystem : MonoBehaviour
     {
         while (true)
         {
+            tickTime++;
             yield return new WaitForSeconds(tickLength);
         }
     }
