@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public Doppelganger : MonoBehaviour
+public class Doppelganger : MonoBehaviour
 {
     
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public StormyWind : MonoBehaviour
+public class StormyWind : MonoBehaviour
 {
     
 }

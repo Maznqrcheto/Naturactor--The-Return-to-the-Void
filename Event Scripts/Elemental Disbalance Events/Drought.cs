@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public Drought : MonoBehaviour
+public class Drought : MonoBehaviour
 {
     
 }

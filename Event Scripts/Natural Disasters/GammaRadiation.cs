@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public GammaRadiation : MonoBehaviour
+public class GammaRadiation : MonoBehaviour
 {
     
 }

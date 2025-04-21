@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public Earthquake : MonoBehaviour
+public class Earthquake : MonoBehaviour
 {
     
 }

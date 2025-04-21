@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public SaveABiologicalSpecie : MonoBehaviour
+public class SaveABiologicalSpecie : MonoBehaviour
 {
     
 }

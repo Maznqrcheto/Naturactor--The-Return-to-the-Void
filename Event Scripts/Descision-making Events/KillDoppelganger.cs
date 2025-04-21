@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public KillDoppelganger : MonoBehaviour
+public class KillDoppelganger : MonoBehaviour
 {
     
 }

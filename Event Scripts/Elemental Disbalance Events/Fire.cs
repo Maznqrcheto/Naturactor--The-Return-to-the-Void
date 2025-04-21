@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public Fire : MonoBehaviour
+public class Fire : MonoBehaviour
 {
     
 }
