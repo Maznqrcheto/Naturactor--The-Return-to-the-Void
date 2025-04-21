@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class ProgressBarController : MonoBehaviour
 {
     public Slider progressBar;
@@ -24,4 +24,5 @@ public class ProgressBarController : MonoBehaviour
     {
         //fdkfdk
     }
+
 }
