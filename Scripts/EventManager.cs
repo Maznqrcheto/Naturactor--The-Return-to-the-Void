@@ -20,6 +20,7 @@ public class EventManager : MonoBehaviour
     public float airChange;
     public float earthChange;
 
+    [Header("Tick system")]
     public ulong ticksToChange = 0;
     public TickSystem tickSystem;
     private void Update()
@@ -45,10 +46,12 @@ public class EventManager : MonoBehaviour
     {
         fireLevel = fireBar.GetProgress();
         waterLevel = waterBar.GetProgress();
+        airLevel = airBar.GetProgress();
+        earthLevel = earthBar.GetProgress();
 
         if (Mathf.Abs(fireLevel - waterLevel) > 20f)
         {
-            Debug.Log("Elements out of balance!");
+            //drought occurs
         }
     }
 
