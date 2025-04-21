@@ -3131,6 +3131,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireBar: {fileID: 1123327510}
   waterBar: {fileID: 1267850169}
+  airBar: {fileID: 434134257}
+  earthBar: {fileID: 441166808}
+  fireLevel: 0
+  waterLevel: 0
+  airLevel: 0
+  earthLevel: 0
+  fireChange: 0
+  waterChange: 0
+  airChange: 0
+  earthChange: 0
+  ticksToChange: 0
+  tickSystem: {fileID: 0}
 --- !u!1 &784706771
 GameObject:
   m_ObjectHideFlags: 0
@@ -5623,7 +5635,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tickLength: 0.25
   tickTime: 0
-  eventManager: {fileID: 781445729}
+  eventManager: {fileID: 0}
 --- !u!114 &1562538653
 MonoBehaviour:
   m_ObjectHideFlags: 0

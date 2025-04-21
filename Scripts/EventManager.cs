@@ -2,20 +2,45 @@ using UnityEngine;
 
 public class EventManager : MonoBehaviour
 {
+    [Header("Slide bars")]
     public ProgressBarController fireBar;
     public ProgressBarController waterBar;
     public ProgressBarController airBar;
     public ProgressBarController earthBar;
 
+    [Header("Element levels")]
     public float fireLevel;
-    float waterLevel;
-    float airLevel;
-    float earthLevel;
-    float fireChange;
-    float waterChange;
-    float airChange;
-    float earthChange;
+    public float waterLevel;
+    public float airLevel;
+    public float earthLevel;
 
+    [Header("Element changes")]
+    public float fireChange;
+    public float waterChange;
+    public float airChange;
+    public float earthChange;
+
+    public ulong ticksToChange = 0;
+    public TickSystem tickSystem;
+    private void Update()
+    {
+        if (ticksToChange == 0)
+            ticksToChange = tickSystem.tickTime + 30;
+
+        if (ticksToChange <= tickSystem.tickTime)
+        {
+            waterLevel += waterChange;
+            fireLevel += fireChange;
+            earthLevel += earthChange;
+            airLevel += airChange;
+            ticksToChange = 0;
+        }
+
+        waterBar.SetProgress(waterLevel);
+        fireBar.SetProgress(fireLevel);
+        earthBar.SetProgress(earthLevel);
+        airBar.SetProgress(airLevel);
+    }
     public void CheckEvents(ulong tick) // tuk sa usloviqta za vseki edin event v igrata, a v samite scriptove NQMA usloviq za protichane, tam e samo kvo se sluchva
     {
         fireLevel = fireBar.GetProgress();
