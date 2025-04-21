@@ -84,4 +84,5 @@ public class InfoPanel : MonoBehaviour
             Panel.SetActive(false);
         }
     }
+
 }

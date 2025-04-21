@@ -4,12 +4,16 @@ using UnityEngine.EventSystems;
 public class PlaceMachine : MonoBehaviour
 {
     public GenerateMap genMap;
-    public GameObject currentMachineHologram;
     public PauseMenu pauseMenu;
+
+    public GameObject currentMachineHologram;
+    public Transform buildingParent;
+
     public List<Factory> factoryTypes;
     public List<Sprite> factorySprites;
     public int selectedfactory = 0;
-    public Transform buildingParent;
+
+    public int rotation = 0;
     private void Start()
     {
         factoryTypes = new List<Factory>();
@@ -24,9 +28,6 @@ public class PlaceMachine : MonoBehaviour
     }
     void Update()
     {
-        if(currentMachineHologram == null)
-            SelectSprite();
-
         if ((pauseMenu != null && pauseMenu.isPaused) || EventSystem.current.IsPointerOverGameObject())
         {
             return;
@@ -90,6 +91,8 @@ public class PlaceMachine : MonoBehaviour
                     building.GetComponent<Machine>().hasOutput = true;
                     building.GetComponent<Machine>().input = factoryTypes[selectedfactory].Input;
                     building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
+                    building.GetComponent<Machine>().ChangeConveyorRotation(rotation);
+                    rotation = 0;
                     break;
 
             }
@@ -102,17 +105,25 @@ public class PlaceMachine : MonoBehaviour
             currentMachineHologram = null;
             genMap.UpdateSortingOrderForStructures();
         }
+
+        //Rotate conveyor belts
+        if (currentMachineHologram != null && Input.GetKeyDown(KeyCode.R) && selectedfactory == 2)
+        {
+            if (rotation == 3)
+                rotation = 0;
+            else
+                rotation++;
+
+            currentMachineHologram.transform.eulerAngles = new Vector3(0, 0, rotation * 90);
+        }
     }
-    public void SelectSprite()
+    public void SelectSprite(int factoryToSelect)
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            selectedfactory = 0;
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-            selectedfactory = 1;
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-            selectedfactory = 2;
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-            selectedfactory = 3;
+        if(currentMachineHologram == null)
+        {
+            selectedfactory = factoryToSelect;
+            rotation = 0;
+        }
     }
     public bool CheckIfCanPlace(Vector2 position, int xSize, int ySize) //position vector2 is the bottom right of the gameObject
     {

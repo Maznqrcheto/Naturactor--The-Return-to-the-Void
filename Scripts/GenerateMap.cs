@@ -9,6 +9,9 @@ public class GenerateMap : MonoBehaviour
     public List<Sprite> TileSprites = new List<Sprite>();
     public List<Sprite> StructureSprites = new List<Sprite>();
 
+    [Space(10)]
+    [Header("Lake Generation")]
+    [Space(10)]
     [SerializeField] int lakeCountMin;
     [SerializeField] int lakeCountMax;
     [SerializeField] int lakeIntensityMin;
@@ -16,6 +19,9 @@ public class GenerateMap : MonoBehaviour
     [SerializeField] int lakeLengthMin;
     [SerializeField] int lakeLengthMax;
 
+    [Space(10)]
+    [Header("Forest Generation")]
+    [Space(10)]
     [SerializeField] int forestCountMin;
     [SerializeField] int forestCountMax;
     [SerializeField] int forestIntensityMin;
@@ -23,6 +29,9 @@ public class GenerateMap : MonoBehaviour
     [SerializeField] int forestLengthMin;
     [SerializeField] int forestLengthMax;
 
+    [Space(10)]
+    [Header("Coal Generation")]
+    [Space(10)]
     [SerializeField] int coalCountMin;
     [SerializeField] int coalCountMax;
     [SerializeField] int coalLengthMin;
@@ -30,6 +39,9 @@ public class GenerateMap : MonoBehaviour
     [SerializeField] int coalWidthMin;
     [SerializeField] int coalWidthMax;
 
+    [Space(10)]
+    [Header("Iron Generation")]
+    [Space(10)]
     [SerializeField] int ironCountMin;
     [SerializeField] int ironCountMax;
     [SerializeField] int ironLengthMin;
@@ -37,6 +49,9 @@ public class GenerateMap : MonoBehaviour
     [SerializeField] int ironWidthMin;
     [SerializeField] int ironWidthMax;
 
+    [Space(10)]
+    [Header("Copper Generation")]
+    [Space(10)]
     [SerializeField] int copperCountMin;
     [SerializeField] int copperCountMax;
     [SerializeField] int copperLengthMin;
@@ -44,6 +59,9 @@ public class GenerateMap : MonoBehaviour
     [SerializeField] int copperWidthMin;
     [SerializeField] int copperWidthMax;
 
+    [Space(10)]
+    [Header("Volcano Generation")]
+    [Space(10)]
     [SerializeField] int volcanoCountMin;
     [SerializeField] int volcanoCountMax;
     

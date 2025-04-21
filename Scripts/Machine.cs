@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -30,7 +31,7 @@ public class Machine : MonoBehaviour
     //Conveyor belt parameters
     public int conveyorSpeed;
     public GameObject objectOnTop;
-    public int rotation; //Clockwise starting from the right in 90 degree intervals
+    public int rotation; //Anti-Clockwise starting from the right in 90 degree intervals
 
     //Generator Parameters
     public int coalConsumptionSpeed = -1;
@@ -170,6 +171,24 @@ public class Machine : MonoBehaviour
 
                 }
             }
+        }
+    }
+    public void ChangeConveyorRotation(int rotation)
+    {
+        this.rotation = rotation;
+        transform.eulerAngles = new Vector3(0, 0, 90 * rotation);
+
+        switch(rotation)
+        {
+            case 1:
+                output = new Vector3(output.y, output.x);
+                break;
+            case 2:
+                output = new Vector3(-output.x, output.y);
+                break;
+            case 3:
+                output = new Vector3(output.y, -output.x);
+                break;
         }
     }
     public void Generator()
