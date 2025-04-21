@@ -49,6 +49,12 @@ public class Machine : MonoBehaviour
     //Machine inventory
     public Stack inventory;
     public int inventorySize = 0;
+
+    //Elemental Change
+    public float waterChange;
+    public float fireChange;
+    public float earthChange;
+    public float airChange;
     private void Awake()
     {
         inventory = new Stack();

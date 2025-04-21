@@ -3142,7 +3142,7 @@ MonoBehaviour:
   airChange: 0
   earthChange: 0
   ticksToChange: 0
-  tickSystem: {fileID: 0}
+  tickSystem: {fileID: 1562538652}
 --- !u!1 &784706771
 GameObject:
   m_ObjectHideFlags: 0

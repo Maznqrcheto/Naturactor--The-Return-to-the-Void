@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 public class PlaceMachine : MonoBehaviour
 {
     public GenerateMap genMap;
@@ -11,16 +12,23 @@ public class PlaceMachine : MonoBehaviour
 
     public List<Factory> factoryTypes;
     public List<Sprite> factorySprites;
-    public int selectedfactory = 0;
+    public int selectedfactory = -1;
+
+    public bool isChoppingTrees = false;
+    public GameObject objectHoveringOver;
 
     public int rotation = 0;
     private void Start()
     {
         factoryTypes = new List<Factory>();
-        factoryTypes.Add(new Factory(factorySprites[0], new Vector2(-1, -1), new Vector2(1, -1), 0));
-        factoryTypes.Add(new Factory(factorySprites[1], new Vector2(-1, -1), new Vector2(-1, -1), 1));
-        factoryTypes.Add(new Factory(factorySprites[2], new Vector2(0 ,0), new Vector2(1, 0), 2));
-        factoryTypes.Add(new Factory(factorySprites[3], new Vector2(-1, -1), new Vector2(-1, -1), 4));
+        factoryTypes.Add(new Factory(factorySprites[0], new Vector2(-1, -1), new Vector2(1, -1), 0)
+        { description = "Useful for mining materials." });
+        factoryTypes.Add(new Factory(factorySprites[1], new Vector2(-1, -1), new Vector2(-1, -1), 1)
+        { description = "Need electricity? Well this is your solution." });
+        factoryTypes.Add(new Factory(factorySprites[2], new Vector2(0, 0), new Vector2(1, 0), 2)
+        { description = "Used for transporting stuff around." });
+        factoryTypes.Add(new Factory(factorySprites[3], new Vector2(-1, -1), new Vector2(-1, -1), 4)
+        { description = "Stores stuff. Yeah that's about it."});
     }
     private void Awake()
     {
@@ -28,36 +36,53 @@ public class PlaceMachine : MonoBehaviour
     }
     void Update()
     {
+        
         if ((pauseMenu != null && pauseMenu.isPaused) || EventSystem.current.IsPointerOverGameObject())
         {
             return;
         }
+        #region PlaceBuilding
         //Create/Destroy hologram
-        if(currentMachineHologram == null && Input.GetMouseButtonDown(1))
+        if (currentMachineHologram == null && Input.GetMouseButtonDown(1) && selectedfactory != -1)
         {
             currentMachineHologram = new GameObject("machineHologram");
             currentMachineHologram.AddComponent<SpriteRenderer>();
             currentMachineHologram.GetComponent<SpriteRenderer>().sprite = factoryTypes[selectedfactory].Sprite;
             currentMachineHologram.GetComponent<SpriteRenderer>().sortingOrder = 1;
         }
-        else if(currentMachineHologram != null && Input.GetKeyDown(KeyCode.Escape))
+        else if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Destroy(currentMachineHologram);
-            currentMachineHologram = null;
+            if (currentMachineHologram != null)
+            {
+                Destroy(currentMachineHologram);
+                currentMachineHologram = null;
+            }
+            selectedfactory = -1;
         }
 
-        //Update position of hologram (malko tupa matematika, otne mi 3 chasa iskam da se samoubiq)
+        //Update position of hologram (malko tupa matematika, otne mi 3 chasa iskam da se samoubiq)      
         Vector2 positionOfMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         positionOfMouse.x = Mathf.Round(positionOfMouse.x); positionOfMouse.y = Mathf.Round(positionOfMouse.y);
-        Vector2 scale = new Vector2(factoryTypes[selectedfactory].Sprite.texture.width / 32, factoryTypes[selectedfactory].Sprite.texture.height / 32);
-        Vector2 offsetPositionOfMouse = new Vector2(positionOfMouse.x + (scale.x / 2) - 0.5f, positionOfMouse.y + (scale.y / 2) - 0.5f);
+        Vector2 scale = new Vector2();
+        Vector2 offsetPositionOfMouse = new Vector2();
+        try
+        {
+            scale = new Vector2(factoryTypes[selectedfactory].Sprite.texture.width / 32, factoryTypes[selectedfactory].Sprite.texture.height / 32);
+            offsetPositionOfMouse = new Vector2(positionOfMouse.x + (scale.x / 2) - 0.5f, positionOfMouse.y + (scale.y / 2) - 0.5f);
+        }
+        catch
+        {
+            //No factory selected
+        }
+
         if (currentMachineHologram != null)
             currentMachineHologram.transform.position = offsetPositionOfMouse;
 
+
         //Check if position is viable for placement and update hologram color
-        if(currentMachineHologram != null && CheckIfCanPlace(positionOfMouse, (int)scale.x, (int)scale.y))
+        if (currentMachineHologram != null && CheckIfCanPlace(positionOfMouse, (int)scale.x, (int)scale.y))
             currentMachineHologram.GetComponent<SpriteRenderer>().color = Color.cyan;
-        else if(currentMachineHologram != null && !CheckIfCanPlace(positionOfMouse, (int)scale.x, (int)scale.y))
+        else if (currentMachineHologram != null && !CheckIfCanPlace(positionOfMouse, (int)scale.x, (int)scale.y))
             currentMachineHologram.GetComponent<SpriteRenderer>().color = Color.red;
 
         //If position is possible, place building
@@ -74,6 +99,11 @@ public class PlaceMachine : MonoBehaviour
 
             building.AddComponent<Machine>();
             building.GetComponent<Machine>().type = factoryTypes[selectedfactory].Type;
+
+            building.GetComponent<Machine>().waterChange = factoryTypes[selectedfactory].waterChange;
+            building.GetComponent<Machine>().fireChange = factoryTypes[selectedfactory].fireChange;
+            building.GetComponent<Machine>().earthChange = factoryTypes[selectedfactory].earthChange;
+            building.GetComponent<Machine>().airChange = factoryTypes[selectedfactory].airChange;
             switch (building.GetComponent<Machine>().type)
             {
                 case 0:
@@ -96,7 +126,7 @@ public class PlaceMachine : MonoBehaviour
                     break;
 
             }
-            
+
 
             building.transform.position = offsetPositionOfMouse;
 
@@ -116,6 +146,43 @@ public class PlaceMachine : MonoBehaviour
 
             currentMachineHologram.transform.eulerAngles = new Vector3(0, 0, rotation * 90);
         }
+        #endregion
+
+        if(isChoppingTrees == true)
+        {
+            if (Input.GetMouseButton(0))
+            {
+                GameObject selectedTree = genMap.structureGrid[(int)Mathf.Round(positionOfMouse.x), (int)Mathf.Round(positionOfMouse.y)];
+                if (selectedTree != null && selectedTree.GetComponent<Structure>().type == 0) Destroy(selectedTree);
+                //Add resources and subtract elements
+            }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+                IsChoppingTrees();
+        }
+
+        #region Hovering
+        if (objectHoveringOver != null)
+        {
+            Color color = objectHoveringOver.GetComponent<SpriteRenderer>().color;
+            color.r = 1f;
+            color.g = 1f;
+            color.b = 1f;
+            objectHoveringOver.GetComponent<SpriteRenderer>().color = color;
+        }
+        objectHoveringOver = genMap.structureGrid[(int)positionOfMouse.x, (int)positionOfMouse.y];
+        if (objectHoveringOver == null)
+            objectHoveringOver = genMap.grid[(int)positionOfMouse.x, (int)positionOfMouse.y];
+
+        if(objectHoveringOver != null)
+        {
+            Color color = objectHoveringOver.GetComponent<SpriteRenderer>().color;
+            color.r = 0.5f;
+            color.g = 0.5f;
+            color.b = 0.5f;
+            objectHoveringOver.GetComponent<SpriteRenderer>().color = color;
+        }
+        #endregion
     }
     public void SelectSprite(int factoryToSelect)
     {
@@ -123,7 +190,14 @@ public class PlaceMachine : MonoBehaviour
         {
             selectedfactory = factoryToSelect;
             rotation = 0;
+            isChoppingTrees = false;
         }
+    }
+    public void IsChoppingTrees()
+    {
+        isChoppingTrees = !isChoppingTrees;
+        selectedfactory = -1;
+        currentMachineHologram = null;
     }
     public bool CheckIfCanPlace(Vector2 position, int xSize, int ySize) //position vector2 is the bottom right of the gameObject
     {

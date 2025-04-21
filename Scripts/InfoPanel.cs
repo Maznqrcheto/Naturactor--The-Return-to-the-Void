@@ -32,7 +32,7 @@ public class InfoPanel : MonoBehaviour
             mousePosition.x = Mathf.Round(mousePosition.x); mousePosition.y = Mathf.Round(mousePosition.y);
 
             //Remove previous highlight
-            if(selectedGameObject != null)
+            if (selectedGameObject != null)
             {
                 Color previousObjectColor = selectedGameObject.GetComponent<SpriteRenderer>().color;
                 previousObjectColor.r = 1f;
@@ -46,17 +46,17 @@ public class InfoPanel : MonoBehaviour
             {
                 Structure currentStructure = genMap.structureGrid[(int)mousePosition.x, (int)mousePosition.y].GetComponent<Structure>();
                 selectedGameObject = currentStructure.gameObject;
-                
+
                 coordinates.text = $"({currentStructure.position.x}, {currentStructure.position.y})";
                 objectName.text = currentStructure.GetName();
                 description.text = currentStructure.GetDescription();
                 icon.sprite = currentStructure.gameObject.GetComponent<SpriteRenderer>().sprite;
             }
-            else if(genMap.grid[(int)mousePosition.x, (int)mousePosition.y] != null)
+            else if (genMap.grid[(int)mousePosition.x, (int)mousePosition.y] != null)
             {
                 Tile currentTile = genMap.grid[(int)mousePosition.x, (int)mousePosition.y].GetComponent<Tile>();
                 selectedGameObject = currentTile.gameObject;
-                
+
                 coordinates.text = $"({currentTile.gameObject.transform.position.x}, {currentTile.gameObject.transform.position.y})";
                 objectName.text = currentTile.GetName();
                 description.text = currentTile.GetDescription();
@@ -71,7 +71,7 @@ public class InfoPanel : MonoBehaviour
             objectColor.b = 0.5f;
             selectedGameObject.GetComponent<SpriteRenderer>().color = objectColor;
         }
-        if(Input.GetKeyDown(KeyCode.Escape) && selectedGameObject != null)
+        if (Input.GetKeyDown(KeyCode.Escape) && selectedGameObject != null)
         {
             //Remove the highlight
             Color objectColor = selectedGameObject.GetComponent<SpriteRenderer>().color;
@@ -84,5 +84,4 @@ public class InfoPanel : MonoBehaviour
             Panel.SetActive(false);
         }
     }
-
 }
