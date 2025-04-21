@@ -76,6 +76,9 @@ public class Machine : MonoBehaviour
             case -1:
                 inventorySize = 30;
                 break;
+            case 4:
+                inventorySize = 250;
+                break;
         }
     }
     private void Update()
@@ -93,6 +96,9 @@ public class Machine : MonoBehaviour
                 break;
             case 3:
                 Refine();
+                break;
+            case 4:
+                ContainerOutput();
                 break;
         }
     }
@@ -173,6 +179,27 @@ public class Machine : MonoBehaviour
                         tickActionFinished = 0;
                     }
 
+                    //If the machine outputting to is a container
+                    else if(objectToMoveTo.type == 4 && objectToMoveTo.inventory.Count < objectToMoveTo.inventorySize
+                        && GetComponent<Structure>().originPosition + output == objectToMoveTo.GetComponent<Structure>().originPosition + objectToMoveTo.GetComponent<Machine>().input)
+                    {
+                        if(objectToMoveTo.inventory.Count > 0 && objectToMoveTo.inventory.Count < objectToMoveTo.inventorySize)
+                        {
+                            Item containerItemType = (Item)objectToMoveTo.inventory.Peek();
+                            if(containerItemType.type == objectOnTop.GetComponent<ItemEntity>().item.type)
+                            {
+                                objectToMoveTo.inventory.Push(objectOnTop.GetComponent<ItemEntity>().item);
+                                Destroy(objectOnTop);
+                            }
+                        }
+                        else if(objectToMoveTo.inventory.Count == 0)
+                        {
+                            objectToMoveTo.inventory.Push(objectOnTop.GetComponent<ItemEntity>().item);
+                            Destroy(objectOnTop);
+                        }
+                        tickActionFinished = 0;
+                    }
+
                     //if it's not
                     else if(objectToMoveTo.type != 2 && objectToMoveTo.hasInput == true 
                         && objectToMoveTo.inventory.Count < objectToMoveTo.inventorySize
@@ -185,6 +212,25 @@ public class Machine : MonoBehaviour
                     }
 
                 }
+            }
+        }
+    }
+    public void ContainerOutput()
+    {
+        if (tickActionFinished == 0)
+            tickActionFinished = tickSystem.tickTime + 5;
+
+        if (tickActionFinished <= tickSystem.tickTime)
+        {
+            Vector2 positionOfOutput = GetComponent<Structure>().originPosition + output;
+            GameObject outputObject = grids.structureGrid[(int)positionOfOutput.x, (int)positionOfOutput.y];
+
+            if(outputObject != null && outputObject.GetComponent<Machine>() != null
+                && outputObject.GetComponent<Machine>().type == 2 && inventory.Count > 0
+                && outputObject.GetComponent<Machine>().objectOnTop == null)
+            {
+                outputObject.GetComponent<Machine>().objectOnTop = itemManager.CreateItemEntity((Item)inventory.Pop(), outputObject);
+                tickActionFinished = 0;
             }
         }
     }

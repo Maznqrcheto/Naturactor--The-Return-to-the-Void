@@ -36,7 +36,7 @@ public class InventoryManager : MonoBehaviour
             if(buildingParent.GetChild(i).GetComponent<Machine>() != null)
             {
                 Machine currentMachine = buildingParent.GetChild(i).GetComponent<Machine>();
-                if (currentMachine.type == 4)
+                if (currentMachine.type == 4 && currentMachine.inventory.Count > 0)
                 {
                     Item topItem = (Item)currentMachine.inventory.Peek();
 

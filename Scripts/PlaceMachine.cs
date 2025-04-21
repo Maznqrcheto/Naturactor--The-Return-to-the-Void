@@ -27,7 +27,7 @@ public class PlaceMachine : MonoBehaviour
         { description = "Need electricity? Well this is your solution." });
         factoryTypes.Add(new Factory(factorySprites[2], new Vector2(0, 0), new Vector2(1, 0), 2)
         { description = "Used for transporting stuff around." });
-        factoryTypes.Add(new Factory(factorySprites[3], new Vector2(-1, -1), new Vector2(-1, -1), 4)
+        factoryTypes.Add(new Factory(factorySprites[3], new Vector2(0, 1), new Vector2(4, 1), 4)
         { description = "Stores stuff. Yeah that's about it."});
     }
     private void Awake()
@@ -124,8 +124,15 @@ public class PlaceMachine : MonoBehaviour
                     building.GetComponent<Machine>().ChangeConveyorRotation(rotation);
                     rotation = 0;
                     break;
+                case 4:
+                    building.GetComponent<Machine>().hasInput = true;
+                    building.GetComponent<Machine>().hasOutput = true;
+                    building.GetComponent<Machine>().input = factoryTypes[selectedfactory].Input;
+                    building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
+                    break;
 
             }
+            building.GetComponent<Machine>().UpdateInventorySize();
 
 
             building.transform.position = offsetPositionOfMouse;
