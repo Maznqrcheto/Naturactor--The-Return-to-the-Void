@@ -328,16 +328,27 @@ public class GenerateMap : MonoBehaviour
             reactorPosition = new Vector2(Random.Range(0, x), Random.Range(0, y));
         }
         GameObject reactor = new GameObject("reactor");
+        reactor.transform.parent = GameObject.Find("BuildingParent").transform;
+
+        reactor.AddComponent<Machine>();
+        reactor.GetComponent<Machine>().type = -1;
+        reactor.GetComponent<Machine>().hasInput = false;
+        reactor.GetComponent<Machine>().hasOutput = false;
+        reactor.GetComponent<Machine>().UpdateInventorySize();
+
         reactor.AddComponent<SpriteRenderer>();
+        reactor.GetComponent<SpriteRenderer>().sprite = StructureSprites[1];
+
         reactor.AddComponent<Structure>();
         reactor.GetComponent<Structure>().type = 1;
         reactor.GetComponent<Structure>().position = new Vector2(reactorPosition.x, reactorPosition.y);
-        reactor.GetComponent<SpriteRenderer>().sprite = StructureSprites[1];
+
         reactor.transform.position = new Vector2(reactorPosition.x + 0.5f, reactorPosition.y + 0.5f); 
         structureGrid[(int)reactorPosition.x, (int)reactorPosition.y] = reactor;
         structureGrid[(int)reactorPosition.x + 1, (int)reactorPosition.y] = reactor;
         structureGrid[(int)reactorPosition.x + 1, (int)reactorPosition.y + 1] = reactor;
         structureGrid[(int)reactorPosition.x, (int)reactorPosition.y + 1] = reactor;
+
         UpdateSortingOrderForStructures();
     }
     public bool CanPlaceReactor(Vector2 reactorPosition)

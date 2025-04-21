@@ -5,6 +5,7 @@ public class Item
     //0 - Coal
     //1 - Iron
     //2 - Copper
+    //3 - Wood
     public int type;
 
     public Item(int type)

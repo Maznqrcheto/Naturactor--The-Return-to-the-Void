@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Machine : MonoBehaviour
 {
+    //-1 - Reactor
     //0 - drill
     //1 - generator
     //2 - conveyor belt
@@ -55,6 +56,7 @@ public class Machine : MonoBehaviour
     public float fireChange;
     public float earthChange;
     public float airChange;
+
     private void Awake()
     {
         inventory = new Stack();
@@ -62,10 +64,17 @@ public class Machine : MonoBehaviour
         itemManager = GameObject.Find("GlobalEvent").GetComponent<ItemManager>();
         grids = GameObject.Find("GlobalEvent").GetComponent<GenerateMap>();
 
+        UpdateInventorySize();
+    }
+    public void UpdateInventorySize()
+    {
         switch (type)
         {
             case 0:
                 inventorySize = 2;
+                break;
+            case -1:
+                inventorySize = 30;
                 break;
         }
     }

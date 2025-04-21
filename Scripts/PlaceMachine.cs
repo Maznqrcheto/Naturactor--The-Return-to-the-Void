@@ -35,12 +35,12 @@ public class PlaceMachine : MonoBehaviour
         buildingParent = new GameObject("BuildingParent").transform;
     }
     void Update()
-    {
-        
+    { 
         if ((pauseMenu != null && pauseMenu.isPaused) || EventSystem.current.IsPointerOverGameObject())
         {
             return;
         }
+        
         #region PlaceBuilding
         //Create/Destroy hologram
         if (currentMachineHologram == null && Input.GetMouseButtonDown(1) && selectedfactory != -1)
@@ -148,18 +148,26 @@ public class PlaceMachine : MonoBehaviour
         }
         #endregion
 
-        if(isChoppingTrees == true)
+        #region ChoppingTrees
+        if (isChoppingTrees == true)
         {
             if (Input.GetMouseButton(0))
             {
                 GameObject selectedTree = genMap.structureGrid[(int)Mathf.Round(positionOfMouse.x), (int)Mathf.Round(positionOfMouse.y)];
-                if (selectedTree != null && selectedTree.GetComponent<Structure>().type == 0) Destroy(selectedTree);
-                //Add resources and subtract elements
+                if (selectedTree != null && selectedTree.GetComponent<Structure>().type == 0)
+                {
+                    Destroy(selectedTree);
+
+                    Machine reactor = GameObject.Find("reactor").GetComponent<Machine>();
+                    if (reactor.inventory.Count < reactor.inventorySize)
+                        reactor.inventory.Push(new Item(3));
+                }
             }
 
             if (Input.GetKeyDown(KeyCode.Escape))
                 IsChoppingTrees();
         }
+        #endregion
 
         #region Hovering
         if (objectHoveringOver != null)
