@@ -23,6 +23,9 @@ public class EventManager : MonoBehaviour
     [Header("Tick system")]
     public ulong ticksToChange = 0;
     public TickSystem tickSystem;
+
+    [Header("Events")]
+    public Drought droughtEvent;
     private void Update()
     {
         if (ticksToChange == 0)
@@ -52,9 +55,10 @@ public class EventManager : MonoBehaviour
         if (Mathf.Abs(fireLevel - waterLevel) > 20f)
         {
             //drought occurs
+            droughtEvent.Drought();
+            Debug.Log("Drought event triggered!");
         }
     }
-
     void Start()
     {
         fireBar.SetProgress(78f);
