@@ -38,7 +38,20 @@ public class InventoryManager : MonoBehaviour
                 Machine currentMachine = buildingParent.GetChild(i).GetComponent<Machine>();
                 if (currentMachine.type == 4)
                 {
-                    //Count items in container
+                    Item topItem = (Item)currentMachine.inventory.Peek();
+
+                    switch(topItem.type)
+                    {
+                        case 0:
+                            coalCount += currentMachine.inventory.Count;
+                            break;
+                        case 1:
+                            ironCount += currentMachine.inventory.Count;
+                            break;
+                        case 2:
+                            copperCount += currentMachine.inventory.Count;
+                            break;
+                    }
                 }
                 if(currentMachine.type == -1)
                 {
