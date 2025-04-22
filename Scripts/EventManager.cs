@@ -26,6 +26,8 @@ public class EventManager : MonoBehaviour
 
     [Header("Events")]
     public Drought droughtEvent;
+    public GenerateMap mapGenerator;
+    public GameObject[,] grid;
     private void Update()
     {
         if (ticksToChange == 0)
@@ -45,17 +47,24 @@ public class EventManager : MonoBehaviour
         earthBar.SetProgress(earthLevel);
         airBar.SetProgress(airLevel);
     }
-    public void CheckEvents(ulong tick) // tuk sa usloviqta za vseki edin event v igrata, a v samite scriptove NQMA usloviq za protichane, tam e samo kvo se sluchva
+    public void GetElementProgress()
     {
         fireLevel = fireBar.GetProgress();
         waterLevel = waterBar.GetProgress();
         airLevel = airBar.GetProgress();
         earthLevel = earthBar.GetProgress();
+    }
+    public void CheckEvents(ulong tick) // tuk sa usloviqta za vseki edin event v igrata, a v samite scriptove NQMA usloviq za protichane, tam e samo kvo se sluchva
+    {
+        GetElementProgress();
 
         if (Mathf.Abs(fireLevel - waterLevel) > 20f)
         {
             //drought occurs
-            droughtEvent.Drought();
+            Debug.Log("vagina");
+            droughtEvent.mapGenerator = mapGenerator;
+            droughtEvent.grid = mapGenerator.grid;
+            droughtEvent.StartDrought();
             Debug.Log("Drought event triggered!");
         }
     }

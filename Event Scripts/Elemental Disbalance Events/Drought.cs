@@ -1,50 +1,60 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Drought : MonoBehaviour
 {
     public GenerateMap mapGenerator;
     public bool droughtIsActive = false;
     public bool droughtOccured = false;
+    public GameObject[,] grid;
+    public List<Sprite> TileSprites;
 
-    public void Drought()
+    void Awake()
     {
+        TileSprites = mapGenerator.TileSprites;
+        grid = mapGenerator.grid;
+    }
+    public void StartDrought()
+    {
+        if (grid == null)
+    {
+        Debug.LogError("Drought.cs — grid is NULL при стартиране!");
+        return;
+    }
+
+    if (mapGenerator == null)
+    {
+        Debug.LogError("Drought.cs — mapGenerator is NULL!");
+        return;
+    }
         droughtIsActive = true;
         for(int i = 0; i < mapGenerator.x; i++)
         {
             for(int j = 0; j < mapGenerator.y; j++)
             {
-            GameObject currentTile = new GameObject();
-            currentTile.transform.parent = mapParent.transform;
-            currentTile.transform.position = new Vector2(i, j);
+            if (grid[i, j] == null) continue;
+            if (grid[i, j].GetComponent<Tile>().type == 1)
+            {
+                if(i > 0 && grid[i - 1, j] != null && grid[i - 1, j].GetComponent<Tile>().type == 0) //tileOnLeft
+                {
+                    grid[i, j].GetComponent<SpriteRenderer>().sprite = TileSprites[Random.Range(1, 4)];
+                }
+                if(i < mapGenerator.x - 1 && grid[i + 1, j] != null && grid[i + 1, j].GetComponent<Tile>().type == 0)//tile on right
+                {
+                    grid[i, j].GetComponent<SpriteRenderer>().sprite = TileSprites[Random.Range(1, 4)];
+                }
+                if(j > 0 && grid[i, j - 1] != null && grid[i, j - 1].GetComponent<Tile>().type == 0)//tile on bottom
+                {
+                    grid[i, j].GetComponent<SpriteRenderer>().sprite = TileSprites[Random.Range(1, 4)];
+                }
+                if(j < mapGenerator.y - 1 && grid[i, j + 1] != null && grid[i, j + 1].GetComponent<Tile>().type == 0) //tileOnTOp
+                {              
+                    grid[i, j].GetComponent<SpriteRenderer>().sprite = TileSprites[Random.Range(1, 4)];
+                }
+            }
 
-            currentTile.AddComponent<SpriteRenderer>();
-            currentTile.AddComponent<Tile>();
-            currentTile.name = $"{i},{j}";
-            grid[x+1, y] = tileOnLeft;
-            grid[x-1, y] = tileOnRight;
-            grid[x, y+1] = tileOnTop;
-            grid[x, y-1] = tileOnBottom;
-
-            if(tileOnLeft.GetComponent<Tile>().type == 0)
-            {
-                tileOnLeft.GetComponent<Tile>().type = Random.Range(1, 4);
-                tileOnLeft.GetComponent<SpriteRenderer>().sprite = TileSprites[Random.Range(1, 4)];
-            }
-            if( tileOnRight.GetComponent<Tile>().type == 0)
-            {
-                tileOnRight.GetComponent<Tile>().type = Random.Range(1, 4);
-                tileOnRight.GetComponent<SpriteRenderer>().sprite = TileSprites[Random.Range(1, 4)];
-            }
-            if(tileOnTop.GetComponent<Tile>().type == 0)
-            {
-                tileOnTop.GetComponent<Tile>().type = Random.Range(1, 4);
-                tileOnTop.GetComponent<SpriteRenderer>().sprite = TileSprites[Random.Range(1, 4)];
-            }
-            if(tileOnBottom.GetComponent<Tile>().type == 0)
-            {              
-                tileOnBottom.GetComponent<Tile>().type = Random.Range(1, 4);
-                tileOnBottom.GetComponent<SpriteRenderer>().sprite = TileSprites[Random.Range(1, 4)];
-            }
+            
             }
         }
         droughtOccured = true;
