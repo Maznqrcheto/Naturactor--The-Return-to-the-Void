@@ -55,7 +55,8 @@ public class Drought : MonoBehaviour
         Debug.Log("Drought started!");
         StartCoroutine(TickDrought());
         droughtIsActive = true;
-        List<GameObject> droughtTiles = new List<GameObject>();
+        List<GameObject> droughtTilesFullGrass = new List<GameObject>();
+        List<GameObject> droughtTilesPartGrass = new List<GameObject>();
         for(int i = 0; i < mapGenerator.x; i++)
         {
             for(int j = 0; j < mapGenerator.y; j++)
@@ -63,66 +64,107 @@ public class Drought : MonoBehaviour
                 if (grid[i, j] == null) continue;
                 if (grid[i, j].GetComponent<Tile>().type == 1)
                 {
+                    //DroughtTilesFullGrass
                     if(i > 0 && grid[i - 1, j] != null && (grid[i - 1, j].GetComponent<Tile>().type == 0 || grid[i - 1, j].GetComponent<SpriteRenderer>().sprite == TileSprites[4])) //tileOnLeft
                     {
-                        droughtTiles.Add(grid[i - 1, j]);  
+                        droughtTilesFullGrass.Add(grid[i - 1, j]);  
                     }
                     if(i < mapGenerator.x - 1 && grid[i + 1, j] != null && (grid[i + 1, j].GetComponent<Tile>().type == 0 || grid[i + 1, j].GetComponent<SpriteRenderer>().sprite == TileSprites[4]))//tile on right
                     {
-                        droughtTiles.Add(grid[i + 1, j]);                 
+                        droughtTilesFullGrass.Add(grid[i + 1, j]);                 
                     }
                     if(j > 0 && grid[i, j - 1] != null && (grid[i, j - 1].GetComponent<Tile>().type == 0 || grid[i, j - 1].GetComponent<SpriteRenderer>().sprite == TileSprites[4]))//tile on bottom
                     {
-                        droughtTiles.Add(grid[i, j - 1]);                 
+                        droughtTilesFullGrass.Add(grid[i, j - 1]);                 
                     }
                     if(j < mapGenerator.y - 1 && grid[i, j + 1] != null && (grid[i, j + 1].GetComponent<Tile>().type == 0 || grid[i, j + 1].GetComponent<SpriteRenderer>().sprite == TileSprites[4])) //tileOnTOp
                     {        
-                        droughtTiles.Add(grid[i, j + 1]);                 
+                        droughtTilesFullGrass.Add(grid[i, j + 1]);                 
+                    }
+
+                    //DroughtTilesPartGrass
+                    if(i > 0 && j > 0 && grid[i - 1, j - 1] != null && grid[i - 1, j - 1].GetComponent<Tile>().type == 0)
+                    {
+                        droughtTilesPartGrass.Add(grid[i - 1, j]);
+                    }
+                    if(i < mapGenerator.x - 1 && j > 0 && grid[i + 1, j - 1] != null && grid[i + 1, j - 1].GetComponent<Tile>().type == 0)
+                    {
+                        droughtTilesPartGrass.Add(grid[i + 1, j]);
+                    }
+                    if(j > 0 && grid[i, j - 1] != null && grid[i, j - 1].GetComponent<Tile>().type == 0)
+                    {
+                        droughtTilesPartGrass.Add(grid[i, j]);
                     }
                 }
             
             }
         }
-        foreach(GameObject tile in droughtTiles)
+        foreach(GameObject tile in droughtTilesFullGrass)
         {
             tile.GetComponent<Tile>().type = 1;
             tile.GetComponent<SpriteRenderer>().sprite = TileSprites[Random.Range(1, 4)];
+        }
+        foreach(GameObject tile in droughtTilesPartGrass)
+        {
+            tile.GetComponent<Tile>().type = 1;
+            tile.GetComponent<SpriteRenderer>().sprite = TileSprites[4];
         }
         droughtOccured = true;
     }
     public void RevertDrought()
     {
-        List<GameObject> revertDroughtTiles = new List<GameObject>();
+        List<GameObject> revertDroughtTilesFullGrass = new List<GameObject>();
+        List<GameObject> revertDroughtTilesPartGrass = new List<GameObject>();
         for(int i = 0; i < mapGenerator.x; i++)
         {
             for(int j = 0; j < mapGenerator.y; j++)
             {
                 if (grid[i, j].GetComponent<Tile>().type == 0)
                 {
+                    //RevertDroughtTilesFullGrass
                     if(i > 0 && grid[i - 1, j] != null && grid[i - 1, j].GetComponent<Tile>().type == 1) //tileOnLeft
                     {
-                        revertDroughtTiles.Add(grid[i - 1, j]);
+                        revertDroughtTilesFullGrass.Add(grid[i - 1, j]);
                     }
                     if(i < mapGenerator.x - 1 && grid[i + 1, j] != null && grid[i + 1, j].GetComponent<Tile>().type == 1)//tile on right
                     {
-                        revertDroughtTiles.Add(grid[i + 1, j]);
+                        revertDroughtTilesFullGrass.Add(grid[i + 1, j]);
                     }
                     if(j > 0 && grid[i, j - 1] != null && grid[i, j - 1].GetComponent<Tile>().type == 1)//tile on bottom
                     {
-                        revertDroughtTiles.Add(grid[i, j - 1]);
+                        revertDroughtTilesFullGrass.Add(grid[i, j - 1]);
                     }
                     if(j < mapGenerator.y - 1 && grid[i, j + 1] != null && grid[i, j + 1].GetComponent<Tile>().type == 1) //tileOnTOp
                     {       
-                        revertDroughtTiles.Add(grid[i, j + 1]);
+                        revertDroughtTilesFullGrass.Add(grid[i, j + 1]);
+                    }
+
+                    //RevertDroughtTilesPartGrass
+                    if(i > 0 && j < mapGenerator.y - 1 && grid[i - 1, j + 1] != null && grid[i - 1, j + 1].GetComponent<Tile>().type == 1)
+                    {
+                        revertDroughtTilesPartGrass.Add(grid[i - 1, j + 1]);
+                    }
+                    if(i < mapGenerator.x - 1 && j < mapGenerator.y - 1 && grid[i + 1, j + 1] != null && grid[i + 1, j + 1].GetComponent<Tile>().type == 1)
+                    {
+                        revertDroughtTilesPartGrass.Add(grid[i + 1, j + 1]);
+                    }
+                    if(j < mapGenerator.y - 2 && grid[i, j + 2] != null && grid[i, j + 2].GetComponent<Tile>().type == 1)
+                    {
+                        revertDroughtTilesPartGrass.Add(grid[i, j + 1]);
                     }
                 }
             }
         }
-        foreach(GameObject tile in revertDroughtTiles)
+        foreach(GameObject tile in revertDroughtTilesFullGrass)
         {
             tile.GetComponent<Tile>().type = 0;
             tile.GetComponent<SpriteRenderer>().sprite = TileSprites[0];
-        }       
+        }
+        foreach(GameObject tile in revertDroughtTilesPartGrass)
+        {
+            tile.GetComponent<Tile>().type = 1;
+            tile.GetComponent<SpriteRenderer>().sprite = TileSprites[4];
+        }
         Debug.Log("Drought ended!");
         droughtIsActive = false;
         TickDroughtCooldown();
