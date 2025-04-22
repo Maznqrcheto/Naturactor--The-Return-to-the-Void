@@ -3692,6 +3692,7 @@ GameObject:
   m_Component:
   - component: {fileID: 781445728}
   - component: {fileID: 781445729}
+  - component: {fileID: 781445730}
   m_Layer: 0
   m_Name: EventManager
   m_TagString: Untagged
@@ -3740,6 +3741,24 @@ MonoBehaviour:
   earthChange: 0
   ticksToChange: 0
   tickSystem: {fileID: 1562538652}
+  droughtEvent: {fileID: 781445730}
+  mapGenerator: {fileID: 1562538648}
+--- !u!114 &781445730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 781445727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0a3b3d4e1757d2458f3070e5723a668, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapGenerator: {fileID: 0}
+  droughtIsActive: 0
+  droughtOccured: 0
+  TileSprites: []
 --- !u!1 &784706771
 GameObject:
   m_ObjectHideFlags: 0
@@ -6729,7 +6748,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tickLength: 0.25
   tickTime: 0
-  eventManager: {fileID: 0}
+  eventManager: {fileID: 781445729}
 --- !u!114 &1562538653
 MonoBehaviour:
   m_ObjectHideFlags: 0

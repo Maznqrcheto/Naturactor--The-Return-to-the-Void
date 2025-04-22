@@ -58,20 +58,18 @@ public class EventManager : MonoBehaviour
     {
         GetElementProgress();
 
-        if (Mathf.Abs(fireLevel - waterLevel) > 20f)
+        if (Mathf.Abs(fireLevel - waterLevel) > 20f && !droughtEvent.droughtOccured && droughtEvent.droughtCooldown == 2400)
         {
             //drought occurs
-            Debug.Log("vagina");
             droughtEvent.mapGenerator = mapGenerator;
             droughtEvent.grid = mapGenerator.grid;
             droughtEvent.StartDrought();
-            Debug.Log("Drought event triggered!");
         }
     }
     void Start()
     {
-        fireBar.SetProgress(78f);
-        waterBar.SetProgress(40f);
+        fireBar.SetProgress(100f);
+        waterBar.SetProgress(100f);
         fireLevel = fireBar.GetProgress();
         waterLevel = waterBar.GetProgress();
     }
