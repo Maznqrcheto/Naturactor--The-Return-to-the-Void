@@ -23,7 +23,7 @@ public class Drought : MonoBehaviour
     {
         while (true)
         {
-            if(droughtIsActive && counter == Random.Range(30, 50)) //960, 1440, 4-6 minutes, because tickLength = 0.25 seconds
+            if(droughtIsActive && counter == Random.Range(960, 1440)) //960, 1440, 4-6 minutes, because tickLength = 0.25 seconds
             {
                 RevertDrought();
                 counter = 1;
