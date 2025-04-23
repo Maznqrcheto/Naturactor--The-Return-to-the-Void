@@ -3789,7 +3789,7 @@ MonoBehaviour:
   counterTickLength: 0.25
 =======
   counter: 1
-  counterTickLength: 0.25
+  counterTickLength: 0
   droughtCooldown: 2400
 --- !u!1 &784706771
 GameObject:
