@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 public class Machine : MonoBehaviour
@@ -8,7 +9,7 @@ public class Machine : MonoBehaviour
     //0 - drill
     //1 - generator
     //2 - conveyor belt
-    //3 - refinery
+    //3 - smeltery
     //4 - container
     //5 - combiner
     //6 - electrical pole
@@ -34,6 +35,9 @@ public class Machine : MonoBehaviour
     public GameObject objectOnTop;
     public int rotation; //Anti-Clockwise starting from the right in 90 degree intervals
 
+    //Smelter parameters
+    public int smeltSpeed = -1;
+
     //Generator Parameters
     public int coalConsumptionSpeed = -1;
     public int energyGain = 0;
@@ -47,9 +51,13 @@ public class Machine : MonoBehaviour
     public bool hasInput;
     public bool hasOutput;
 
+    public bool canInputAnywhere;
+    public bool canOutputAnywhere;
+
     //Machine inventory
     public Stack inventory;
     public int inventorySize = 0;
+    public int[] ItemsAllowed;
 
     //Elemental Change
     public float waterChange;
@@ -70,11 +78,15 @@ public class Machine : MonoBehaviour
     {
         switch (type)
         {
+            case -1:
+                inventorySize = 30;
+                break;
             case 0:
                 inventorySize = 2;
                 break;
-            case -1:
-                inventorySize = 30;
+            case 3:
+                inventorySize = 2;
+                ItemsAllowed = new int[] { 0, 1, 2, 3 };
                 break;
             case 4:
                 inventorySize = 250;
@@ -95,7 +107,9 @@ public class Machine : MonoBehaviour
                 ConveyorBeltMove();
                 break;
             case 3:
-                Refine();
+                Smelt();
+                if (hasInput == false)
+                    ContainerOutput();
                 break;
             case 4:
                 ContainerOutput();
@@ -205,10 +219,13 @@ public class Machine : MonoBehaviour
                         && objectToMoveTo.inventory.Count < objectToMoveTo.inventorySize
                         && objectToMoveTo.input + objectToMoveTo.gameObject.GetComponent<Structure>().originPosition == positionOfOutput)
                     {
-                        objectToMoveTo.inventory.Push(objectOnTop.GetComponent<ItemEntity>().item);
-                        Destroy(objectOnTop);
-                        objectOnTop = null;
-                        tickActionFinished = 0;
+                        if(objectToMoveTo.ItemsAllowed.Length == 0 || objectToMoveTo.ItemsAllowed.Contains(objectOnTop.GetComponent<ItemEntity>().item.type))
+                        {
+                            objectToMoveTo.inventory.Push(objectOnTop.GetComponent<ItemEntity>().item);
+                            Destroy(objectOnTop);
+                            objectOnTop = null;
+                            tickActionFinished = 0;
+                        }
                     }
 
                 }
@@ -230,6 +247,9 @@ public class Machine : MonoBehaviour
                 && outputObject.GetComponent<Machine>().objectOnTop == null)
             {
                 outputObject.GetComponent<Machine>().objectOnTop = itemManager.CreateItemEntity((Item)inventory.Pop(), outputObject);
+
+                if (type == 3)
+                    hasInput = true;
                 tickActionFinished = 0;
             }
         }
@@ -262,14 +282,42 @@ public class Machine : MonoBehaviour
             tickActionFinished = 0;
         }
     }
-    public void Refine()
+    public void Smelt()
     {
-        if (tickActionFinished == 0 && refiningSpeed != -1) tickActionFinished = tickSystem.tickTime + (ulong)refiningSpeed;
+        if (tickActionFinished == 0 && smeltSpeed != -1) tickActionFinished = tickSystem.tickTime + (ulong)smeltSpeed;
 
         if (tickActionFinished <= tickSystem.tickTime)
         {
-            Debug.Log("Refinery Ticked");
-            tickActionFinished = 0;
+            if(inventory.Count == 2)
+            {
+                hasInput = false;
+                Item fuel = (Item)inventory.Pop();
+                Item material = (Item)inventory.Pop();
+                if(material.type == 0)
+                {
+                    Item item = fuel;
+                    fuel = material;
+                    material = item;
+                }
+                if(fuel.type == 0)
+                {
+                    switch(material.type)
+                    {
+                        case 1:
+                            inventory.Push(new Item(3));
+                            break;
+                        case 2:
+                            inventory.Push(new Item(4));
+                            break;
+                    }
+                }
+                else
+                {
+                    inventory = new Stack();
+                    hasInput = true;
+                }
+                tickActionFinished = 0;
+            }
         }
     }
 }

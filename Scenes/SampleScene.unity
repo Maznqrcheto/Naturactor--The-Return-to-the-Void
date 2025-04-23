@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 22344992}
   - component: {fileID: 22344991}
   m_Layer: 5
-  m_Name: Button (Legacy) (7)
+  m_Name: Smelter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -234,7 +234,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 90, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 80.4508, y: 76.8916}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &22344991
@@ -280,7 +280,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 22344992}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1562538650}
+        m_TargetAssemblyTypeName: PlaceMachine, Assembly-CSharp
+        m_MethodName: SelectSprite
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1562538654}
+        m_TargetAssemblyTypeName: InfoPanel2, Assembly-CSharp
+        m_MethodName: CurrentAction
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 4
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &22344992
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3154,7 +3178,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.000002861}
+  m_AnchoredPosition: {x: 90, y: -0.000002861}
   m_SizeDelta: {x: 80.4508, y: 76.8916}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &647065737
@@ -3208,7 +3232,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
+          m_IntArgument: 4
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -3220,7 +3244,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
+          m_IntArgument: 5
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -3755,10 +3779,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0a3b3d4e1757d2458f3070e5723a668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapGenerator: {fileID: 0}
+  mapGenerator: {fileID: 1562538648}
   droughtIsActive: 0
   droughtOccured: 0
   TileSprites: []
+  tickSystem: {fileID: 1562538652}
+  counter: 1
+  counterTickLength: 0
+  droughtCooldown: 2400
 --- !u!1 &784706771
 GameObject:
   m_ObjectHideFlags: 0
@@ -6246,7 +6274,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: Smelter
 --- !u!222 &1438288924
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6710,6 +6738,7 @@ MonoBehaviour:
   - {fileID: -3010401151903113755, guid: 682e44e162aa01943b60d1d5931bb6df, type: 3}
   - {fileID: -8011775145534436228, guid: 068935a7dc14c9c46aa980e954bc233c, type: 3}
   - {fileID: -2171869769579782635, guid: 4295c873a2269d24e8cd66b580c7290c, type: 3}
+  - {fileID: -1554214871758326463, guid: a00494c48366f674e8ecaee7f0dc2e4a, type: 3}
   - {fileID: 3184906931786229180, guid: e5299220fdad9b443901c6638df42e42, type: 3}
   selectedfactory: 0
   isChoppingTrees: 0
@@ -6765,6 +6794,8 @@ MonoBehaviour:
   - {fileID: 6980718301678118903, guid: e0d45c9fa229ec24ea85ab739599b2e0, type: 3}
   - {fileID: -9090482848748715413, guid: 9e7b880ab1653334481b3de87c550847, type: 3}
   - {fileID: -505525909854602960, guid: 4fe9c9b7ebd4088469df8fabe14b30c2, type: 3}
+  - {fileID: 2368875588930414890, guid: bb2957e030798c44f957c25af09c7acc, type: 3}
+  - {fileID: 7005946037892912416, guid: c33674dc3e32e0a49bd7138e5d45f878, type: 3}
 --- !u!114 &1562538654
 MonoBehaviour:
   m_ObjectHideFlags: 0
