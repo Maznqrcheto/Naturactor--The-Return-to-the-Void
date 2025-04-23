@@ -3755,10 +3755,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0a3b3d4e1757d2458f3070e5723a668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapGenerator: {fileID: 0}
+  mapGenerator: {fileID: 1562538648}
   droughtIsActive: 0
   droughtOccured: 0
   TileSprites: []
+  tickSystem: {fileID: 1562538652}
+  counter: 0
+  counterTickLength: 0.25
+  droughtCooldown: 2400
 --- !u!1 &784706771
 GameObject:
   m_ObjectHideFlags: 0
