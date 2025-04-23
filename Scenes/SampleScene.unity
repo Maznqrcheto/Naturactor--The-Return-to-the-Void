@@ -3784,6 +3784,10 @@ MonoBehaviour:
   droughtOccured: 0
   TileSprites: []
   tickSystem: {fileID: 1562538652}
+<<<<<<< HEAD
+  counter: 0
+  counterTickLength: 0.25
+=======
   counter: 1
   counterTickLength: 0.25
   droughtCooldown: 2400
