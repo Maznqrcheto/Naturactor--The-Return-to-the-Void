@@ -23,7 +23,7 @@ public class Drought : MonoBehaviour
     {
         while (true)
         {
-            if(droughtIsActive && counter == Random.Range(40, 50)) //960, 1440, 4-6 minutes, because tickLength = 0.25 seconds
+            if(droughtIsActive && counter == Random.Range(960, 1440)) //960, 1440, 4-6 minutes, because tickLength = 0.25 seconds
             {
                 RevertDrought();
                 counter = 1;
@@ -53,8 +53,8 @@ public class Drought : MonoBehaviour
     public void StartDrought()
     {
         Debug.Log("Drought started!");
-        StartCoroutine(TickDrought());
         droughtIsActive = true;
+        StartCoroutine(TickDrought());
         List<GameObject> droughtTilesFullGrass = new List<GameObject>();
         List<GameObject> droughtTilesPartGrass = new List<GameObject>();
         for(int i = 0; i < mapGenerator.x; i++)
@@ -81,20 +81,6 @@ public class Drought : MonoBehaviour
                     {        
                         droughtTilesFullGrass.Add(grid[i, j + 1]);                 
                     }
-
-                    //DroughtTilesPartGrass
-                    if(i > 0 && j > 0 && grid[i - 1, j - 1] != null && grid[i - 1, j - 1].GetComponent<Tile>().type == 0)
-                    {
-                        droughtTilesPartGrass.Add(grid[i - 1, j]);
-                    }
-                    if(i < mapGenerator.x - 1 && j > 0 && grid[i + 1, j - 1] != null && grid[i + 1, j - 1].GetComponent<Tile>().type == 0)
-                    {
-                        droughtTilesPartGrass.Add(grid[i + 1, j]);
-                    }
-                    if(j > 0 && grid[i, j - 1] != null && grid[i, j - 1].GetComponent<Tile>().type == 0)
-                    {
-                        droughtTilesPartGrass.Add(grid[i, j]);
-                    }
                 }
             
             }
@@ -104,9 +90,23 @@ public class Drought : MonoBehaviour
             tile.GetComponent<Tile>().type = 1;
             tile.GetComponent<SpriteRenderer>().sprite = TileSprites[Random.Range(1, 4)];
         }
+        for(int i = 0; i < mapGenerator.x; i++)
+        {
+            for(int j = 0; j < mapGenerator.y; j++)
+            {
+                if (grid[i, j] == null) continue;
+                if (grid[i, j].GetComponent<Tile>().type == 1)
+                {
+                    //DroughtTilesPartGrass
+                    if(j > 0 && grid[i, j - 1] != null && grid[i, j - 1].GetComponent<Tile>().type == 0)
+                    {
+                        droughtTilesPartGrass.Add(grid[i, j]);
+                    }
+                }
+            }
+        }
         foreach(GameObject tile in droughtTilesPartGrass)
         {
-            tile.GetComponent<Tile>().type = 1;
             tile.GetComponent<SpriteRenderer>().sprite = TileSprites[4];
         }
         droughtOccured = true;
@@ -138,20 +138,6 @@ public class Drought : MonoBehaviour
                     {       
                         revertDroughtTilesFullGrass.Add(grid[i, j + 1]);
                     }
-
-                    //RevertDroughtTilesPartGrass
-                    if(i > 0 && j < mapGenerator.y - 1 && grid[i - 1, j + 1] != null && grid[i - 1, j + 1].GetComponent<Tile>().type == 1)
-                    {
-                        revertDroughtTilesPartGrass.Add(grid[i - 1, j + 1]);
-                    }
-                    if(i < mapGenerator.x - 1 && j < mapGenerator.y - 1 && grid[i + 1, j + 1] != null && grid[i + 1, j + 1].GetComponent<Tile>().type == 1)
-                    {
-                        revertDroughtTilesPartGrass.Add(grid[i + 1, j + 1]);
-                    }
-                    if(j < mapGenerator.y - 2 && grid[i, j + 2] != null && grid[i, j + 2].GetComponent<Tile>().type == 1)
-                    {
-                        revertDroughtTilesPartGrass.Add(grid[i, j + 1]);
-                    }
                 }
             }
         }
@@ -160,13 +146,26 @@ public class Drought : MonoBehaviour
             tile.GetComponent<Tile>().type = 0;
             tile.GetComponent<SpriteRenderer>().sprite = TileSprites[0];
         }
+         for(int i = 0; i < mapGenerator.x; i++)
+        {
+            for(int j = 0; j < mapGenerator.y; j++)
+            {
+                if (grid[i, j].GetComponent<Tile>().type == 0)
+                {
+                    //RevertDroughtTilesPartGrass
+                    if(j < mapGenerator.y - 1 && grid[i, j + 1] != null && grid[i, j + 1].GetComponent<Tile>().type == 1)
+                    {
+                        revertDroughtTilesPartGrass.Add(grid[i, j + 1]);
+                    }
+                }
+            }
+        }
         foreach(GameObject tile in revertDroughtTilesPartGrass)
         {
-            tile.GetComponent<Tile>().type = 1;
             tile.GetComponent<SpriteRenderer>().sprite = TileSprites[4];
         }
         Debug.Log("Drought ended!");
         droughtIsActive = false;
-        TickDroughtCooldown();
+        StartCoroutine(TickDroughtCooldown());
     }  
 }
