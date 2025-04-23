@@ -3785,7 +3785,7 @@ MonoBehaviour:
   TileSprites: []
   tickSystem: {fileID: 1562538652}
   counter: 1
-  counterTickLength: 0
+  counterTickLength: 0.25
   droughtCooldown: 2400
 --- !u!1 &784706771
 GameObject:
