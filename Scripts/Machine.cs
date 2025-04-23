@@ -11,7 +11,7 @@ public class Machine : MonoBehaviour
     //2 - conveyor belt
     //3 - smeltery
     //4 - container
-    //5 - combiner
+    //5 - crafter
     //6 - electrical pole
     public int type;
 
@@ -37,6 +37,9 @@ public class Machine : MonoBehaviour
 
     //Smelter parameters
     public int smeltSpeed = -1;
+
+    //Crafter parameters
+    public int craftSpeed = -1;
 
     //Generator Parameters
     public int coalConsumptionSpeed = -1;
@@ -90,6 +93,9 @@ public class Machine : MonoBehaviour
                 break;
             case 4:
                 inventorySize = 250;
+                break;
+            case 5:
+                inventorySize = 2;
                 break;
         }
     }
@@ -217,7 +223,7 @@ public class Machine : MonoBehaviour
                     //if it's not
                     else if(objectToMoveTo.type != 2 && objectToMoveTo.hasInput == true 
                         && objectToMoveTo.inventory.Count < objectToMoveTo.inventorySize
-                        && objectToMoveTo.input + objectToMoveTo.gameObject.GetComponent<Structure>().originPosition == positionOfOutput)
+                        && (objectToMoveTo.canInputAnywhere || objectToMoveTo.input + objectToMoveTo.gameObject.GetComponent<Structure>().originPosition == positionOfOutput))
                     {
                         if(objectToMoveTo.ItemsAllowed.Length == 0 || objectToMoveTo.ItemsAllowed.Contains(objectOnTop.GetComponent<ItemEntity>().item.type))
                         {
@@ -304,10 +310,10 @@ public class Machine : MonoBehaviour
                     switch(material.type)
                     {
                         case 1:
-                            inventory.Push(new Item(3));
+                            inventory.Push(new Item(4));
                             break;
                         case 2:
-                            inventory.Push(new Item(4));
+                            inventory.Push(new Item(5));
                             break;
                     }
                 }

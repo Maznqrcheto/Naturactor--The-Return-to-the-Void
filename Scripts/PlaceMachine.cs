@@ -30,6 +30,7 @@ public class PlaceMachine : MonoBehaviour
         factoryTypes.Add(new Factory(factorySprites[3], new Vector2(0, 0), new Vector3(0, -1), 3));     
         factoryTypes.Add(new Factory(factorySprites[4], new Vector2(0, 1), new Vector2(4, 1), 4)
         { description = "Stores stuff. Yeah that's about it."});
+        factoryTypes.Add(new Factory(factorySprites[5], new Vector2(0, 0), new Vector2(1, -1), 5));
     }
     private void Awake()
     {
@@ -125,10 +126,24 @@ public class PlaceMachine : MonoBehaviour
                     building.GetComponent<Machine>().ChangeConveyorRotation(rotation);
                     rotation = 0;
                     break;
+                case 3:
+                    building.GetComponent<Machine>().smeltSpeed = 30;
+                    building.GetComponent<Machine>().hasInput = true;
+                    building.GetComponent<Machine>().hasOutput = true;
+                    building.GetComponent<Machine>().canInputAnywhere = true;
+                    building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
+                    break;
                 case 4:
                     building.GetComponent<Machine>().hasInput = true;
                     building.GetComponent<Machine>().hasOutput = true;
                     building.GetComponent<Machine>().input = factoryTypes[selectedfactory].Input;
+                    building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
+                    break;
+                case 5:
+                    building.GetComponent<Machine>().craftSpeed = 30;
+                    building.GetComponent<Machine>().hasInput = true;
+                    building.GetComponent<Machine>().hasOutput = true;
+                    building.GetComponent<Machine>().canInputAnywhere = true;
                     building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
                     break;
 
