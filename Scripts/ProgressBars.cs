@@ -19,10 +19,4 @@ public class ProgressBarController : MonoBehaviour
     {
         return currentLevel;
     }
-
-    private void Start()
-    {
-        //fdkfdk
-    }
-
 }
