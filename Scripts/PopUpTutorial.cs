@@ -18,7 +18,6 @@ public class PopUpTutorial : MonoBehaviour
         closeButton.onClick.AddListener(ClosePopUp);
         nextButton.onClick.AddListener(NextPage);
         previousButton.onClick.AddListener(PreviousPage);
-        UpdatePageVisibility();
         firstPage();
         secondPage();
         thirdPage();
@@ -31,6 +30,7 @@ public class PopUpTutorial : MonoBehaviour
         tenthPage();
         eleventhPage();
         twelfthPage();
+        UpdatePageVisibility();
     }
 
     public void ClosePopUp()
