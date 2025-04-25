@@ -955,12 +955,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popUpPanel: {fileID: 826694942}
-  closeButton: {fileID: 1150488470}
+  tutorialText: {fileID: 1796431209}
   nextButton: {fileID: 236710962}
   previousButton: {fileID: 73128587}
-  tutorialText: {fileID: 1796431209}
-  tutorialMessages: []
-  tutorialPages: []
+  closeButton: {fileID: 1150488470}
 --- !u!1 &79522890
 GameObject:
   m_ObjectHideFlags: 0
@@ -2085,12 +2083,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popUpPanel: {fileID: 826694942}
-  closeButton: {fileID: 1150488470}
+  tutorialText: {fileID: 1796431209}
   nextButton: {fileID: 236710962}
   previousButton: {fileID: 73128587}
-  tutorialText: {fileID: 1796431209}
-  tutorialMessages: []
-  tutorialPages: []
+  closeButton: {fileID: 1150488470}
 --- !u!1 &247061625
 GameObject:
   m_ObjectHideFlags: 0
@@ -4646,13 +4642,13 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 826694943}
   - {fileID: 1221427615}
   - {fileID: 595388626}
   - {fileID: 1089279304}
   - {fileID: 1046192359}
   - {fileID: 1542234874}
   - {fileID: 784706775}
-  - {fileID: 826694943}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -5320,12 +5316,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popUpPanel: {fileID: 826694942}
-  closeButton: {fileID: 1150488470}
+  tutorialText: {fileID: 1796431209}
   nextButton: {fileID: 236710962}
   previousButton: {fileID: 73128587}
-  tutorialText: {fileID: 1796431209}
-  tutorialMessages: []
-  tutorialPages: []
+  closeButton: {fileID: 1150488470}
 --- !u!114 &826694945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7413,12 +7407,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popUpPanel: {fileID: 826694942}
-  closeButton: {fileID: 1150488470}
+  tutorialText: {fileID: 1796431209}
   nextButton: {fileID: 236710962}
   previousButton: {fileID: 73128587}
-  tutorialText: {fileID: 1796431209}
-  tutorialMessages: []
-  tutorialPages: []
+  closeButton: {fileID: 1150488470}
 --- !u!1 &1202593006
 GameObject:
   m_ObjectHideFlags: 0
@@ -9809,7 +9801,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -6.5, y: 209.2}
-  m_SizeDelta: {x: 259.8, y: 100}
+  m_SizeDelta: {x: 275, y: 112.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1796431209
 MonoBehaviour:
@@ -9867,12 +9859,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popUpPanel: {fileID: 826694942}
-  closeButton: {fileID: 1150488470}
+  tutorialText: {fileID: 1796431209}
   nextButton: {fileID: 236710962}
   previousButton: {fileID: 73128587}
-  tutorialText: {fileID: 1796431209}
-  tutorialMessages: []
-  tutorialPages: []
+  closeButton: {fileID: 1150488470}
 --- !u!1 &1861631930
 GameObject:
   m_ObjectHideFlags: 0
