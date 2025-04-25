@@ -21,8 +21,8 @@ public class Machine : MonoBehaviour
     ItemManager itemManager;
     GenerateMap grids;
 
-    //Global energyConsumption for each machinbe
-    public int energyConsumption;
+    //Global energyConsumption for each machine
+    public float energyConsumption = -1;
 
     //Drill Parameters
     public int drillSpeed = -1;
@@ -43,9 +43,10 @@ public class Machine : MonoBehaviour
 
     //Generator Parameters
     public int coalConsumptionSpeed = -1;
-    public int energyGain = 0;
-    public int maxEnergy = 300;
-    public int energy = 0;
+    public float energyGain = 0;
+    public float maxEnergy = 300f;
+    public float energy = 0;
+    public int range = 0;
 
     //Input and Output for materials
     public Vector2 input;
@@ -67,7 +68,7 @@ public class Machine : MonoBehaviour
     public float fireChange;
     public float earthChange;
     public float airChange;
-
+    
     private void Awake()
     {
         inventory = new Stack();
@@ -86,6 +87,10 @@ public class Machine : MonoBehaviour
                 break;
             case 0:
                 inventorySize = 2;
+                break;
+            case 1:
+                inventorySize = 5;
+                ItemsAllowed = new int[] { 0, 8 };
                 break;
             case 3:
                 inventorySize = 2;
@@ -107,7 +112,7 @@ public class Machine : MonoBehaviour
                 Drill();
                 break;
             case 1:
-                Generator();
+                GenerateEnergy();
                 break;
             case 2:
                 ConveyorBeltMove();
@@ -119,6 +124,11 @@ public class Machine : MonoBehaviour
                 break;
             case 4:
                 ContainerOutput();
+                break;
+            case 5:
+                Craft();
+                if (hasInput == false)
+                    ContainerOutput();
                 break;
         }
     }
@@ -254,7 +264,7 @@ public class Machine : MonoBehaviour
             {
                 outputObject.GetComponent<Machine>().objectOnTop = itemManager.CreateItemEntity((Item)inventory.Pop(), outputObject);
 
-                if (type == 3)
+                if (type == 3 || type == 5)
                     hasInput = true;
                 tickActionFinished = 0;
             }
@@ -278,13 +288,13 @@ public class Machine : MonoBehaviour
                 break;
         }
     }
-    public void Generator()
+    public void GenerateEnergy()
     {
         if (tickActionFinished == 0 && coalConsumptionSpeed != -1) tickActionFinished = tickSystem.tickTime + (ulong)coalConsumptionSpeed;
 
         if (tickActionFinished <= tickSystem.tickTime)
         {
-            Debug.Log("Generator Ticked");
+
             tickActionFinished = 0;
         }
     }
@@ -321,6 +331,32 @@ public class Machine : MonoBehaviour
                 {
                     inventory = new Stack();
                     hasInput = true;
+                }
+                tickActionFinished = 0;
+            }
+        }
+    }
+    public void Craft()
+    {
+        if (tickActionFinished == 0 && craftSpeed != -1) tickActionFinished = tickSystem.tickTime + (ulong)craftSpeed;
+
+        if (tickActionFinished <= tickSystem.tickTime)
+        {
+            if(inventory.Count == 2)
+            {
+                Item firstItem = (Item)inventory.Pop();
+                Item secondItem = (Item)inventory.Pop();
+
+                //Recipes
+                if((firstItem.type == 4 && secondItem.type == 3) || (firstItem.type == 3 && secondItem.type == 4))
+                {
+                    hasInput = false;
+                    inventory.Push(new Item(6));
+                }
+                else if((firstItem.type == 6 && secondItem.type == 5) || (firstItem.type == 5 && secondItem.type == 6))
+                {
+                    hasInput = false;
+                    inventory.Push(new Item(7));
                 }
                 tickActionFinished = 0;
             }
