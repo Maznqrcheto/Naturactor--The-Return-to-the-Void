@@ -20,19 +20,53 @@ public class PlaceMachine : MonoBehaviour
     public int rotation = 0;
     private void Start()
     {
+        #region factorySettings
         factoryTypes = new List<Factory>();
         factoryTypes.Add(new Factory(factorySprites[0], new Vector2(-1, -1), new Vector2(1, -1), 0)
-        { description = "Useful for mining materials." });
+        {
+            description = "Useful for mining materials.",
+            fireChange = -0.2f,
+            waterChange = 0.4f,
+            earthChange = -0.2f
+        });
         factoryTypes.Add(new Factory(factorySprites[1], new Vector2(-1, -1), new Vector2(-1, -1), 1)
-        { description = "Need electricity? Well this is your solution." });
+        {
+            description = "Need electricity? Well this is your solution.",
+            airChange = -0.2f
+        });
         factoryTypes.Add(new Factory(factorySprites[2], new Vector2(0, 0), new Vector2(1, 0), 2)
         { description = "Used for transporting stuff around." });
-        factoryTypes.Add(new Factory(factorySprites[3], new Vector2(0, 0), new Vector3(0, -1), 3));     
+        factoryTypes.Add(new Factory(factorySprites[3], new Vector2(0, 0), new Vector3(0, -1), 3)
+        {
+            description = "You can smelt stuff here into more refined materials.",
+            airChange = -0.2f,
+            waterChange = -0.2f
+        });     
         factoryTypes.Add(new Factory(factorySprites[4], new Vector2(0, 1), new Vector2(4, 1), 4)
         { description = "Stores stuff. Yeah that's about it."});
-        factoryTypes.Add(new Factory(factorySprites[5], new Vector2(0, 0), new Vector2(1, -1), 5));
+        factoryTypes.Add(new Factory(factorySprites[5], new Vector2(0, 0), new Vector2(1, -1), 5)
+        {
+            description = "Crafter for crafting 2 items into 1. Requires electricity to work.",
+            energyConsumption = 15f,
+            airChange = -0.5f,
+            waterChange = -0.5f
+        });
+        factoryTypes.Add(new Factory(factorySprites[6], new Vector2(0, 0), new Vector2(1, -1), 6)
+        {
+            description = "Used to refine materials into a more pure form. Required electricity to work.",
+            energyConsumption = 10f,
+            earthChange = -0.2f,
+            fireChange = 0.3f
+        });
+        factoryTypes.Add(new Factory(factorySprites[7], new Vector2(0, 0), new Vector2(1, -1), 7)
+        {
+            description = "Passive wood income. The limit to wood collection is your imagination.",
+            earthChange = 0.1f,
+            airChange = 0.1f
+        });
+        #endregion
     }
-    private void Awake()
+    private void Awake() 
     {
         buildingParent = new GameObject("BuildingParent").transform;
     }
@@ -106,6 +140,8 @@ public class PlaceMachine : MonoBehaviour
             building.GetComponent<Machine>().fireChange = factoryTypes[selectedfactory].fireChange;
             building.GetComponent<Machine>().earthChange = factoryTypes[selectedfactory].earthChange;
             building.GetComponent<Machine>().airChange = factoryTypes[selectedfactory].airChange;
+
+            building.GetComponent<Machine>().energyConsumption = factoryTypes[selectedfactory].energyConsumption;
             switch (building.GetComponent<Machine>().type)
             {
                 case 0:
@@ -115,7 +151,10 @@ public class PlaceMachine : MonoBehaviour
                     building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
                     break;
                 case 1:
-                    building.GetComponent<Machine>().coalConsumptionSpeed = 30;
+                    building.GetComponent<Machine>().fuelConsumptionSpeed = 30;
+                    building.GetComponent<Machine>().generatorRange = 5;
+                    building.GetComponent<Machine>().hasInput = true;
+                    building.GetComponent<Machine>().canInputAnywhere = true;
                     break;
                 case 2:
                     building.GetComponent<Machine>().conveyorSpeed = 4;
@@ -144,6 +183,20 @@ public class PlaceMachine : MonoBehaviour
                     building.GetComponent<Machine>().hasInput = true;
                     building.GetComponent<Machine>().hasOutput = true;
                     building.GetComponent<Machine>().canInputAnywhere = true;
+                    building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
+                    break;
+                case 6:
+                    building.GetComponent<Machine>().refiningSpeed = 30;
+                    building.GetComponent<Machine>().hasInput = true;
+                    building.GetComponent<Machine>().hasOutput = true;
+                    building.GetComponent<Machine>().canInputAnywhere = true;
+                    building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
+                    break;
+                case 7:
+                    building.GetComponent<Machine>().lumberCampSpeed = 40;
+                    building.GetComponent<Machine>().lumberCampRange = 4;
+                    building.GetComponent<Machine>().hasInput = false;
+                    building.GetComponent<Machine>().hasOutput = true;
                     building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
                     break;
 

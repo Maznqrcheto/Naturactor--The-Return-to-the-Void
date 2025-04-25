@@ -37,16 +37,22 @@ public class EventManager : MonoBehaviour
     public GameObject[,] grid;
     private void Update()
     {
+
         if (ticksToChange == 0)
-            ticksToChange = tickSystem.tickTime + 30;
+            ticksToChange = tickSystem.tickTime + 100;
 
         if (ticksToChange <= tickSystem.tickTime)
         {
+            //Calculate change
+            SetElementalChange();
+
+            //Change elemental levels
             waterLevel += waterChange;
             fireLevel += fireChange;
             earthLevel += earthChange;
             airLevel += airChange;
             happinessLevel += happinessChange;
+
             ticksToChange = 0;
         }
 
@@ -83,5 +89,24 @@ public class EventManager : MonoBehaviour
         fireLevel = fireBar.GetProgress();
         waterLevel = waterBar.GetProgress();
         happinessBar.SetProgress(100f);
+    }
+    public void SetElementalChange()
+    {
+        waterChange = 0;
+        fireChange = 0;
+        earthChange = 0;
+        airChange = 0;
+        Transform buildingParent = GameObject.Find("BuildingParent").transform;
+        for (int i = 0; i < buildingParent.childCount; i++)
+        {
+            if (buildingParent.GetChild(i).GetComponent<Machine>() != null)
+            {
+                Machine machine = buildingParent.GetChild(i).GetComponent<Machine>();
+                waterChange += machine.waterChange;
+                fireChange += machine.fireChange;
+                earthChange += machine.earthChange;
+                airChange += machine.airChange;
+            }
+        }
     }
 }

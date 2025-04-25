@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 4295c873a2269d24e8cd66b580c7290c
+guid: 7b6ad7515c04a554e8da31769388bb8c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2171869769579782635
-    second: ConveyorBelt_0
+      213: -2996734555212572362
+    second: Refinery_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ConveyorBelt_0
+      name: Refinery_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 5
-        width: 32
-        height: 23
+        x: 4
+        y: 1
+        width: 56
+        height: 89
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 51e99cd93f7fbd1e0800000000000000
-      internalID: -2171869769579782635
+      spriteID: 6399a66acc57966d0800000000000000
+      internalID: -2996734555212572362
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ConveyorBelt_0: -2171869769579782635
+      Refinery_0: -2996734555212572362
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

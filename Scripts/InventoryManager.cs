@@ -61,6 +61,9 @@ public class InventoryManager : MonoBehaviour
                         case 2:
                             copperCount += currentMachine.inventory.Count;
                             break;
+                        case 3:
+                            woodCount += currentMachine.inventory.Count;
+                            break;
                         case 4:
                             ironBarCount += currentMachine.inventory.Count;
                             break;

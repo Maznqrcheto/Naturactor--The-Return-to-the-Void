@@ -15,6 +15,7 @@ public class Factory
     public float earthChange;
     public float airChange;
 
+    public float energyConsumption = -1;
     public Factory(Sprite sprite, Vector2 input, Vector2 output, int type)
     {
         Sprite = sprite;

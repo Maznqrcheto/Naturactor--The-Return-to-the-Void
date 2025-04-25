@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class Machine : MonoBehaviour
 {
@@ -12,43 +14,49 @@ public class Machine : MonoBehaviour
     //3 - smeltery
     //4 - container
     //5 - crafter
-    //6 - electrical pole
+    //6 - refinery
+    //7 - lumber camp
     public int type;
 
-    //Tick System
+    [Header("Tick System")]
     public ulong tickActionFinished = 0;
     TickSystem tickSystem;
     ItemManager itemManager;
     GenerateMap grids;
 
-    //Global energyConsumption for each machine
+    [Header("Consumption of energy")]
     public float energyConsumption = -1;
+    public bool isSupplied;
 
-    //Drill Parameters
+    [Header("Drill Parameters")]
     public int drillSpeed = -1;
 
-    //Refinery Parameters
+    [Header("Refinery Parameters")]
     public int refiningSpeed = -1;
 
-    //Conveyor belt parameters
+    [Header("Conveyor Parameters")]
     public int conveyorSpeed;
     public GameObject objectOnTop;
     public int rotation; //Anti-Clockwise starting from the right in 90 degree intervals
 
-    //Smelter parameters
+    [Header("Smelter Parameters")]
     public int smeltSpeed = -1;
 
-    //Crafter parameters
+    [Header("Crafter Parameters")]
     public int craftSpeed = -1;
 
-    //Generator Parameters
-    public int coalConsumptionSpeed = -1;
+    [Header("Generator Parameters")]
+    public int fuelConsumptionSpeed = -1;
     public float energyGain = 0;
     public float maxEnergy = 300f;
     public float energy = 0;
-    public int range = 0;
+    public int generatorRange = 0;
 
-    //Input and Output for materials
+    [Header("Lumber camp Parameters")]
+    public int lumberCampRange = 0;
+    public int lumberCampSpeed = 0;
+
+    [Header("Input and output")]
     public Vector2 input;
     public Vector2 output;
 
@@ -58,19 +66,20 @@ public class Machine : MonoBehaviour
     public bool canInputAnywhere;
     public bool canOutputAnywhere;
 
-    //Machine inventory
+    [Header("Inventory parameters")]
     public Stack inventory;
     public int inventorySize = 0;
     public int[] ItemsAllowed;
 
-    //Elemental Change
-    public float waterChange;
-    public float fireChange;
-    public float earthChange;
-    public float airChange;
+    [Header("Elemental change of machine")]
+    public float waterChange = 0;
+    public float fireChange = 0;
+    public float earthChange = 0;
+    public float airChange = 0;
     
     private void Awake()
     {
+        ItemsAllowed = new int[0];
         inventory = new Stack();
         tickSystem = GameObject.Find("GlobalEvent").GetComponent<TickSystem>();
         itemManager = GameObject.Find("GlobalEvent").GetComponent<ItemManager>();
@@ -102,6 +111,12 @@ public class Machine : MonoBehaviour
             case 5:
                 inventorySize = 2;
                 break;
+            case 6:
+                inventorySize = 1;
+                break;
+            case 7:
+                inventorySize = 10;
+                break;
         }
     }
     private void Update()
@@ -120,15 +135,31 @@ public class Machine : MonoBehaviour
             case 3:
                 Smelt();
                 if (hasInput == false)
-                    ContainerOutput();
+                    MachineOutput();
                 break;
             case 4:
                 ContainerOutput();
                 break;
             case 5:
-                Craft();
-                if (hasInput == false)
-                    ContainerOutput();
+                if(isSupplied == true)
+                {
+                    Craft();
+                    if (hasInput == false)
+                        MachineOutput();
+                }
+                break;
+            case 6:
+                if(isSupplied == true)
+                {
+                    Refine();
+                    if (hasInput == false)
+                        MachineOutput();
+                }
+                break;
+            case 7:
+                LumberCamp();
+                if (inventory.Count > 0)
+                    MachineOutput();
                 break;
         }
     }
@@ -255,19 +286,23 @@ public class Machine : MonoBehaviour
 
         if (tickActionFinished <= tickSystem.tickTime)
         {
-            Vector2 positionOfOutput = GetComponent<Structure>().originPosition + output;
-            GameObject outputObject = grids.structureGrid[(int)positionOfOutput.x, (int)positionOfOutput.y];
+            MachineOutput();
+            tickActionFinished = 0;
+        }
+    }
+    public void MachineOutput()
+    {
+        Vector2 positionOfOutput = GetComponent<Structure>().originPosition + output;
+        GameObject outputObject = grids.structureGrid[(int)positionOfOutput.x, (int)positionOfOutput.y];
 
-            if(outputObject != null && outputObject.GetComponent<Machine>() != null
-                && outputObject.GetComponent<Machine>().type == 2 && inventory.Count > 0
-                && outputObject.GetComponent<Machine>().objectOnTop == null)
-            {
-                outputObject.GetComponent<Machine>().objectOnTop = itemManager.CreateItemEntity((Item)inventory.Pop(), outputObject);
+        if (outputObject != null && outputObject.GetComponent<Machine>() != null
+            && outputObject.GetComponent<Machine>().type == 2 && inventory.Count > 0
+            && outputObject.GetComponent<Machine>().objectOnTop == null)
+        {
+            outputObject.GetComponent<Machine>().objectOnTop = itemManager.CreateItemEntity((Item)inventory.Pop(), outputObject);
 
-                if (type == 3 || type == 5)
-                    hasInput = true;
-                tickActionFinished = 0;
-            }
+            if (type == 3 || type == 5 || type == 6)
+                hasInput = true;
         }
     }
     public void ChangeConveyorRotation(int rotation)
@@ -290,10 +325,69 @@ public class Machine : MonoBehaviour
     }
     public void GenerateEnergy()
     {
-        if (tickActionFinished == 0 && coalConsumptionSpeed != -1) tickActionFinished = tickSystem.tickTime + (ulong)coalConsumptionSpeed;
+        if (tickActionFinished == 0 && fuelConsumptionSpeed != -1) tickActionFinished = tickSystem.tickTime + (ulong)fuelConsumptionSpeed;
 
         if (tickActionFinished <= tickSystem.tickTime)
         {
+            energyGain = 0;
+            //Add energy gain
+            if(inventory.Count > 0)
+            {
+                Item fuel = (Item)inventory.Pop();
+                if (fuel.type == 0)
+                    energyGain += 30;
+                else if (fuel.type == 8)
+                    energyGain += 40;
+            }
+            //Remove energy gain
+
+            //Gain every building in range
+            List<GameObject> objectsInRange = new List<GameObject>();
+            Vector2 pos = GetComponent<Structure>().position;
+            for (int i = (int)pos.x - generatorRange; i < (int)pos.x + generatorRange; i++)
+            {
+                for (int j = (int)pos.y - generatorRange; j < (int)pos.y + generatorRange; j++)
+                {
+                    if (grids.structureGrid[i, j] != null &&
+                        objectsInRange.Contains(grids.structureGrid[i, j]) == false 
+                        && grids.structureGrid[i, j].GetComponent<Machine>() != null)
+                    {
+                        objectsInRange.Add(grids.structureGrid[i, j]);
+                    }
+                }
+            }
+            foreach (GameObject obj in objectsInRange)
+            {
+                if (obj.GetComponent<Machine>().energyConsumption != -1)
+                    energyGain -= obj.GetComponent<Machine>().energyConsumption;
+            }
+
+            energy += energyGain;
+
+            //Regulate Energy
+            if (energy > maxEnergy)
+            {
+                energy = maxEnergy;
+                foreach (GameObject obj in objectsInRange)
+                {
+                    obj.GetComponent<Machine>().isSupplied = true;
+                }
+            }
+            else if (energy < 0)
+            {
+                energy = 0;
+                foreach(GameObject obj in objectsInRange)
+                {
+                    obj.GetComponent<Machine>().isSupplied = false;
+                }
+            }
+            else
+            {
+                foreach (GameObject obj in objectsInRange)
+                {
+                    obj.GetComponent<Machine>().isSupplied = true;
+                }
+            }
 
             tickActionFinished = 0;
         }
@@ -360,6 +454,60 @@ public class Machine : MonoBehaviour
                 }
                 tickActionFinished = 0;
             }
+        }
+    }
+    public void Refine()
+    {
+        if (tickActionFinished == 0 && refiningSpeed != -1) tickActionFinished = tickSystem.tickTime + (ulong)refiningSpeed;
+
+        if (tickActionFinished <= tickSystem.tickTime)
+        {
+            if (inventory.Count == 1 && hasInput)
+            {
+                Item item = (Item)inventory.Pop();
+                switch (item.type)
+                {
+                    case 3:
+                        inventory.Push(new Item(8));
+                        hasInput = false;
+                        break;
+                }
+                tickActionFinished = 0;
+            }
+        }
+    }
+    public void LumberCamp()
+    {
+        if (tickActionFinished == 0 && lumberCampSpeed != -1) tickActionFinished = tickSystem.tickTime + (ulong)lumberCampSpeed;
+
+        if (tickActionFinished <= tickSystem.tickTime)
+        {
+            lumberCampSpeed = 40;
+            int speedIncrease = 0;
+            Vector2 pos = GetComponent<Structure>().position;
+            for (int i = (int)pos.x - lumberCampRange; i < (int)pos.x + lumberCampRange; i++)
+            {
+                for (int j = (int)pos.y - lumberCampRange; j < (int)pos.y + lumberCampRange; j++)
+                {
+                    if (grids.structureGrid[i, j] != null 
+                        && grids.structureGrid[i, j].GetComponent<Structure>().type == 0) {
+                    
+                        speedIncrease++;
+
+                    }
+                }
+            }
+            if (speedIncrease > 10)
+                speedIncrease = 10;
+
+            lumberCampSpeed -= speedIncrease * 2;
+            
+            if(lumberCampSpeed > 0 && inventory.Count < inventorySize)
+            {
+                inventory.Push(new Item(3));
+            }
+
+            tickActionFinished = 0;
         }
     }
 }

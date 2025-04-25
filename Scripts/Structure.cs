@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Structure : MonoBehaviour
 {
-    //0 - forest
+    //0 - tree
     //1 - reactor
     //2 - harvesting factory
     //3 - refining factory
