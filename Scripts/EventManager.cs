@@ -7,6 +7,7 @@ public class EventManager : MonoBehaviour
     public ProgressBarController waterBar;
     public ProgressBarController airBar;
     public ProgressBarController earthBar;
+    public ProgressBarController happinessBar;
 
     [Header("Element levels")]
     public float fireLevel;
@@ -14,11 +15,17 @@ public class EventManager : MonoBehaviour
     public float airLevel;
     public float earthLevel;
 
+    [Header("Happiness level")]
+    public float happinessLevel;
+
     [Header("Element changes")]
     public float fireChange;
     public float waterChange;
     public float airChange;
     public float earthChange;
+
+    [Header("Happiness change")]
+    public float happinessChange;
 
     [Header("Tick system")]
     public ulong ticksToChange = 0;
@@ -39,6 +46,7 @@ public class EventManager : MonoBehaviour
             fireLevel += fireChange;
             earthLevel += earthChange;
             airLevel += airChange;
+            happinessLevel += happinessChange;
             ticksToChange = 0;
         }
 
@@ -46,6 +54,7 @@ public class EventManager : MonoBehaviour
         fireBar.SetProgress(fireLevel);
         earthBar.SetProgress(earthLevel);
         airBar.SetProgress(airLevel);
+        happinessBar.SetProgress(happinessLevel);
     }
     public void GetElementProgress()
     {
@@ -53,6 +62,7 @@ public class EventManager : MonoBehaviour
         waterLevel = waterBar.GetProgress();
         airLevel = airBar.GetProgress();
         earthLevel = earthBar.GetProgress();
+        happinessLevel = happinessBar.GetProgress();
     }
     public void CheckEvents(ulong tick) // tuk sa usloviqta za vseki edin event v igrata, a v samite scriptove NQMA usloviq za protichane, tam e samo kvo se sluchva
     {
@@ -72,5 +82,6 @@ public class EventManager : MonoBehaviour
         waterBar.SetProgress(100f);
         fireLevel = fireBar.GetProgress();
         waterLevel = waterBar.GetProgress();
+        happinessBar.SetProgress(100f);
     }
 }
