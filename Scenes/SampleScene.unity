@@ -9529,11 +9529,11 @@ MonoBehaviour:
   copperBarCount: 0
   copperBarCountText: {fileID: 1980741646}
   toolsCount: 0
-  toolsCountText: {fileID: 0}
+  toolsCountText: {fileID: 1166143456}
   advToolsCount: 0
-  advToolsCountText: {fileID: 0}
+  advToolsCountText: {fileID: 1267205642}
   biomassCount: 0
-  biomassCountText: {fileID: 0}
+  biomassCountText: {fileID: 981339416}
 --- !u!1 &1568527570
 GameObject:
   m_ObjectHideFlags: 0

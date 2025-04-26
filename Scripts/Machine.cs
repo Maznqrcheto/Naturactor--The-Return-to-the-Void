@@ -22,6 +22,7 @@ public class Machine : MonoBehaviour
     TickSystem tickSystem;
     ItemManager itemManager;
     GenerateMap grids;
+    SoundFXManager soundFXManager;
 
     [Header("Consumption of energy")]
     public float energyConsumption = -1;
@@ -83,7 +84,7 @@ public class Machine : MonoBehaviour
         tickSystem = GameObject.Find("GlobalEvent").GetComponent<TickSystem>();
         itemManager = GameObject.Find("GlobalEvent").GetComponent<ItemManager>();
         grids = GameObject.Find("GlobalEvent").GetComponent<GenerateMap>();
-
+        soundFXManager = GameObject.Find("GlobalEvent").GetComponent<SoundFXManager>();
         UpdateInventorySize();
     }
     public void UpdateInventorySize()
@@ -190,6 +191,7 @@ public class Machine : MonoBehaviour
                 }
 
             }
+            SoundFXManager.instance.PlaySoundFXClip(soundFXManager.clips[0], this.transform, 100);
             tickActionFinished = 0;
         }
 
