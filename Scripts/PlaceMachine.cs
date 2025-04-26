@@ -233,7 +233,11 @@ public class PlaceMachine : MonoBehaviour
             Destroy(currentMachineHologram);
             currentMachineHologram = null;
             genMap.UpdateSortingOrderForStructures();
+
+            SoundFXManager.instance.PlaySoundFXClip(GetComponent<SoundFXManager>().clips[3], transform, 100);
         }
+        else if(Input.GetMouseButtonDown(0) && currentMachineHologram != null)
+            SoundFXManager.instance.PlaySoundFXClip(GetComponent<SoundFXManager>().clips[2], transform, 100);
 
         //Rotate conveyor belts
         if (currentMachineHologram != null && Input.GetKeyDown(KeyCode.R) && selectedfactory == 2)
@@ -260,6 +264,7 @@ public class PlaceMachine : MonoBehaviour
                     Machine reactor = GameObject.Find("reactor").GetComponent<Machine>();
                     if (reactor.inventory.Count < reactor.inventorySize)
                         reactor.inventory.Push(new Item(3));
+                    SoundFXManager.instance.PlaySoundFXClip(GetComponent<SoundFXManager>().clips[1], transform, 100);
                 }
             }
 
