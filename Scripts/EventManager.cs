@@ -33,6 +33,7 @@ public class EventManager : MonoBehaviour
 
     [Header("Events")]
     public Drought droughtEvent;
+    public Flood floodEvent;
     public GenerateMap mapGenerator;
     public GameObject[,] grid;
     private void Update()
@@ -74,12 +75,17 @@ public class EventManager : MonoBehaviour
     {
         GetElementProgress();
 
-        if (Mathf.Abs(fireLevel - waterLevel) > 20f && !droughtEvent.droughtOccured && droughtEvent.droughtCooldown == 2400)
+        if (fireLevel - waterLevel > 20f && !droughtEvent.droughtOccured && droughtEvent.droughtCooldown == 2400) // Drought Event
         {
-            //drought occurs
             droughtEvent.mapGenerator = mapGenerator;
             droughtEvent.grid = mapGenerator.grid;
             droughtEvent.StartDrought();
+        }
+        if (waterLevel - fireLevel > 20f && !floodEvent.floodOccured && floodEvent.floodCooldown == 2400)
+        {
+            floodEvent.mapGenerator = mapGenerator;
+            floodEvent.grid = mapGenerator.grid;
+            floodEvent.StartFlood();
         }
     }
     void Start()

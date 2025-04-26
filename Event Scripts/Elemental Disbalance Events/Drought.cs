@@ -146,7 +146,7 @@ public class Drought : MonoBehaviour
             tile.GetComponent<Tile>().type = 0;
             tile.GetComponent<SpriteRenderer>().sprite = TileSprites[0];
         }
-         for(int i = 0; i < mapGenerator.x; i++)
+        for(int i = 0; i < mapGenerator.x; i++)
         {
             for(int j = 0; j < mapGenerator.y; j++)
             {
