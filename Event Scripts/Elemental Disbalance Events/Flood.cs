@@ -60,24 +60,28 @@ public class Flood : MonoBehaviour
             for(int j = 0; j < mapGenerator.y; j++)
             {
                 if (grid[i, j] == null) continue;
-                if (grid[i, j].GetComponent<Tile>().type == 0)
+                if (grid[i, j].GetComponent<Tile>().type == 1)
                 {
+                    if (grid[i, j].GetComponent<SpriteRenderer>().sprite == TileSprites[4])
+                    {
+                        grid[i, j].GetComponent<SpriteRenderer>().sprite = TileSprites[Random.Range(1, 4)];
+                    }
                     //FloodTilesFullGrass
-                    if(i > 0 && grid[i - 1, j] != null && grid[i - 1, j].GetComponent<Tile>().type == 1) //tileOnLeft
+                    if(i > 0 && grid[i - 1, j] != null && grid[i - 1, j].GetComponent<Tile>().type == 0) //tileOnLeft
                     {
-                        floodTilesFullGrass.Add(grid[i - 1, j]);  
+                        floodTilesFullGrass.Add(grid[i, j]);  
                     }
-                    if(i < mapGenerator.x - 1 && grid[i + 1, j] != null && grid[i + 1, j].GetComponent<Tile>().type == 1 )//tile on right
+                    if(i < mapGenerator.x - 1 && grid[i + 1, j] != null && grid[i + 1, j].GetComponent<Tile>().type == 0)//tile on right
                     {
-                        floodTilesFullGrass.Add(grid[i + 1, j]);                 
+                        floodTilesFullGrass.Add(grid[i, j]);                 
                     }
-                    if(j > 0 && grid[i, j - 1] != null && grid[i, j - 1].GetComponent<Tile>().type == 1)//tile on bottom
+                    if(j > 0 && grid[i, j - 1] != null && grid[i, j - 1].GetComponent<Tile>().type == 0)//tile on bottom
                     {
-                        floodTilesFullGrass.Add(grid[i, j - 1]);                 
+                        floodTilesFullGrass.Add(grid[i, j]);                 
                     }
-                    if(j < mapGenerator.y - 1 && grid[i, j + 1] != null && grid[i, j + 1].GetComponent<Tile>().type == 1 ) //tileOnTOp
+                    if(j < mapGenerator.y - 1 && grid[i, j + 1] != null && grid[i, j + 1].GetComponent<Tile>().type == 0) //tileOnTOp
                     {        
-                        floodTilesFullGrass.Add(grid[i, j + 1]);                 
+                        floodTilesFullGrass.Add(grid[i, j]);                 
                     }
                 }
             }
@@ -119,6 +123,10 @@ public class Flood : MonoBehaviour
             {
                 if (grid[i, j].GetComponent<Tile>().type == 1)
                 {
+                    if (grid[i, j].GetComponent<SpriteRenderer>().sprite == TileSprites[4])
+                    {
+                        grid[i, j].GetComponent<SpriteRenderer>().sprite = TileSprites[Random.Range(1, 4)];
+                    }
                     //RevertFloodTilesFullGrass
                     if(i > 0 && grid[i - 1, j] != null && (grid[i - 1, j].GetComponent<Tile>().type == 0 || grid[i - 1, j].GetComponent<SpriteRenderer>().sprite == TileSprites[4])) //tileOnLeft
                     {
