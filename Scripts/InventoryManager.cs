@@ -23,6 +23,14 @@ public class InventoryManager : MonoBehaviour
     public int copperBarCount;
     public Text copperBarCountText;
 
+    public int toolsCount;
+    public Text toolsCountText; 
+
+    public int advToolsCount;
+    public Text advToolsCountText; 
+
+    public int biomassCount;
+    public Text biomassCountText;
     private void Update()
     {
         UpdateItemCount();
@@ -32,6 +40,9 @@ public class InventoryManager : MonoBehaviour
         copperCountText.text = copperCount.ToString();
         ironBarCountText.text = ironBarCount.ToString();
         copperBarCountText.text = copperBarCount.ToString();
+        toolsCountText.text = toolsCount.ToString();
+        advToolsCountText.text = advToolsCount.ToString();
+        biomassCountText.text = biomassCount.ToString();
     }
 
     public void UpdateItemCount()
@@ -43,6 +54,10 @@ public class InventoryManager : MonoBehaviour
         copperCount = 0;
         ironBarCount = 0;
         copperBarCount = 0;
+        toolsCount = 0;
+        advToolsCount = 0;
+        biomassCount = 0;
+
         for (int i = 0; i < buildingParent.childCount; i++)
         {
             if (buildingParent.GetChild(i).GetComponent<Machine>() != null)
@@ -71,6 +86,15 @@ public class InventoryManager : MonoBehaviour
                             break;
                         case 5:
                             copperBarCount += currentMachine.inventory.Count;
+                            break;
+                        case 6:
+                            toolsCount += currentMachine.inventory.Count;
+                            break;
+                        case 7:
+                            advToolsCount += currentMachine.inventory.Count;
+                            break;
+                        case 8:
+                            biomassCount += currentMachine.inventory.Count;
                             break;
                     }
                 }
