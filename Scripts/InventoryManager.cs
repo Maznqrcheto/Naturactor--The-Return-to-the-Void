@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using System.Collections.Generic;
+using System.Collections;
 public class InventoryManager : MonoBehaviour
 {
     public int woodCount;
@@ -41,16 +43,16 @@ public class InventoryManager : MonoBehaviour
         copperCount = 0;
         ironBarCount = 0;
         copperBarCount = 0;
-        for(int i = 0; i < buildingParent.childCount; i++)
+        for (int i = 0; i < buildingParent.childCount; i++)
         {
-            if(buildingParent.GetChild(i).GetComponent<Machine>() != null)
+            if (buildingParent.GetChild(i).GetComponent<Machine>() != null)
             {
                 Machine currentMachine = buildingParent.GetChild(i).GetComponent<Machine>();
                 if (currentMachine.type == 4 && currentMachine.inventory.Count > 0)
                 {
                     Item topItem = (Item)currentMachine.inventory.Peek();
 
-                    switch(topItem.type)
+                    switch (topItem.type)
                     {
                         case 0:
                             coalCount += currentMachine.inventory.Count;
@@ -72,12 +74,44 @@ public class InventoryManager : MonoBehaviour
                             break;
                     }
                 }
-                if(currentMachine.type == -1)
+                if (currentMachine.type == -1)
                 {
-                    if(currentMachine.inventory.Count > 0)
+                    if (currentMachine.inventory.Count > 0)
                         woodCount += currentMachine.inventory.Count;
                 }
             }
-        } 
+        }
+    }
+    public void RemoveItem(int[] itemTypesToRemove, int[] countOfItemsToRemove)
+    {
+        Transform buildingParent = GameObject.Find("BuildingParent").transform;
+
+        for (int currentItem = 0; currentItem < itemTypesToRemove.Length; currentItem++)
+        {
+            int countToRemove = countOfItemsToRemove[currentItem];
+            for (int objectToCheck = 0; objectToCheck < buildingParent.childCount; objectToCheck++)
+            {
+                Machine currentMachine = buildingParent.GetChild(objectToCheck).GetComponent<Machine>();
+                if ((currentMachine.type == 4 || currentMachine.type == -1) && currentMachine.inventory.Count > 0)
+                {
+                    Item containerItem = (Item)currentMachine.inventory.Peek();
+                    if (containerItem.type == itemTypesToRemove[currentItem])
+                    {
+                        if (currentMachine.inventory.Count < countToRemove)
+                        {
+                            countToRemove -= currentMachine.inventory.Count;
+                            currentMachine.inventory = new Stack();
+                        }
+                        else
+                        {
+                            for (int k = 0; k < countToRemove; k++)
+                                currentMachine.inventory.Pop();
+                            return;
+                        }
+                    }
+                }
+
+            }
+        }
     }
 }

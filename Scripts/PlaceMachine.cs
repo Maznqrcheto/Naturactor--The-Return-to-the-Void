@@ -6,6 +6,7 @@ public class PlaceMachine : MonoBehaviour
 {
     public GenerateMap genMap;
     public PauseMenu pauseMenu;
+    public InventoryManager inventoryManager;
 
     public GameObject currentMachineHologram;
     public Transform buildingParent;
@@ -79,12 +80,13 @@ public class PlaceMachine : MonoBehaviour
         
         #region PlaceBuilding
         //Create/Destroy hologram
-        if (currentMachineHologram == null && Input.GetMouseButtonDown(1) && selectedfactory != -1)
+        if (currentMachineHologram == null && selectedfactory != -1)
         {
             currentMachineHologram = new GameObject("machineHologram");
             currentMachineHologram.AddComponent<SpriteRenderer>();
             currentMachineHologram.GetComponent<SpriteRenderer>().sprite = factoryTypes[selectedfactory].Sprite;
             currentMachineHologram.GetComponent<SpriteRenderer>().sortingOrder = 1;
+            currentMachineHologram.transform.eulerAngles = new Vector3(0, 0, rotation * 90);
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -101,6 +103,7 @@ public class PlaceMachine : MonoBehaviour
         positionOfMouse.x = Mathf.Round(positionOfMouse.x); positionOfMouse.y = Mathf.Round(positionOfMouse.y);
         Vector2 scale = new Vector2();
         Vector2 offsetPositionOfMouse = new Vector2();
+
         try
         {
             scale = new Vector2(factoryTypes[selectedfactory].Sprite.texture.width / 32, factoryTypes[selectedfactory].Sprite.texture.height / 32);
@@ -116,13 +119,44 @@ public class PlaceMachine : MonoBehaviour
 
 
         //Check if position is viable for placement and update hologram color
-        if (currentMachineHologram != null && CheckIfCanPlace(positionOfMouse, (int)scale.x, (int)scale.y))
+        if (currentMachineHologram != null && CheckIfCanPlace(positionOfMouse, (int)scale.x, (int)scale.y) && HasMaterialsToBuild(selectedfactory, false))
             currentMachineHologram.GetComponent<SpriteRenderer>().color = Color.cyan;
-        else if (currentMachineHologram != null && !CheckIfCanPlace(positionOfMouse, (int)scale.x, (int)scale.y))
+        else if (currentMachineHologram != null && (!CheckIfCanPlace(positionOfMouse, (int)scale.x, (int)scale.y) || !HasMaterialsToBuild(selectedfactory, false)))
             currentMachineHologram.GetComponent<SpriteRenderer>().color = Color.red;
 
         //If position is possible, place building
-        if (Input.GetMouseButtonDown(0) && currentMachineHologram != null && CheckIfCanPlace(positionOfMouse, (int)scale.x, (int)scale.y))
+        if (Input.GetMouseButton(0) && currentMachineHologram != null
+            && selectedfactory == 2 && CheckIfCanPlace(positionOfMouse, (int)scale.x, (int)scale.y)
+            && HasMaterialsToBuild(selectedfactory, true))
+        {
+            GameObject building = new GameObject("building");
+            building.transform.parent = buildingParent;
+            building.AddComponent<SpriteRenderer>();
+            building.GetComponent<SpriteRenderer>().sprite = factoryTypes[selectedfactory].Sprite;
+
+            building.AddComponent<Structure>();
+            building.GetComponent<Structure>().type = -1;
+            building.GetComponent<Structure>().position = new Vector2(offsetPositionOfMouse.x, offsetPositionOfMouse.y);
+
+            building.AddComponent<Machine>();
+            building.GetComponent<Machine>().type = factoryTypes[selectedfactory].Type;
+
+            building.GetComponent<Machine>().conveyorSpeed = 4;
+            building.GetComponent<Machine>().hasInput = true;
+            building.GetComponent<Machine>().hasOutput = true;
+            building.GetComponent<Machine>().input = factoryTypes[selectedfactory].Input;
+            building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
+            building.GetComponent<Machine>().ChangeConveyorRotation(rotation);
+
+            building.GetComponent<Machine>().UpdateInventorySize();
+            building.transform.position = offsetPositionOfMouse;
+
+            UpdateStructureGrid(building, positionOfMouse, (int)scale.x, (int)scale.y);
+            genMap.UpdateSortingOrderForStructures();
+        }
+        else if (Input.GetMouseButtonDown(0) && currentMachineHologram != null 
+            && CheckIfCanPlace(positionOfMouse, (int)scale.x, (int)scale.y) 
+            && HasMaterialsToBuild(selectedfactory, true))
         {
             GameObject building = new GameObject("building");
             building.transform.parent = buildingParent;
@@ -155,15 +189,6 @@ public class PlaceMachine : MonoBehaviour
                     building.GetComponent<Machine>().generatorRange = 5;
                     building.GetComponent<Machine>().hasInput = true;
                     building.GetComponent<Machine>().canInputAnywhere = true;
-                    break;
-                case 2:
-                    building.GetComponent<Machine>().conveyorSpeed = 4;
-                    building.GetComponent<Machine>().hasInput = true;
-                    building.GetComponent<Machine>().hasOutput = true;
-                    building.GetComponent<Machine>().input = factoryTypes[selectedfactory].Input;
-                    building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
-                    building.GetComponent<Machine>().ChangeConveyorRotation(rotation);
-                    rotation = 0;
                     break;
                 case 3:
                     building.GetComponent<Machine>().smeltSpeed = 30;
@@ -202,8 +227,6 @@ public class PlaceMachine : MonoBehaviour
 
             }
             building.GetComponent<Machine>().UpdateInventorySize();
-
-
             building.transform.position = offsetPositionOfMouse;
 
             UpdateStructureGrid(building, positionOfMouse, (int)scale.x, (int)scale.y);
@@ -276,11 +299,19 @@ public class PlaceMachine : MonoBehaviour
             rotation = 0;
             isChoppingTrees = false;
         }
+        else if(currentMachineHologram != null)
+        {
+            selectedfactory = factoryToSelect;
+            Destroy(currentMachineHologram);
+            currentMachineHologram = null;
+            rotation = 0;
+        }
     }
     public void IsChoppingTrees()
     {
         isChoppingTrees = !isChoppingTrees;
         selectedfactory = -1;
+        Destroy(currentMachineHologram);
         currentMachineHologram = null;
     }
     public bool CheckIfCanPlace(Vector2 position, int xSize, int ySize) //position vector2 is the bottom right of the gameObject
@@ -304,6 +335,22 @@ public class PlaceMachine : MonoBehaviour
             }
         }
         return true;
+    }
+    public bool HasMaterialsToBuild(int factoryType, bool removeMaterials)
+    {
+        switch (factoryType)
+        {
+            case 0:
+                if(inventoryManager.woodCount >= 10)
+                {
+                    if(removeMaterials) inventoryManager.RemoveItem(new int[] { 3 }, new int[] { 10 });
+                    return true;
+                }
+                break;
+            default:
+                return true;
+        }
+        return false;
     }
     public void UpdateStructureGrid(GameObject gObj, Vector2 position, int xSize, int ySize)
     {
