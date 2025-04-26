@@ -39,7 +39,7 @@ public class EventManager : MonoBehaviour
     {
 
         if (ticksToChange == 0)
-            ticksToChange = tickSystem.tickTime + 100;
+            ticksToChange = tickSystem.tickTime + 50;
 
         if (ticksToChange <= tickSystem.tickTime)
         {
