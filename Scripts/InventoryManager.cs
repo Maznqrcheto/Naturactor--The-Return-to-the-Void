@@ -130,7 +130,7 @@ public class InventoryManager : MonoBehaviour
                         {
                             for (int k = 0; k < countToRemove; k++)
                                 currentMachine.inventory.Pop();
-                            return;
+                            break;
                         }
                     }
                 }

@@ -92,7 +92,7 @@ public class Machine : MonoBehaviour
         switch (type)
         {
             case -1:
-                inventorySize = 30;
+                inventorySize = 50;
                 break;
             case 0:
                 inventorySize = 2;

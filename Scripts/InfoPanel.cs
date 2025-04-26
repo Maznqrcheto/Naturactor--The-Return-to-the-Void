@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
+using System;
 public class InfoPanel : MonoBehaviour
 {
     public GenerateMap genMap;
@@ -40,34 +41,43 @@ public class InfoPanel : MonoBehaviour
                 selectedGameObject.GetComponent<SpriteRenderer>().color = previousObjectColor;
             }
 
-            if (genMap.structureGrid[(int)mousePosition.x, (int)mousePosition.y] != null)
+            try
             {
-                selectedGameObject = genMap.structureGrid[(int)mousePosition.x, (int)mousePosition.y];
-
-                objectName.text = selectedGameObject.GetComponent<Structure>().GetName();
-                icon.sprite = selectedGameObject.GetComponent<SpriteRenderer>().sprite;
-                Panel.SetActive(true);
-
-                Color objectColor = selectedGameObject.GetComponent<SpriteRenderer>().color;
-                objectColor.r = 0.5f;
-                objectColor.g = 0.5f;
-                objectColor.b = 0.5f;
-                selectedGameObject.GetComponent<SpriteRenderer>().color = objectColor;
-            }
-            else
-            {
-                if(selectedGameObject != null)
+                if (genMap.structureGrid[(int)mousePosition.x, (int)mousePosition.y] != null 
+                    && genMap.structureGrid[(int)mousePosition.x, (int)mousePosition.y].GetComponent<Machine>() != null)
                 {
+                    selectedGameObject = genMap.structureGrid[(int)mousePosition.x, (int)mousePosition.y];
+
+                    objectName.text = selectedGameObject.GetComponent<Structure>().GetName();
+                    icon.sprite = selectedGameObject.GetComponent<SpriteRenderer>().sprite;
+                    Panel.SetActive(true);
+
                     Color objectColor = selectedGameObject.GetComponent<SpriteRenderer>().color;
-                    objectColor.r = 1f;
-                    objectColor.g = 1f;
-                    objectColor.b = 1f;
+                    objectColor.r = 0.5f;
+                    objectColor.g = 0.5f;
+                    objectColor.b = 0.5f;
                     selectedGameObject.GetComponent<SpriteRenderer>().color = objectColor;
                 }
-                
-                selectedGameObject = null;
-                Panel.SetActive(false);
+                else
+                {
+                    if (selectedGameObject != null)
+                    {
+                        Color objectColor = selectedGameObject.GetComponent<SpriteRenderer>().color;
+                        objectColor.r = 1f;
+                        objectColor.g = 1f;
+                        objectColor.b = 1f;
+                        selectedGameObject.GetComponent<SpriteRenderer>().color = objectColor;
+                    }
+
+                    selectedGameObject = null;
+                    Panel.SetActive(false);
+                }
             }
+            catch
+            {
+                //Out of bounds
+            }
+            
         }
         if (selectedGameObject != null && selectedGameObject.GetComponent<Machine>() != null)
         {
@@ -83,6 +93,19 @@ public class InfoPanel : MonoBehaviour
                 inventory.ClearOptions();
                 inventory.AddOptions(itemsInInventory);
             }
+        }
+    }
+    public void Demolish()
+    {
+        if (selectedGameObject != null && selectedGameObject.GetComponent<Machine>().type != 2) {
+            Destroy(selectedGameObject);
+            Panel.SetActive(false);
+        }
+        else if(selectedGameObject != null)
+        {
+            Destroy(selectedGameObject.GetComponent<Machine>().objectOnTop);
+            Destroy(selectedGameObject);
+            Panel.SetActive(false);
         }
     }
 }

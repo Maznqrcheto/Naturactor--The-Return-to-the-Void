@@ -15,7 +15,10 @@ public class InfoPanel2 : MonoBehaviour
     public Text descriptionText;
 
     public Image icon;
-
+    private void Awake()
+    {
+        panel.SetActive(false);
+    }
     private void Update()
     {
         if(actionManager.selectedfactory == -1 && actionManager.isChoppingTrees == false)
@@ -30,10 +33,13 @@ public class InfoPanel2 : MonoBehaviour
             case 0:
                 nameText.text = "Chop Trees";
                 waterText = ColourText(waterText, 0.0f);
-                fireText = ColourText(fireText, 0.5f);
-                earthText = ColourText(earthText, -0.5f);
+                fireText = ColourText(fireText, 0.1f);
+                earthText = ColourText(earthText, -0.1f);
                 airText = ColourText(airText, 0.0f);
-                //descriptionText.text = "Chop Trees";
+                descriptionText.text = "Chop Trees";
+                Color color = icon.color;
+                color.a = 0f;
+                icon.color = color;
                 break;
             default:
                 Factory curSelection = actionManager.factoryTypes[selectedAction - 1];
@@ -56,8 +62,11 @@ public class InfoPanel2 : MonoBehaviour
                 fireText = ColourText(fireText, curSelection.fireChange);
                 earthText = ColourText(earthText, curSelection.earthChange);
                 airText = ColourText(airText, curSelection.airChange);
-                //descriptionText.text = curSelection.description;
+                descriptionText.text = curSelection.description;
                 icon.sprite = curSelection.Sprite;
+                color = icon.color;
+                color.a = 1f;
+                icon.color = color;
                 break;
         }
     }

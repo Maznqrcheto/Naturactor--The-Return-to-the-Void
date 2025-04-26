@@ -7,6 +7,7 @@ public class PlaceMachine : MonoBehaviour
     public GenerateMap genMap;
     public PauseMenu pauseMenu;
     public InventoryManager inventoryManager;
+    public EventManager eventManager;
 
     public GameObject currentMachineHologram;
     public Transform buildingParent;
@@ -25,43 +26,43 @@ public class PlaceMachine : MonoBehaviour
         factoryTypes = new List<Factory>();
         factoryTypes.Add(new Factory(factorySprites[0], new Vector2(-1, -1), new Vector2(1, -1), 0)
         {
-            description = "Useful for mining materials.",
+            description = "Useful for mining materials. \nCosts 10 wood to build. Outputs from the middle of the bottom.",
             fireChange = -0.2f,
             waterChange = 0.4f,
             earthChange = -0.2f
         });
         factoryTypes.Add(new Factory(factorySprites[1], new Vector2(-1, -1), new Vector2(-1, -1), 1)
         {
-            description = "Need electricity? Well this is your solution.",
+            description = "Need electricity? Well this is your solution. \nCosts 10 iron and copper ore. Needs fuel to function",
             airChange = -0.2f
         });
         factoryTypes.Add(new Factory(factorySprites[2], new Vector2(0, 0), new Vector2(1, 0), 2)
-        { description = "Used for transporting stuff around." });
+        { description = "Used for transporting stuff around. \nCosts 2 wood. Rotate with R" });
         factoryTypes.Add(new Factory(factorySprites[3], new Vector2(0, 0), new Vector3(0, -1), 3)
         {
-            description = "You can smelt stuff here into more refined materials.",
+            description = "You can smelt stuff here into more refined materials. \nCosts 5 iron and copper ore. Outputs from the bottom. Needs coal to function.",
             airChange = -0.2f,
             waterChange = -0.2f
         });     
         factoryTypes.Add(new Factory(factorySprites[4], new Vector2(0, 1), new Vector2(4, 1), 4)
-        { description = "Stores stuff. Yeah that's about it."});
+        { description = "Stores stuff. Yeah that's about it. \nCosts 20 wood. Outputs from the middle of the right side."});
         factoryTypes.Add(new Factory(factorySprites[5], new Vector2(0, 0), new Vector2(1, -1), 5)
         {
-            description = "Crafter for crafting 2 items into 1. Requires electricity to work.",
+            description = "Crafter for crafting 2 items into 1. \nCosts 10 iron and copper bars. Requires electricity to work.",
             energyConsumption = 15f,
             airChange = -0.5f,
             waterChange = -0.5f
         });
         factoryTypes.Add(new Factory(factorySprites[6], new Vector2(0, 0), new Vector2(1, -1), 6)
         {
-            description = "Used to refine materials into a more pure form. Required electricity to work.",
+            description = "Used to refine materials into a more pure form. Needs 20 tools to be built. Requires electricity to work.",
             energyConsumption = 10f,
             earthChange = -0.2f,
             fireChange = 0.3f
         });
         factoryTypes.Add(new Factory(factorySprites[7], new Vector2(0, 0), new Vector2(1, -1), 7)
         {
-            description = "Passive wood income. The limit to wood collection is your imagination.",
+            description = "Passive wood income. The limit to wood collection is your imagination. Costs 15 Advanced tools. Trees nearby increase production rate.",
             earthChange = 0.1f,
             airChange = 0.1f
         });
@@ -72,12 +73,12 @@ public class PlaceMachine : MonoBehaviour
         buildingParent = new GameObject("BuildingParent").transform;
     }
     void Update()
-    { 
+    {
         if ((pauseMenu != null && pauseMenu.isPaused) || EventSystem.current.IsPointerOverGameObject())
         {
             return;
         }
-        
+
         #region PlaceBuilding
         //Create/Destroy hologram
         if (currentMachineHologram == null && selectedfactory != -1)
@@ -154,8 +155,8 @@ public class PlaceMachine : MonoBehaviour
             UpdateStructureGrid(building, positionOfMouse, (int)scale.x, (int)scale.y);
             genMap.UpdateSortingOrderForStructures();
         }
-        else if (Input.GetMouseButtonDown(0) && currentMachineHologram != null 
-            && CheckIfCanPlace(positionOfMouse, (int)scale.x, (int)scale.y) 
+        else if (Input.GetMouseButtonDown(0) && currentMachineHologram != null
+            && CheckIfCanPlace(positionOfMouse, (int)scale.x, (int)scale.y)
             && HasMaterialsToBuild(selectedfactory, true))
         {
             GameObject building = new GameObject("building");
@@ -202,6 +203,7 @@ public class PlaceMachine : MonoBehaviour
                     building.GetComponent<Machine>().hasOutput = true;
                     building.GetComponent<Machine>().input = factoryTypes[selectedfactory].Input;
                     building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
+                    building.GetComponent<Machine>().canInputAnywhere = true;
                     break;
                 case 5:
                     building.GetComponent<Machine>().craftSpeed = 30;
@@ -236,7 +238,7 @@ public class PlaceMachine : MonoBehaviour
 
             SoundFXManager.instance.PlaySoundFXClip(GetComponent<SoundFXManager>().clips[3], transform, 100);
         }
-        else if(Input.GetMouseButtonDown(0) && currentMachineHologram != null)
+        else if (Input.GetMouseButtonDown(0) && currentMachineHologram != null)
             SoundFXManager.instance.PlaySoundFXClip(GetComponent<SoundFXManager>().clips[2], transform, 100);
 
         //Rotate conveyor belts
@@ -265,11 +267,15 @@ public class PlaceMachine : MonoBehaviour
                     if (reactor.inventory.Count < reactor.inventorySize)
                         reactor.inventory.Push(new Item(3));
                     SoundFXManager.instance.PlaySoundFXClip(GetComponent<SoundFXManager>().clips[1], transform, 100);
+
+                    eventManager.fireLevel += 0.1f;
+                    eventManager.earthLevel -= 0.1f;
                 }
             }
-
             if (Input.GetKeyDown(KeyCode.Escape))
                 IsChoppingTrees();
+
+
         }
         #endregion
 
@@ -282,11 +288,19 @@ public class PlaceMachine : MonoBehaviour
             color.b = 1f;
             objectHoveringOver.GetComponent<SpriteRenderer>().color = color;
         }
-        objectHoveringOver = genMap.structureGrid[(int)positionOfMouse.x, (int)positionOfMouse.y];
+        try
+        {
+            objectHoveringOver = genMap.structureGrid[(int)positionOfMouse.x, (int)positionOfMouse.y];
+
+        }
+        catch
+        {
+            //mouse out of bounds
+        }
         if (objectHoveringOver == null)
             objectHoveringOver = genMap.grid[(int)positionOfMouse.x, (int)positionOfMouse.y];
 
-        if(objectHoveringOver != null)
+        if (objectHoveringOver != null)
         {
             Color color = objectHoveringOver.GetComponent<SpriteRenderer>().color;
             color.r = 0.5f;
@@ -349,6 +363,55 @@ public class PlaceMachine : MonoBehaviour
                 if(inventoryManager.woodCount >= 10)
                 {
                     if(removeMaterials) inventoryManager.RemoveItem(new int[] { 3 }, new int[] { 10 });
+                    return true;
+                }
+                break;
+            case 1:
+                if(inventoryManager.ironCount >= 10 && inventoryManager.copperCount >= 10)
+                {
+                    if (removeMaterials) inventoryManager.RemoveItem(new int[] { 1, 2 }, new int[] { 10, 10 });
+                    return true;
+                }
+                break;
+            case 2:
+                if (inventoryManager.woodCount >= 2)
+                {
+                    if (removeMaterials) inventoryManager.RemoveItem(new int[] { 3 }, new int[] { 2 });
+                    return true;
+                }
+                break;
+            case 3:
+                if (inventoryManager.ironCount >= 5 && inventoryManager.copperCount >= 5)
+                {
+                    if (removeMaterials) inventoryManager.RemoveItem(new int[] { 1, 2 }, new int[] { 5, 5 });
+                    return true;
+                }
+                break;
+            case 4:
+                if (inventoryManager.woodCount >= 20)
+                {
+                    if (removeMaterials) inventoryManager.RemoveItem(new int[] { 3 }, new int[] { 20 });
+                    return true;
+                }
+                break;
+            case 5:
+                if (inventoryManager.ironBarCount >= 10 && inventoryManager.copperBarCount >= 10)
+                {
+                    if (removeMaterials) inventoryManager.RemoveItem(new int[] { 4, 5 }, new int[] { 10, 10 });
+                    return true;
+                }
+                break;
+            case 6:
+                if (inventoryManager.toolsCount >= 20)
+                {
+                    if (removeMaterials) inventoryManager.RemoveItem(new int[] { 6 }, new int[] { 20 });
+                    return true;
+                }
+                break;
+            case 7:
+                if (inventoryManager.advToolsCount >= 15)
+                {
+                    if (removeMaterials) inventoryManager.RemoveItem(new int[] { 7 }, new int[] { 15 });
                     return true;
                 }
                 break;
