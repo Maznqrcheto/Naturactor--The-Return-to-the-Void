@@ -38,16 +38,14 @@ public class EventManager : MonoBehaviour
     public GameObject[,] grid;
     private void Update()
     {
-
         if (ticksToChange == 0)
+        {
             ticksToChange = tickSystem.tickTime + 50;
-
+        }
         if (ticksToChange <= tickSystem.tickTime)
         {
-            //Calculate change
             SetElementalChange();
 
-            //Change elemental levels
             waterLevel += waterChange;
             fireLevel += fireChange;
             earthLevel += earthChange;

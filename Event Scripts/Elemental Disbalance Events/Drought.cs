@@ -24,7 +24,7 @@ public class Drought : MonoBehaviour
     {
         while (true)
         {
-            if (droughtIsActive && counter == Random.Range(30, 60))
+            if (droughtIsActive && counter == Random.Range(960, 1440))
             {
                 RevertDrought();
                 counter = 1;
