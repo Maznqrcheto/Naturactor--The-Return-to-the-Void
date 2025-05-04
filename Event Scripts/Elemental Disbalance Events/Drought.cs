@@ -59,10 +59,10 @@ public class Drought : MonoBehaviour
         droughtIsActive = true;
         StartCoroutine(TickDrought());
 
-        var droughtTilesFullGrass = GetDroughtTilesFullGrass();
+        List<GameObject> droughtTilesFullGrass = GetDroughtTilesFullGrass();
         AssignDroughtTilesFullGrassSprite(droughtTilesFullGrass);
 
-        var droughtTilesPartGrass = GetDroughtTilesPartGrass();
+        List<GameObject> droughtTilesPartGrass = GetDroughtTilesPartGrass();
         AssignDroughtTilesPartGrassSprite(droughtTilesPartGrass);
 
         droughtOccured = true;
@@ -70,10 +70,10 @@ public class Drought : MonoBehaviour
 
     public void RevertDrought()
     {
-        var revertDroughtTilesFullGrass = GetRevertDroughtTilesFullGrass();
+        List<GameObject> revertDroughtTilesFullGrass = GetRevertDroughtTilesFullGrass();
         AssignRevertDroughtTilesFullGrassSprite(revertDroughtTilesFullGrass);
 
-        var revertDroughtTilesPartGrass = GetRevertDroughtTilesPartGrass();
+        List<GameObject> revertDroughtTilesPartGrass = GetRevertDroughtTilesPartGrass();
         AssignRevertDroughtTilesPartGrassSprite(revertDroughtTilesPartGrass);
 
         Debug.Log("Drought ended!");
@@ -83,7 +83,7 @@ public class Drought : MonoBehaviour
 
     List<GameObject> GetDroughtTilesFullGrass()
     {
-        var list = new List<GameObject>();
+        List<GameObject> list = new List<GameObject>();
         for (int i = 0; i < mapGenerator.x; i++)
         {
             for (int j = 0; j < mapGenerator.y; j++)
@@ -107,7 +107,7 @@ public class Drought : MonoBehaviour
 
     List<GameObject> GetDroughtTilesPartGrass()
     {
-        var list = new List<GameObject>();
+        List<GameObject> list = new List<GameObject>();
         for (int i = 0; i < mapGenerator.x; i++)
         {
             for (int j = 0; j < mapGenerator.y; j++)
@@ -142,7 +142,7 @@ public class Drought : MonoBehaviour
 
     List<GameObject> GetRevertDroughtTilesFullGrass()
     {
-        var list = new List<GameObject>();
+        List<GameObject> list = new List<GameObject>();
         for (int i = 0; i < mapGenerator.x; i++)
         {
             for (int j = 0; j < mapGenerator.y; j++)
@@ -165,7 +165,7 @@ public class Drought : MonoBehaviour
 
     List<GameObject> GetRevertDroughtTilesPartGrass()
     {
-        var list = new List<GameObject>();
+        List<GameObject> list = new List<GameObject>();
         for (int i = 0; i < mapGenerator.x; i++)
         {
             for (int j = 0; j < mapGenerator.y; j++)
