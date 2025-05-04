@@ -92,13 +92,21 @@ public class Drought : MonoBehaviour
                 if (grid[i, j].GetComponent<Tile>().type == 1)
                 {
                     if (i > 0 && grid[i - 1, j] != null && (grid[i - 1, j].GetComponent<Tile>().type == 0 || grid[i - 1, j].GetComponent<SpriteRenderer>().sprite == TileSprites[4]))
+                    {
                         list.Add(grid[i - 1, j]);
+                    }
                     if (i < mapGenerator.x - 1 && grid[i + 1, j] != null && (grid[i + 1, j].GetComponent<Tile>().type == 0 || grid[i + 1, j].GetComponent<SpriteRenderer>().sprite == TileSprites[4]))
+                    {
                         list.Add(grid[i + 1, j]);
+                    }
                     if (j > 0 && grid[i, j - 1] != null && (grid[i, j - 1].GetComponent<Tile>().type == 0 || grid[i, j - 1].GetComponent<SpriteRenderer>().sprite == TileSprites[4]))
+                    {
                         list.Add(grid[i, j - 1]);
+                    }
                     if (j < mapGenerator.y - 1 && grid[i, j + 1] != null && (grid[i, j + 1].GetComponent<Tile>().type == 0 || grid[i, j + 1].GetComponent<SpriteRenderer>().sprite == TileSprites[4]))
+                    {
                         list.Add(grid[i, j + 1]);
+                    }        
                 }
             }
         }
@@ -116,7 +124,9 @@ public class Drought : MonoBehaviour
                 if (grid[i, j].GetComponent<Tile>().type == 1)
                 {
                     if (j > 0 && grid[i, j - 1] != null && grid[i, j - 1].GetComponent<Tile>().type == 0)
-                        list.Add(grid[i, j]);
+                        {
+                            list.Add(grid[i, j]);
+                        }
                 }
             }
         }
@@ -150,13 +160,21 @@ public class Drought : MonoBehaviour
                 if (grid[i, j].GetComponent<Tile>().type == 0)
                 {
                     if (i > 0 && grid[i - 1, j] != null && grid[i - 1, j].GetComponent<Tile>().type == 1)
+                    {
                         list.Add(grid[i - 1, j]);
+                    }
                     if (i < mapGenerator.x - 1 && grid[i + 1, j] != null && grid[i + 1, j].GetComponent<Tile>().type == 1)
+                    {
                         list.Add(grid[i + 1, j]);
+                    }
                     if (j > 0 && grid[i, j - 1] != null && grid[i, j - 1].GetComponent<Tile>().type == 1)
+                    {
                         list.Add(grid[i, j - 1]);
+                    }
                     if (j < mapGenerator.y - 1 && grid[i, j + 1] != null && grid[i, j + 1].GetComponent<Tile>().type == 1)
+                    {
                         list.Add(grid[i, j + 1]);
+                    }
                 }
             }
         }
@@ -173,7 +191,9 @@ public class Drought : MonoBehaviour
                 if (grid[i, j].GetComponent<Tile>().type == 0)
                 {
                     if (j < mapGenerator.y - 1 && grid[i, j + 1] != null && grid[i, j + 1].GetComponent<Tile>().type == 1)
+                    {
                         list.Add(grid[i, j + 1]);
+                    }
                 }
             }
         }
