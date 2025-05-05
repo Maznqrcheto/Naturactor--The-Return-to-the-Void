@@ -69,6 +69,14 @@ public class EventManager : MonoBehaviour
         earthLevel = earthBar.GetProgress();
         happinessLevel = happinessBar.GetProgress();
     }
+    public void SetElementProgress(value)
+    {
+        fireBar.SetProgress(value);
+        waterBar.SetProgress(value);
+        airBar.SetProgress(value);
+        earthBar.SetProgress(value);
+        happinessBar.SetProgress(value);
+    }    
     public void CheckEvents(ulong tick) // tuk sa usloviqta za vseki edin event v igrata, a v samite scriptove NQMA usloviq za protichane, tam e samo kvo se sluchva
     {
         GetElementProgress();
@@ -88,11 +96,7 @@ public class EventManager : MonoBehaviour
     }
     void Start()
     {
-        fireBar.SetProgress(100f);
-        waterBar.SetProgress(100f);
-        fireLevel = fireBar.GetProgress();
-        waterLevel = waterBar.GetProgress();
-        happinessBar.SetProgress(100f);
+        SetElementalProgress(100f);
     }
     public void SetElementalChange()
     {
