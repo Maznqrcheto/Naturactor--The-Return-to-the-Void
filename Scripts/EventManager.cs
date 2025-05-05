@@ -69,7 +69,7 @@ public class EventManager : MonoBehaviour
         earthLevel = earthBar.GetProgress();
         happinessLevel = happinessBar.GetProgress();
     }
-    public void SetElementProgress(value)
+    public void SetElementProgress(float value)
     {
         fireBar.SetProgress(value);
         waterBar.SetProgress(value);
