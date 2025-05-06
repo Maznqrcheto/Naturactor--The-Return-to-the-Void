@@ -32,7 +32,6 @@ public class PauseMenu: MonoBehaviour
     }
     public void Settings()
     {
-        
         Debug.Log("Settings clicked");
     }
 }
