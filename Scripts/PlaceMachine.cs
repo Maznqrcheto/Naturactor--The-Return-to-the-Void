@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
+using UnityEngine.UIElements;
+using UnityEngine.InputSystem;
 public class PlaceMachine : MonoBehaviour
 {
     public GenerateMap genMap;
@@ -9,7 +11,6 @@ public class PlaceMachine : MonoBehaviour
     public InventoryManager inventoryManager;
     public EventManager eventManager;
 
-    public GameObject currentMachineHologram;
     public Transform buildingParent;
 
     public List<Factory> factoryTypes;
@@ -20,9 +21,14 @@ public class PlaceMachine : MonoBehaviour
     public GameObject objectHoveringOver;
 
     public int rotation = 0;
-    private void Start()
+    void Awake() 
     {
-        #region factorySettings
+        buildingParent = new GameObject("BuildingParent").transform;
+
+        CreateFactoryTypes();
+    }
+    void CreateFactoryTypes()
+    {
         factoryTypes = new List<Factory>();
         factoryTypes.Add(new Factory(factorySprites[0], new Vector2(-1, -1), new Vector2(1, -1), 0)
         {
@@ -43,9 +49,9 @@ public class PlaceMachine : MonoBehaviour
             description = "You can smelt stuff here into more refined materials. \nCosts 5 iron and copper ore. Outputs from the bottom. Needs coal to function.",
             airChange = -0.2f,
             waterChange = -0.2f
-        });     
+        });
         factoryTypes.Add(new Factory(factorySprites[4], new Vector2(0, 1), new Vector2(4, 1), 4)
-        { description = "Stores stuff. Yeah that's about it. \nCosts 20 wood. Outputs from the middle of the right side."});
+        { description = "Stores stuff. Yeah that's about it. \nCosts 20 wood. Outputs from the middle of the right side." });
         factoryTypes.Add(new Factory(factorySprites[5], new Vector2(0, 0), new Vector2(1, -1), 5)
         {
             description = "Crafter for crafting 2 items into 1. \nCosts 10 iron and copper bars. Requires electricity to work.",
@@ -66,11 +72,6 @@ public class PlaceMachine : MonoBehaviour
             earthChange = 0.1f,
             airChange = 0.1f
         });
-        #endregion
-    }
-    private void Awake() 
-    {
-        buildingParent = new GameObject("BuildingParent").transform;
     }
     void Update()
     {
@@ -79,8 +80,66 @@ public class PlaceMachine : MonoBehaviour
             return;
         }
 
-        #region PlaceBuilding
+        //Update Mouse positon and scale of current factory
+        Vector2[] mouseVars = UpdateMousePositionProperties();
+        Vector2 positionOfMouse = mouseVars[0];
+        Vector2 scale = mouseVars[1];
+        Vector2 offsetPositionOfMouse = mouseVars[2];
+
+        //Building event and rotating conveyor belt
+        PlaceBuildingEvent(positionOfMouse, scale, offsetPositionOfMouse);
+
+        if (currentMachineHologram != null && Input.GetKeyDown(KeyCode.R) && selectedfactory == 2)
+            RotateConveyorBelt();
+
+        //Tree chopping
+        if (isChoppingTrees == true && Input.GetMouseButton(0)) ChopTree(positionOfMouse);
+        if (isChoppingTrees == true && Input.GetKeyDown(KeyCode.Escape)) IsChoppingTrees();
+
+        //Hover over object
+        MouseHoveringOverObject(positionOfMouse);
+    }
+    Vector2[] UpdateMousePositionProperties()
+    {
+        Vector2 positionOfMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        positionOfMouse.x = Mathf.Round(positionOfMouse.x); positionOfMouse.y = Mathf.Round(positionOfMouse.y);
+
+        Vector2 scale = new Vector2();
+        Vector2 offsetPositionOfMouse = new Vector2();
+
+        try
+        {
+            scale = new Vector2(factoryTypes[selectedfactory].Sprite.texture.width / 32, factoryTypes[selectedfactory].Sprite.texture.height / 32);
+            offsetPositionOfMouse = new Vector2(positionOfMouse.x + (scale.x / 2) - 0.5f, positionOfMouse.y + (scale.y / 2) - 0.5f);
+        }
+        catch { }//No factory selected
+
+        return new Vector2[] {positionOfMouse, scale, offsetPositionOfMouse};
+    }
+    GameObject currentMachineHologram;
+    void PlaceBuildingEvent(Vector2 positionOfMouse, Vector2 scale, Vector2 offsetPositionOfMouse)
+    {
         //Create/Destroy hologram
+        MachineHologramAction(offsetPositionOfMouse);
+
+        //Check if position is viable for placement and update hologram color
+        bool canPlace = MachineHologramCheckIfCanPlace(positionOfMouse, scale);
+
+        //If position is possible, place building
+        if (Input.GetMouseButtonDown(0) && canPlace == true) // Placing building succesful
+        {
+            GameObject building = PlaceBuilding(offsetPositionOfMouse);
+            UpdateStructureGrid(building, positionOfMouse, (int)scale.x, (int)scale.y);
+            genMap.UpdateSortingOrderForStructures();
+
+            SoundFXManager.instance.PlaySoundFXClip(GetComponent<SoundFXManager>().clips[3], transform, 100);
+        }
+        else if (Input.GetMouseButtonDown(0) && currentMachineHologram != null) // Placing building unsuccesful
+            SoundFXManager.instance.PlaySoundFXClip(GetComponent<SoundFXManager>().clips[2], transform, 100);
+    }
+    void MachineHologramAction(Vector2 offsetPositionOfMouse)
+    {
+        //Create hologram
         if (currentMachineHologram == null && selectedfactory != -1)
         {
             currentMachineHologram = new GameObject("machineHologram");
@@ -89,6 +148,8 @@ public class PlaceMachine : MonoBehaviour
             currentMachineHologram.GetComponent<SpriteRenderer>().sortingOrder = 1;
             currentMachineHologram.transform.eulerAngles = new Vector3(0, 0, rotation * 90);
         }
+
+        //Remove hologram
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (currentMachineHologram != null)
@@ -99,187 +160,155 @@ public class PlaceMachine : MonoBehaviour
             selectedfactory = -1;
         }
 
-        //Update position of hologram (malko tupa matematika, otne mi 3 chasa iskam da se samoubiq)      
-        Vector2 positionOfMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        positionOfMouse.x = Mathf.Round(positionOfMouse.x); positionOfMouse.y = Mathf.Round(positionOfMouse.y);
-        Vector2 scale = new Vector2();
-        Vector2 offsetPositionOfMouse = new Vector2();
-
-        try
-        {
-            scale = new Vector2(factoryTypes[selectedfactory].Sprite.texture.width / 32, factoryTypes[selectedfactory].Sprite.texture.height / 32);
-            offsetPositionOfMouse = new Vector2(positionOfMouse.x + (scale.x / 2) - 0.5f, positionOfMouse.y + (scale.y / 2) - 0.5f);
-        }
-        catch
-        {
-            //No factory selected
-        }
-
+        //Update Hologram position
         if (currentMachineHologram != null)
             currentMachineHologram.transform.position = offsetPositionOfMouse;
-
-
-        //Check if position is viable for placement and update hologram color
-        if (currentMachineHologram != null && CheckIfCanPlace(positionOfMouse, (int)scale.x, (int)scale.y) && HasMaterialsToBuild(selectedfactory, false))
+    }
+    bool MachineHologramCheckIfCanPlace(Vector2 positionOfMouse, Vector2 scale)
+    {
+        if (currentMachineHologram == null)
+            return false;
+        else if (currentMachineHologram != null && CheckIfCanPlace(positionOfMouse, (int)scale.x, (int)scale.y) && HasMaterialsToBuild(selectedfactory, false))
+        {
             currentMachineHologram.GetComponent<SpriteRenderer>().color = Color.cyan;
+            return true;
+        }
         else if (currentMachineHologram != null && (!CheckIfCanPlace(positionOfMouse, (int)scale.x, (int)scale.y) || !HasMaterialsToBuild(selectedfactory, false)))
+        {
             currentMachineHologram.GetComponent<SpriteRenderer>().color = Color.red;
-
-        //If position is possible, place building
-        if (Input.GetMouseButton(0) && currentMachineHologram != null
-            && selectedfactory == 2 && CheckIfCanPlace(positionOfMouse, (int)scale.x, (int)scale.y)
-            && HasMaterialsToBuild(selectedfactory, true))
-        {
-            GameObject building = new GameObject("building");
-            building.transform.parent = buildingParent;
-            building.AddComponent<SpriteRenderer>();
-            building.GetComponent<SpriteRenderer>().sprite = factoryTypes[selectedfactory].Sprite;
-
-            building.AddComponent<Structure>();
-            building.GetComponent<Structure>().type = -1;
-            building.GetComponent<Structure>().position = new Vector2(offsetPositionOfMouse.x, offsetPositionOfMouse.y);
-
-            building.AddComponent<Machine>();
-            building.GetComponent<Machine>().type = factoryTypes[selectedfactory].Type;
-
-            building.GetComponent<Machine>().conveyorSpeed = 4;
-            building.GetComponent<Machine>().hasInput = true;
-            building.GetComponent<Machine>().hasOutput = true;
-            building.GetComponent<Machine>().input = factoryTypes[selectedfactory].Input;
-            building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
-            building.GetComponent<Machine>().ChangeConveyorRotation(rotation);
-
-            building.GetComponent<Machine>().UpdateInventorySize();
-            building.transform.position = offsetPositionOfMouse;
-
-            UpdateStructureGrid(building, positionOfMouse, (int)scale.x, (int)scale.y);
-            genMap.UpdateSortingOrderForStructures();
+            return false;
         }
-        else if (Input.GetMouseButtonDown(0) && currentMachineHologram != null
-            && CheckIfCanPlace(positionOfMouse, (int)scale.x, (int)scale.y)
-            && HasMaterialsToBuild(selectedfactory, true))
+        return false;
+    }
+    GameObject PlaceBuilding(Vector2 offsetPositionOfMouse)
+    {
+        GameObject building = new GameObject("building");
+        building.transform.parent = buildingParent;
+
+        //Set starting properties for the building
+        building.AddComponent<SpriteRenderer>();
+        building.GetComponent<SpriteRenderer>().sprite = factoryTypes[selectedfactory].Sprite;
+
+        building.AddComponent<Structure>();
+        building.GetComponent<Structure>().type = -1;
+        building.GetComponent<Structure>().position = new Vector2(offsetPositionOfMouse.x, offsetPositionOfMouse.y);
+
+        building.AddComponent<Machine>();
+        building.GetComponent<Machine>().type = factoryTypes[selectedfactory].Type;
+
+        building.GetComponent<Machine>().waterChange = factoryTypes[selectedfactory].waterChange;
+        building.GetComponent<Machine>().fireChange = factoryTypes[selectedfactory].fireChange;
+        building.GetComponent<Machine>().earthChange = factoryTypes[selectedfactory].earthChange;
+        building.GetComponent<Machine>().airChange = factoryTypes[selectedfactory].airChange;
+
+        building.GetComponent<Machine>().energyConsumption = factoryTypes[selectedfactory].energyConsumption;
+        
+        //Update building Properties for specific tyoe
+        UpdateBuildingProperties(offsetPositionOfMouse, building);
+
+        //Set Building Position
+        building.GetComponent<Machine>().UpdateInventorySize();
+        building.transform.position = offsetPositionOfMouse;
+        
+        //Destroy hologram
+        Destroy(currentMachineHologram);
+        currentMachineHologram = null;
+
+        return building;
+    }
+    void UpdateBuildingProperties(Vector2 offsetPositionOfMouse, GameObject building)
+    {
+        switch (building.GetComponent<Machine>().type)
         {
-            GameObject building = new GameObject("building");
-            building.transform.parent = buildingParent;
-            building.AddComponent<SpriteRenderer>();
-            building.GetComponent<SpriteRenderer>().sprite = factoryTypes[selectedfactory].Sprite;
-
-            building.AddComponent<Structure>();
-            building.GetComponent<Structure>().type = -1;
-            building.GetComponent<Structure>().position = new Vector2(offsetPositionOfMouse.x, offsetPositionOfMouse.y);
-
-            building.AddComponent<Machine>();
-            building.GetComponent<Machine>().type = factoryTypes[selectedfactory].Type;
-
-            building.GetComponent<Machine>().waterChange = factoryTypes[selectedfactory].waterChange;
-            building.GetComponent<Machine>().fireChange = factoryTypes[selectedfactory].fireChange;
-            building.GetComponent<Machine>().earthChange = factoryTypes[selectedfactory].earthChange;
-            building.GetComponent<Machine>().airChange = factoryTypes[selectedfactory].airChange;
-
-            building.GetComponent<Machine>().energyConsumption = factoryTypes[selectedfactory].energyConsumption;
-            switch (building.GetComponent<Machine>().type)
-            {
-                case 0:
-                    building.GetComponent<Machine>().drillSpeed = 30;
-                    building.GetComponent<Machine>().hasInput = false;
-                    building.GetComponent<Machine>().hasOutput = true;
-                    building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
-                    break;
-                case 1:
-                    building.GetComponent<Machine>().fuelConsumptionSpeed = 30;
-                    building.GetComponent<Machine>().generatorRange = 5;
-                    building.GetComponent<Machine>().hasInput = true;
-                    building.GetComponent<Machine>().canInputAnywhere = true;
-                    break;
-                case 3:
-                    building.GetComponent<Machine>().smeltSpeed = 30;
-                    building.GetComponent<Machine>().hasInput = true;
-                    building.GetComponent<Machine>().hasOutput = true;
-                    building.GetComponent<Machine>().canInputAnywhere = true;
-                    building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
-                    break;
-                case 4:
-                    building.GetComponent<Machine>().hasInput = true;
-                    building.GetComponent<Machine>().hasOutput = true;
-                    building.GetComponent<Machine>().input = factoryTypes[selectedfactory].Input;
-                    building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
-                    building.GetComponent<Machine>().canInputAnywhere = true;
-                    break;
-                case 5:
-                    building.GetComponent<Machine>().craftSpeed = 30;
-                    building.GetComponent<Machine>().hasInput = true;
-                    building.GetComponent<Machine>().hasOutput = true;
-                    building.GetComponent<Machine>().canInputAnywhere = true;
-                    building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
-                    break;
-                case 6:
-                    building.GetComponent<Machine>().refiningSpeed = 30;
-                    building.GetComponent<Machine>().hasInput = true;
-                    building.GetComponent<Machine>().hasOutput = true;
-                    building.GetComponent<Machine>().canInputAnywhere = true;
-                    building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
-                    break;
-                case 7:
-                    building.GetComponent<Machine>().lumberCampSpeed = 40;
-                    building.GetComponent<Machine>().lumberCampRange = 4;
-                    building.GetComponent<Machine>().hasInput = false;
-                    building.GetComponent<Machine>().hasOutput = true;
-                    building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
-                    break;
-
-            }
-            building.GetComponent<Machine>().UpdateInventorySize();
-            building.transform.position = offsetPositionOfMouse;
-
-            UpdateStructureGrid(building, positionOfMouse, (int)scale.x, (int)scale.y);
-            Destroy(currentMachineHologram);
-            currentMachineHologram = null;
-            genMap.UpdateSortingOrderForStructures();
-
-            SoundFXManager.instance.PlaySoundFXClip(GetComponent<SoundFXManager>().clips[3], transform, 100);
-        }
-        else if (Input.GetMouseButtonDown(0) && currentMachineHologram != null)
-            SoundFXManager.instance.PlaySoundFXClip(GetComponent<SoundFXManager>().clips[2], transform, 100);
-
-        //Rotate conveyor belts
-        if (currentMachineHologram != null && Input.GetKeyDown(KeyCode.R) && selectedfactory == 2)
-        {
-            if (rotation == 3)
-                rotation = 0;
-            else
-                rotation++;
-
-            currentMachineHologram.transform.eulerAngles = new Vector3(0, 0, rotation * 90);
-        }
-        #endregion
-
-        #region ChoppingTrees
-        if (isChoppingTrees == true)
-        {
-            if (Input.GetMouseButton(0))
-            {
-                GameObject selectedTree = genMap.structureGrid[(int)Mathf.Round(positionOfMouse.x), (int)Mathf.Round(positionOfMouse.y)];
-                if (selectedTree != null && selectedTree.GetComponent<Structure>().type == 0)
-                {
-                    Destroy(selectedTree);
-
-                    Machine reactor = GameObject.Find("reactor").GetComponent<Machine>();
-                    if (reactor.inventory.Count < reactor.inventorySize)
-                        reactor.inventory.Push(new Item(3));
-                    SoundFXManager.instance.PlaySoundFXClip(GetComponent<SoundFXManager>().clips[1], transform, 100);
-
-                    eventManager.fireLevel += 0.1f;
-                    eventManager.earthLevel -= 0.1f;
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.Escape))
-                IsChoppingTrees();
-
+            case 0:
+                building.GetComponent<Machine>().drillSpeed = 30;
+                building.GetComponent<Machine>().hasInput = false;
+                building.GetComponent<Machine>().hasOutput = true;
+                building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
+                break;
+            case 1:
+                building.GetComponent<Machine>().fuelConsumptionSpeed = 30;
+                building.GetComponent<Machine>().generatorRange = 5;
+                building.GetComponent<Machine>().hasInput = true;
+                building.GetComponent<Machine>().canInputAnywhere = true;
+                break;
+            case 2:
+                building.GetComponent<Machine>().conveyorSpeed = 4;
+                building.GetComponent<Machine>().hasInput = true;
+                building.GetComponent<Machine>().hasOutput = true;
+                building.GetComponent<Machine>().input = factoryTypes[selectedfactory].Input;
+                building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
+                building.GetComponent<Machine>().ChangeConveyorRotation(rotation);
+                break;
+            case 3:
+                building.GetComponent<Machine>().smeltSpeed = 30;
+                building.GetComponent<Machine>().hasInput = true;
+                building.GetComponent<Machine>().hasOutput = true;
+                building.GetComponent<Machine>().canInputAnywhere = true;
+                building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
+                break;
+            case 4:
+                building.GetComponent<Machine>().hasInput = true;
+                building.GetComponent<Machine>().hasOutput = true;
+                building.GetComponent<Machine>().input = factoryTypes[selectedfactory].Input;
+                building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
+                building.GetComponent<Machine>().canInputAnywhere = true;
+                break;
+            case 5:
+                building.GetComponent<Machine>().craftSpeed = 30;
+                building.GetComponent<Machine>().hasInput = true;
+                building.GetComponent<Machine>().hasOutput = true;
+                building.GetComponent<Machine>().canInputAnywhere = true;
+                building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
+                break;
+            case 6:
+                building.GetComponent<Machine>().refiningSpeed = 30;
+                building.GetComponent<Machine>().hasInput = true;
+                building.GetComponent<Machine>().hasOutput = true;
+                building.GetComponent<Machine>().canInputAnywhere = true;
+                building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
+                break;
+            case 7:
+                building.GetComponent<Machine>().lumberCampSpeed = 40;
+                building.GetComponent<Machine>().lumberCampRange = 4;
+                building.GetComponent<Machine>().hasInput = false;
+                building.GetComponent<Machine>().hasOutput = true;
+                building.GetComponent<Machine>().output = factoryTypes[selectedfactory].Output;
+                break;
 
         }
-        #endregion
+    }
+    void RotateConveyorBelt()
+    {
 
-        #region Hovering
+        if (rotation == 3)
+            rotation = 0;
+        else
+            rotation++;
+
+        currentMachineHologram.transform.eulerAngles = new Vector3(0, 0, rotation * 90);
+
+    }
+
+    void ChopTree(Vector2 positionOfMouse)
+    {
+        GameObject selectedTree = genMap.structureGrid[(int)Mathf.Round(positionOfMouse.x), (int)Mathf.Round(positionOfMouse.y)];
+        if (selectedTree != null && selectedTree.GetComponent<Structure>().type == 0)
+        {
+            Destroy(selectedTree);
+
+            Machine reactor = GameObject.Find("reactor").GetComponent<Machine>();
+            if (reactor.inventory.Count < reactor.inventorySize)
+                reactor.inventory.Push(new Item(3));
+            SoundFXManager.instance.PlaySoundFXClip(GetComponent<SoundFXManager>().clips[1], transform, 100);
+
+            eventManager.fireLevel += 0.1f;
+            eventManager.earthLevel -= 0.1f;
+        }
+    }
+
+    void MouseHoveringOverObject(Vector2 positionOfMouse)
+    {
         if (objectHoveringOver != null)
         {
             Color color = objectHoveringOver.GetComponent<SpriteRenderer>().color;
@@ -288,15 +317,13 @@ public class PlaceMachine : MonoBehaviour
             color.b = 1f;
             objectHoveringOver.GetComponent<SpriteRenderer>().color = color;
         }
+
         try
         {
             objectHoveringOver = genMap.structureGrid[(int)positionOfMouse.x, (int)positionOfMouse.y];
+        }
+        catch {}//mouse out of bounds
 
-        }
-        catch
-        {
-            //mouse out of bounds
-        }
         if (objectHoveringOver == null)
             objectHoveringOver = genMap.grid[(int)positionOfMouse.x, (int)positionOfMouse.y];
 
@@ -308,8 +335,8 @@ public class PlaceMachine : MonoBehaviour
             color.b = 0.5f;
             objectHoveringOver.GetComponent<SpriteRenderer>().color = color;
         }
-        #endregion
     }
+
     public void SelectSprite(int factoryToSelect)
     {
         if(currentMachineHologram == null)

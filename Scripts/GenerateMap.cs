@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.U2D;
 
 public class GenerateMap : MonoBehaviour
 {
@@ -64,29 +65,46 @@ public class GenerateMap : MonoBehaviour
     [Space(10)]
     [SerializeField] int volcanoCountMin;
     [SerializeField] int volcanoCountMax;
-    
+
     public GameObject[,] grid; //Gameobject.Find() is extremely slow so this is an optimisation technique (put all tiles in a matrix beforehand)
     public GameObject[,] structureGrid; // Grid for the structures like forests, mountains and others.
     private void Awake()
     {
-        grid = new GameObject[x, y];
         structureGrid = new GameObject[x, y];
     }
     void Start()
     {
-        GenerateMapFromScratch();
-        GenerateStructuresFromScratch();
+        //Generate tiles (grass, water and veins)
+        GenerateMapTiles();
+
+        //Generate structures (Forests, volcanoes, etc..)
+        GenerateMapStructures();
+
         UpdateSortingOrderForStructures();
     }
 
-    public void GenerateMapFromScratch()
+    void GenerateMapTiles()
     {
+        //Create tiles
+        grid = CreateTilesAndPopulateGrid();
+
+        //Call resource vein generator
+        CreateVeins();
+
+        //Lake generation algorithm: Slow but Simple and easily modifiable
+        GenerateWaterAlgorithm();
+
+    }
+    GameObject[,] CreateTilesAndPopulateGrid()
+    {
+        GameObject[,] currentGrid = new GameObject[x, y];
         GameObject mapParent = new GameObject();
         mapParent.name = "TileParent";
+
         //Generate all tiles
-        for(int i = 0; i < x; i++)
+        for (int i = 0; i < x; i++)
         {
-            for(int j = 0; j < y; j++)
+            for (int j = 0; j < y; j++)
             {
                 GameObject currentTile = new GameObject();
                 currentTile.transform.parent = mapParent.transform;
@@ -98,27 +116,96 @@ public class GenerateMap : MonoBehaviour
 
                 currentTile.GetComponent<Tile>().type = 1;
                 currentTile.GetComponent<SpriteRenderer>().sprite = TileSprites[Random.Range(1, 4)];
-                grid[i, j] = currentTile;
+                currentGrid[i, j] = currentTile;
             }
         }
+        return currentGrid;
+    }
+
+    void CreateVeins()
+    {
         //Coal generation
         for (int i = 0; i < Random.Range(coalCountMin, coalCountMax); i++)
-        {
-            GenerateVein(Random.Range(coalLengthMin, coalLenghtMax), coalWidthMin, coalWidthMax, TileSprites[5], 2);
-        }
+            GenerateVeinAlgorithm(Random.Range(coalLengthMin, coalLenghtMax), coalWidthMin, coalWidthMax, TileSprites[5], 2);
+
         //Iron generation
         for (int i = 0; i < Random.Range(ironCountMin, ironCountMax); i++)
-        {
-            GenerateVein(Random.Range(ironLengthMin, ironLenghtMax), ironWidthMin, ironWidthMax, TileSprites[6], 3);
-        }
+            GenerateVeinAlgorithm(Random.Range(ironLengthMin, ironLenghtMax), ironWidthMin, ironWidthMax, TileSprites[6], 3);
+
         //Copper generation
-        for(int i = 0; i < Random.Range(copperCountMin, copperCountMax); i++)
+        for (int i = 0; i < Random.Range(copperCountMin, copperCountMax); i++)
+            GenerateVeinAlgorithm(Random.Range(copperLengthMin, copperLenghtMax), copperWidthMin, copperWidthMax, TileSprites[7], 4);
+    }
+    void GenerateVeinAlgorithm(int length, int widthMin, int widthMax, Sprite sprite, int type)
+    {
+        //Get starting position
+        Vector2 startingPosOfVein = new Vector2(Random.Range(0, x), Random.Range(0, y));
+
+        //2 ways to generate a vein, going up and going right
+        int randomAlgorhytm = Random.Range(0, 2);
+
+        GameObject[] tilesToChange = new GameObject[0];
+
+        //Get the tiles to change based on 2 different algorithms
+        if (randomAlgorhytm == 0)
+            tilesToChange = GetTilesForVeinFirstWay(length, startingPosOfVein, widthMin, widthMax);
+        else if (randomAlgorhytm == 1)
+            tilesToChange = GetTilesForVeinSecondWay(length, startingPosOfVein, widthMin, widthMax);
+
+        //Update all the tiles
+        foreach(GameObject tile in tilesToChange)
         {
-            GenerateVein(Random.Range(copperLengthMin, copperLenghtMax), copperWidthMin, copperWidthMax, TileSprites[7], 4);
+            tile.GetComponent<Tile>().type = type;
+            tile.GetComponent<SpriteRenderer>().sprite = sprite;
         }
-        //Lake generation algorithm: Slow but Simple and easily modifiable
+
+    }
+    GameObject[] GetTilesForVeinFirstWay(int length, Vector2 startingPosOfVein, int widthMin, int widthMax)
+    {
+        List<GameObject> tilesToChange = new List<GameObject>();
+        for (int i = 0; i < length; i++)
+        {
+            startingPosOfVein.y += (int)(Random.Range(-20, 21) / 10);
+            try
+            {
+                tilesToChange.Add(grid[i + (int)startingPosOfVein.x, (int)startingPosOfVein.y]);
+                int width = Random.Range(widthMin, widthMax);
+
+                for (int j = 1; j < width; j++)
+                    tilesToChange.Add(grid[i + (int)startingPosOfVein.x, j + (int)startingPosOfVein.y]);
+                for (int j = -1; j > -width; j--)
+                    tilesToChange.Add(grid[i + (int)startingPosOfVein.x, j + (int)startingPosOfVein.y]);
+
+            }
+            catch { } //Out of bounds
+        }
+        return tilesToChange.ToArray();
+    }
+    GameObject[] GetTilesForVeinSecondWay(int length, Vector2 startingPosOfVein, int widthMin, int widthMax)
+    {
+        List<GameObject> tilesToChange = new List<GameObject>();
+        for (int i = 0; i < length; i++)
+        {
+            startingPosOfVein.x += (int)(Random.Range(-20, 21) / 10);
+            try
+            {
+                tilesToChange.Add(grid[(int)startingPosOfVein.x, i + (int)startingPosOfVein.y]);
+
+                for (int j = 1; j < Random.Range(widthMin, widthMax); j++)
+                    tilesToChange.Add(grid[j + (int)startingPosOfVein.x, i + (int)startingPosOfVein.y]);
+                for (int j = -1; j > -Random.Range(widthMin, widthMax); j--)
+                    tilesToChange.Add(grid[j + (int)startingPosOfVein.x, i + (int)startingPosOfVein.y]);
+
+            }
+            catch{} //Out of bounds
+        }
+        return tilesToChange.ToArray();
+    }
+
+    void GenerateWaterAlgorithm()
+    {
         for (int i = 0; i < Random.Range(lakeCountMin, lakeCountMax); i++)
-        {    
+        {
             Vector2 startingPos = new Vector2(Random.Range(0, x), Random.Range(0, y)); //Get starting pos for lake
             GameObject startingTile = grid[(int)startingPos.x, (int)startingPos.y];
 
@@ -151,15 +238,18 @@ public class GenerateMap : MonoBehaviour
 
                 }
             }
+            RemoveGrassTilesSurroundedByWater();
         }
-        //Remove grass tiles surrounded by water
+    }
+    void RemoveGrassTilesSurroundedByWater()
+    {
         for (int i = 1; i < x - 1; i++)
         {
             for (int j = 1; j < y - 1; j++)
             {
                 if (grid[i, j].GetComponent<Tile>().type == 1)
                 {
-                    if ( grid[i, j + 1].GetComponent<Tile>().type == 0
+                    if (grid[i, j + 1].GetComponent<Tile>().type == 0
                     && grid[i, j - 1].GetComponent<Tile>().type == 0
                     && grid[i + 1, j].GetComponent<Tile>().type == 0
                     && grid[i - 1, j].GetComponent<Tile>().type == 0)
@@ -170,76 +260,17 @@ public class GenerateMap : MonoBehaviour
                 }
             }
         }
-       
-
     }
-    public void GenerateVein(int length, int widthMin, int widthMax, Sprite sprite, int type)
-    {
-        Vector2 startingPosOfVein = new Vector2(Random.Range(0, x), Random.Range(0, y));
-        //2 ways to generate a vein, going up and going right
-        int randomAlgorhytm = Random.Range(0, 2);
 
-        for (int i = 0; i < length; i++)
-        {
-            //Going right
-            if (randomAlgorhytm == 0)
-            {
-                startingPosOfVein.y += (int)(Random.Range(-20, 21) / 10);
-                try
-                {
-                    grid[i + (int)startingPosOfVein.x, (int)startingPosOfVein.y].GetComponent<Tile>().type = type;
-                    grid[i + (int)startingPosOfVein.x, (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = sprite;
-                    int width = Random.Range(widthMin, widthMax);
-                    for (int j = 1; j < width; j++)
-                    {
-                        grid[i + (int)startingPosOfVein.x, j + (int)startingPosOfVein.y].GetComponent<Tile>().type = type;
-                        grid[i + (int)startingPosOfVein.x, j + (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = sprite;
-                    }
-                    for (int j = -1; j > -width; j--)
-                    {
-                        grid[i + (int)startingPosOfVein.x, j + (int)startingPosOfVein.y].GetComponent<Tile>().type = type;
-                        grid[i + (int)startingPosOfVein.x, j + (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = sprite;
-                    }
-                }
-                catch
-                {
-                    //Out of bounds
-                }
-            }
-            //Going up
-            else if (randomAlgorhytm == 1)
-            {
-                startingPosOfVein.x += (int)(Random.Range(-20, 21) / 10);
-                try
-                {
-                    grid[(int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<Tile>().type = type;
-                    grid[(int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = sprite;
-                    for (int j = 1; j < Random.Range(widthMin, widthMax); j++)
-                    {
-                        grid[j + (int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<Tile>().type = type;
-                        grid[j + (int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = sprite;
-                    }
-                    for (int j = -1; j > -Random.Range(widthMin, widthMax); j--)
-                    {
-                        grid[j + (int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<Tile>().type = type;
-                        grid[j + (int)startingPosOfVein.x, i + (int)startingPosOfVein.y].GetComponent<SpriteRenderer>().sprite = sprite;
-                    }
-                }
-                catch
-                {
-                    //Out of bounds
-                }
-            }
-        }
-
-    }
-    public void GenerateStructuresFromScratch()
+    void GenerateMapStructures()
     {
         GenerateForestStructure();
+
         GenerateVolcanoes();
+
         GenerateReactor();
     }
-    public void GenerateForestStructure()
+    void GenerateForestStructure()
     {
         GameObject forestParent = new GameObject();
         forestParent.name = "ForestParent";
@@ -294,7 +325,7 @@ public class GenerateMap : MonoBehaviour
         treeOffset.y = .8f;
         forestParent.transform.position = treeOffset;
         }
-    public void GenerateVolcanoes()
+    void GenerateVolcanoes()
     {
         int volcanoCount = Random.Range(volcanoCountMin, volcanoCountMax);
         for (int i = 0; i < volcanoCount; i++)
@@ -320,7 +351,8 @@ public class GenerateMap : MonoBehaviour
             }
         }
     }
-    public void GenerateReactor()
+
+    void GenerateReactor()
     {
         Vector2 reactorPosition = new Vector2(Random.Range(0, x), Random.Range(0, y));
         while (!gameObject.GetComponent<PlaceMachine>().CheckIfCanPlace(new Vector2(reactorPosition.x-5, reactorPosition.y-5), 12, 12))
@@ -358,6 +390,7 @@ public class GenerateMap : MonoBehaviour
 
         return true;
     }
+
     public void UpdateSortingOrderForStructures()
     {
         for(int i = 0; i < y; i++)
