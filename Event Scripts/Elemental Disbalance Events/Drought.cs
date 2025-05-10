@@ -66,7 +66,7 @@ public class Drought : MonoBehaviour
         AssignDroughtTilesPartGrassSprite(droughtTilesPartGrass);
 
         droughtOccured = true;
-      } 
+    } 
 
     public void RevertDrought()
     {
@@ -124,9 +124,9 @@ public class Drought : MonoBehaviour
                 if (grid[i, j].GetComponent<Tile>().type == 1)
                 {
                     if (j > 0 && grid[i, j - 1] != null && grid[i, j - 1].GetComponent<Tile>().type == 0)
-                        {
-                            list.Add(grid[i, j]);
-                        }
+                    {
+                        list.Add(grid[i, j]);
+                    }
                 }
             }
         }
