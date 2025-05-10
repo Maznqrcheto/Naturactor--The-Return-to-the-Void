@@ -62,10 +62,11 @@ public class Flood : MonoBehaviour
 
         List<GameObject> floodTilesFullGrass = GetFloodTilesFullGrass();
         AssignFloodTilesFullGrassSprite(floodTilesFullGrass);
+        // DestroyStructuresOnWater(floodTilesFullGrass);
 
         List<GameObject> floodTilesPartGrass = GetFloodTilesPartGrass();
         AssignFloodTilesPartGrassSprite(floodTilesPartGrass);
-       
+        
         floodOccured = true;
     }
     public void RevertFlood()
@@ -147,11 +148,22 @@ public class Flood : MonoBehaviour
     }
     void AssignFloodTilesPartGrassSprite(List<GameObject> tiles)
     {
-         foreach(GameObject tile in tiles)
+        foreach(GameObject tile in tiles)
         {
             tile.GetComponent<SpriteRenderer>().sprite = TileSprites[4];
         }
     }
+
+    // void DestroyStructuresOnWater(List<GameObject> tiles)
+    // {
+    //     foreach(GameObject tile in tiles)
+    //     {
+    //         if(tile.GetComponent<SpriteRenderer>().sprite == StructureSprites[0])
+    //         {
+    //             tile.GetComponent<SpriteRenderer>().sprite = null;
+    //         }
+    //     }
+    // }
 
     List<GameObject> GetRevertFloodTilesFullGrass()
     {
@@ -224,5 +236,8 @@ public class Flood : MonoBehaviour
             tile.GetComponent<SpriteRenderer>().sprite = TileSprites[4];
         }
     }
+    void DestroyStructuresOnWater()
+    {
 
+    }
 }
