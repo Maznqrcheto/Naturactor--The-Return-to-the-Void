@@ -25,7 +25,7 @@ public class Flood : MonoBehaviour
     {
         while (true)
         {
-            if (floodIsActive && counter == Random.Range(30, 50)) //960, 1440, 4-6 minutes, because tickLength = 0.25 seconds
+            if (floodIsActive && counter == Random.Range(960, 1440)) //960, 1440, 4-6 minutes, because tickLength = 0.25 seconds
             {
                 RevertFlood();
                 counter = 1;
@@ -62,7 +62,7 @@ public class Flood : MonoBehaviour
 
         List<GameObject> floodTilesFullGrass = GetFloodTilesFullGrass();
         AssignFloodTilesFullGrassSprite(floodTilesFullGrass);
-        // DestroyStructuresOnWater(floodTilesFullGrass);
+        DestroyStructuresOnWater(floodTilesFullGrass);
 
         List<GameObject> floodTilesPartGrass = GetFloodTilesPartGrass();
         AssignFloodTilesPartGrassSprite(floodTilesPartGrass);
@@ -154,16 +154,16 @@ public class Flood : MonoBehaviour
         }
     }
 
-    // void DestroyStructuresOnWater(List<GameObject> tiles)
-    // {
-    //     foreach(GameObject tile in tiles)
-    //     {
-    //         if(tile.GetComponent<SpriteRenderer>().sprite == StructureSprites[0])
-    //         {
-    //             tile.GetComponent<SpriteRenderer>().sprite = null;
-    //         }
-    //     }
-    // }
+    void DestroyStructuresOnWater(List<GameObject> tiles)
+    {
+        foreach(GameObject tile in tiles)
+        {
+            if(mapGenerator.structureGrid[(int)tile.transform.position.x, (int)tile.transform.position.y] != null)
+            {
+                Destroy(mapGenerator.structureGrid[(int)tile.transform.position.x, (int)tile.transform.position.y]);
+            }
+        }
+    }
 
     List<GameObject> GetRevertFloodTilesFullGrass()
     {
