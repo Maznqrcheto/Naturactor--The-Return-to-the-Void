@@ -158,9 +158,14 @@ public class Flood : MonoBehaviour
     {
         foreach(GameObject tile in tiles)
         {
-            if(mapGenerator.structureGrid[(int)tile.transform.position.x, (int)tile.transform.position.y] != null)
+            try
             {
+                GameObject structureToRemove = mapGenerator.structureGrid[(int)tile.transform.position.x, (int)tile.transform.position.y];
                 Destroy(mapGenerator.structureGrid[(int)tile.transform.position.x, (int)tile.transform.position.y]);
+            }
+            catch
+            {
+                //structure does not exist
             }
         }
     }
