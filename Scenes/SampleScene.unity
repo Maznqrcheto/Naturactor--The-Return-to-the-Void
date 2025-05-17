@@ -2465,7 +2465,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1087313768900113465, guid: 6c074fce33e392942abcc6eb2b34031a, type: 3}
+  m_Sprite: {fileID: -1363610248638860192, guid: 60f442c6e5e412b42a4a92c5188a1042, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4473,7 +4473,6 @@ MonoBehaviour:
   floodIsActive: 0
   floodOccured: 0
   TileSprites: []
-  StructureSprites: []
   tickSystem: {fileID: 1562538652}
   counter: 1
   counterTickLength: 0.25
@@ -6214,7 +6213,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1087313768900113465, guid: 6c074fce33e392942abcc6eb2b34031a, type: 3}
+  m_Sprite: {fileID: -1363610248638860192, guid: 60f442c6e5e412b42a4a92c5188a1042, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8469,7 +8468,7 @@ MonoBehaviour:
   - {fileID: 6853316077166303748, guid: 2a18597eff2cb8249b155467aa486332, type: 3}
   - {fileID: 5354429476588687777, guid: e4385da7baffa4342bd8837d5e612c19, type: 3}
   - {fileID: 5490517706564299302, guid: da085199294d10245b94667a65d21ed5, type: 3}
-  - {fileID: -1087313768900113465, guid: 6c074fce33e392942abcc6eb2b34031a, type: 3}
+  - {fileID: -1363610248638860192, guid: 60f442c6e5e412b42a4a92c5188a1042, type: 3}
   - {fileID: -1309091486694266011, guid: a25b0237ee0feaa4bba0f5ca1bc9d1dd, type: 3}
   lakeCountMin: 2
   lakeCountMax: 16
@@ -8534,6 +8533,7 @@ MonoBehaviour:
   pauseMenu: {fileID: 0}
   inventoryManager: {fileID: 1562538655}
   eventManager: {fileID: 781445729}
+  currentMachineHologram: {fileID: 0}
   buildingParent: {fileID: 0}
   factorySprites:
   - {fileID: -3010401151903113755, guid: 682e44e162aa01943b60d1d5931bb6df, type: 3}
@@ -10208,7 +10208,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1087313768900113465, guid: 6c074fce33e392942abcc6eb2b34031a, type: 3}
+  m_Sprite: {fileID: -1363610248638860192, guid: 60f442c6e5e412b42a4a92c5188a1042, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
