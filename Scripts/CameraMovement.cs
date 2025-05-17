@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
@@ -6,7 +7,8 @@ public class CameraMovement : MonoBehaviour
     public GenerateMap mapGen;
     void Update()
     {
-        Vector3 toMove = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0);
+        Vector3 toMove = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0);
+
         if ((transform.position.x + toMove.x) < 0
             || (transform.position.x + toMove.x) > mapGen.GetComponent<GenerateMap>().x)
             toMove.x = 0;
@@ -15,10 +17,32 @@ public class CameraMovement : MonoBehaviour
             toMove.y = 0;
 
         float mouseScroll = Input.mouseScrollDelta.y;
-        float ortographicSize = GetComponent<Camera>().orthographicSize;
-        ortographicSize = Mathf.Clamp(ortographicSize - mouseScroll, 5, 20);
-        GetComponent<Camera>().orthographicSize = ortographicSize;
+        if (mouseScroll != 0)
+            StartCoroutine(CameraZoom((int)mouseScroll));
 
         gameObject.transform.Translate(toMove * speed * Time.deltaTime);
+    }
+    IEnumerator CameraZoom(int zoomAmount)
+    {
+        if(zoomAmount > 0)
+        {
+            for (float i = 0; i < zoomAmount; i += 0.1f)
+            {
+                float ortographicSize = GetComponent<Camera>().orthographicSize;
+                ortographicSize = Mathf.Clamp(ortographicSize - i, 5, 20);
+                GetComponent<Camera>().orthographicSize = ortographicSize;
+                yield return new WaitForSeconds(0.01f);
+            }
+        }
+        else
+        {
+            for (float i = 0; i > zoomAmount; i -= 0.1f)
+            {
+                float ortographicSize = GetComponent<Camera>().orthographicSize;
+                ortographicSize = Mathf.Clamp(ortographicSize - i, 5, 20);
+                GetComponent<Camera>().orthographicSize = ortographicSize;
+                yield return new WaitForSeconds(0.01f);
+            }
+        }
     }
 }
