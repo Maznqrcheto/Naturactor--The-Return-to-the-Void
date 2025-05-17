@@ -1,13 +1,14 @@
 using UnityEngine;
 
-public abstract class EventManagerComponents : MonoBehaviour
+public class EventManagerComponents : MonoBehaviour
 {
-     [Header("Slide bars")]
-    public ProgressBarController fireBar;
-    public ProgressBarController waterBar;
-    public ProgressBarController airBar;
-    public ProgressBarController earthBar;
-    public ProgressBarController happinessBar;
+    public ElementalDisbalanceEventManager elementalDisbalanceEventManager;
+    [Header("Slide bars")]
+    [SerializeField] ProgressBarController fireBar;
+    [SerializeField] ProgressBarController waterBar;
+    [SerializeField] ProgressBarController airBar;
+    [SerializeField] ProgressBarController earthBar;
+    [SerializeField] ProgressBarController happinessBar;
 
     [Header("Element levels")]
     public float fireLevel;
@@ -16,22 +17,26 @@ public abstract class EventManagerComponents : MonoBehaviour
     public float earthLevel;
 
     [Header("Happiness level")]
-    public float happinessLevel;
+    [SerializeField] float happinessLevel;
 
     [Header("Element changes")]
-    public float fireChange;
-    public float waterChange;
-    public float airChange;
-    public float earthChange;
+    [SerializeField] float fireChange;
+    [SerializeField] float waterChange;
+    [SerializeField] float airChange;
+    [SerializeField] float earthChange;
 
     [Header("Happiness change")]
-    public float happinessChange;
+    [SerializeField] float happinessChange;
 
     [Header("Tick system")]
-    public ulong ticksToChange = 0;
-    public TickSystem tickSystem;
+    [SerializeField] ulong ticksToChange = 0;
+    [SerializeField] TickSystem tickSystem;
 
-    private void Update()
+    public GenerateMap mapGenerator { get; set; }
+    public GameObject[,] grid { get; set; }
+
+
+    public void Update()
     {
         if (ticksToChange == 0)
         {
@@ -63,7 +68,7 @@ public abstract class EventManagerComponents : MonoBehaviour
         airBar.SetProgress(value);
         earthBar.SetProgress(value);
         happinessBar.SetProgress(value);
-    }  
+    }
     public void GetElementalProgress()
     {
         fireLevel = fireBar.GetProgress();
@@ -91,5 +96,18 @@ public abstract class EventManagerComponents : MonoBehaviour
             }
         }
     }
-    public abstract void CheckEvents(ulong tick);
+    public void SetMapValuesForEvent(IEventMapGetValues currentEvent)
+    {
+        currentEvent.mapGenerator = mapGenerator;
+        currentEvent.grid = mapGenerator.grid;
+    }
+    public interface IEventMapGetValues
+{
+    public GenerateMap mapGenerator { get; set; }
+    public GameObject[,] grid { get; set; }
+}
+}
+public interface IEventTickManager
+{
+    public void CheckEvents(ulong tick);
 }

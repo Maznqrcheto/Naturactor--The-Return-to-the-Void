@@ -2,10 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Drought : MonoBehaviour
+public class Drought : MonoBehaviour, EventManagerComponents.IEventMapGetValues
 {
-    public GenerateMap mapGenerator;
-    public GameObject[,] grid;
     public bool droughtIsActive = false;
     public bool droughtOccured = false;
     public List<Sprite> TileSprites;
@@ -13,6 +11,8 @@ public class Drought : MonoBehaviour
     public int counter = 1;
     public float counterTickLength;
     public int droughtCooldown = 2400; //2400 = 10 minutes
+    public GenerateMap mapGenerator { get; set; }
+    public GameObject[,] grid { get; set; }
 
     void Awake()
     {
