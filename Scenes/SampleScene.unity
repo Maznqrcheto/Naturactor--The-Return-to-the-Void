@@ -4383,6 +4383,7 @@ GameObject:
   - component: {fileID: 781445729}
   - component: {fileID: 781445730}
   - component: {fileID: 781445731}
+  - component: {fileID: 781445732}
   m_Layer: 0
   m_Name: EventManager
   m_TagString: Untagged
@@ -4435,6 +4436,7 @@ MonoBehaviour:
   happinessChange: 0
   ticksToChange: 0
   tickSystem: {fileID: 1562538652}
+  mapGenerator: {fileID: 1562538648}
 --- !u!114 &781445730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4447,6 +4449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0a3b3d4e1757d2458f3070e5723a668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapGenerator: {fileID: 1562538648}
   droughtIsActive: 0
   droughtOccured: 0
   TileSprites: []
@@ -4466,6 +4469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77d8a937b0cf530449807a48fa21fec2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapGenerator: {fileID: 1562538648}
   floodIsActive: 0
   floodOccured: 0
   TileSprites: []
@@ -4474,6 +4478,39 @@ MonoBehaviour:
   counter: 1
   counterTickLength: 0.25
   floodCooldown: 2400
+--- !u!114 &781445732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 781445727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae5f131a21e85fe48b9a070a002d8248, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementalDisbalanceEventManager: {fileID: 781445732}
+  fireBar: {fileID: 1123327510}
+  waterBar: {fileID: 1267850169}
+  airBar: {fileID: 434134257}
+  earthBar: {fileID: 441166808}
+  happinessBar: {fileID: 1568527572}
+  fireLevel: 0
+  waterLevel: 0
+  airLevel: 0
+  earthLevel: 0
+  happinessLevel: 0
+  fireChange: 0
+  waterChange: 0
+  airChange: 0
+  earthChange: 0
+  happinessChange: 0
+  ticksToChange: 0
+  tickSystem: {fileID: 1562538652}
+  mapGenerator: {fileID: 1562538648}
+  floodEvent: {fileID: 781445731}
+  droughtEvent: {fileID: 781445730}
 --- !u!1 &784706771
 GameObject:
   m_ObjectHideFlags: 0
