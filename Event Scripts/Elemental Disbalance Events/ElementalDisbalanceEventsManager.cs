@@ -1,8 +1,14 @@
 using UnityEngine;
-public class ElementalDisbalanceEventManager : EventManagerComponents, IEventTickManager, EventManagerComponents.IEventMapGetValues
+public class ElementalDisbalanceEventManager : EventManagerComponents, IEventTickManager
 {
     [SerializeField] private Flood floodEvent;
     [SerializeField] private Drought droughtEvent;
+
+    public void SetMapValuesForEvent(MapValues eventInstance)
+    {
+        eventInstance.mapGenerator = mapGenerator;
+        eventInstance.grid = grid;
+    }
 
     public void CheckEvents(ulong tick) // tuk sa usloviqta za vseki edin event v igrata, a v samite scriptove NQMA usloviq za protichane, tam e samo kvo se sluchva
     {
@@ -14,17 +20,23 @@ public class ElementalDisbalanceEventManager : EventManagerComponents, IEventTic
 
         if (droughtCanOccur) // Drought Event
         {
-            SetMapValuesForEvent(droughtEvent);
             droughtEvent.StartDrought();
         }
         if (floodCanOccur) // Flood Event
         {
-            SetMapValuesForEvent(floodEvent);
             floodEvent.StartFlood();
         }
     }
     void Start()
     {
-        
+        SetMapValuesForEvent(droughtEvent);
+        SetMapValuesForEvent(floodEvent);
+        floodEvent.Initialize();
+        droughtEvent.Initialize();
     }
+}
+public class MapValues : MonoBehaviour
+{
+    public GenerateMap mapGenerator;
+    public GameObject[,] grid;
 }

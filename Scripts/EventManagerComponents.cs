@@ -32,8 +32,8 @@ public class EventManagerComponents : MonoBehaviour
     [SerializeField] ulong ticksToChange = 0;
     [SerializeField] TickSystem tickSystem;
 
-    public GenerateMap mapGenerator { get; set; }
-    public GameObject[,] grid { get; set; }
+    public GenerateMap mapGenerator;
+    public GameObject[,] grid;
 
 
     public void Update()
@@ -96,16 +96,6 @@ public class EventManagerComponents : MonoBehaviour
             }
         }
     }
-    public void SetMapValuesForEvent(IEventMapGetValues currentEvent)
-    {
-        currentEvent.mapGenerator = mapGenerator;
-        currentEvent.grid = mapGenerator.grid;
-    }
-    public interface IEventMapGetValues
-{
-    public GenerateMap mapGenerator { get; set; }
-    public GameObject[,] grid { get; set; }
-}
 }
 public interface IEventTickManager
 {

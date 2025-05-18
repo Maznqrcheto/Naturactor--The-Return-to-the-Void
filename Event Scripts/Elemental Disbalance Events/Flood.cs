@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Flood : MonoBehaviour, EventManagerComponents.IEventMapGetValues
+public class Flood : MapValues
 {
     public bool floodIsActive = false;
     public bool floodOccured = false;
@@ -12,10 +12,8 @@ public class Flood : MonoBehaviour, EventManagerComponents.IEventMapGetValues
     public int counter = 1;
     public float counterTickLength;
     public int floodCooldown = 2400; //2400 = 10 minutes
-    public GenerateMap mapGenerator { get; set; }
-    public GameObject[,] grid { get; set; }
 
-    void Awake()
+    public void Initialize()
     {
         TileSprites = mapGenerator.TileSprites;
         grid = mapGenerator.grid;
