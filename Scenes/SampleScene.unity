@@ -4418,7 +4418,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82310c444e92d4445a65547c6d94a345, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementalDisbalanceEventManager: {fileID: 0}
+  elementalDisbalanceEventManager: {fileID: 781445732}
   fireBar: {fileID: 1123327510}
   waterBar: {fileID: 1267850169}
   airBar: {fileID: 434134257}
