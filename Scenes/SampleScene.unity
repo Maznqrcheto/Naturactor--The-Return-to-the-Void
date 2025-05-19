@@ -4384,6 +4384,7 @@ GameObject:
   - component: {fileID: 781445730}
   - component: {fileID: 781445731}
   - component: {fileID: 781445732}
+  - component: {fileID: 781445733}
   m_Layer: 0
   m_Name: EventManager
   m_TagString: Untagged
@@ -4511,6 +4512,37 @@ MonoBehaviour:
   mapGenerator: {fileID: 1562538648}
   floodEvent: {fileID: 781445731}
   droughtEvent: {fileID: 781445730}
+  fireEvent: {fileID: 781445733}
+--- !u!114 &781445733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 781445727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09516a99eb25d5148b92e5297e18faa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapGenerator: {fileID: 1562538648}
+  fireIsActive: 0
+  fireOccured: 0
+  TileSprites: []
+  StructureSprites: []
+  FireTileSprites:
+  - {fileID: 3435491804879947130, guid: 5241f5684afc26b47864105b500765b3, type: 3}
+  - {fileID: -427610096721032119, guid: ac51577ba1930dc44b8f0d758c5303c5, type: 3}
+  - {fileID: 5864190604192253700, guid: 75177eff21b7e4b42a0ed94e269e8417, type: 3}
+  - {fileID: 6579724798270529873, guid: d928d22fa4721eb4a963384bb57a3c4f, type: 3}
+  FireStructureSprites:
+  - {fileID: 6853316077166303748, guid: 656a94d8507131645827255441150055, type: 3}
+  - {fileID: 5354429476588687777, guid: 8419553de3e80f8458bc608e710861e0, type: 3}
+  - {fileID: 5490517706564299302, guid: 33077314b5d9dda4fa7291497c3bf9b9, type: 3}
+  tickSystem: {fileID: 1562538652}
+  counter: 1
+  counterTickLength: 0
+  fireCooldown: 2400
 --- !u!1 &784706771
 GameObject:
   m_ObjectHideFlags: 0
