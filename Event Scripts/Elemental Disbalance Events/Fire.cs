@@ -96,7 +96,6 @@ public class Fire : MapValues
     }
     public void CheckAllStructures()
     {
-        
         Debug.Log("CheckAllStructures");
         for (int i = 0; i < mapGenerator.x; i++)
         {
@@ -111,7 +110,7 @@ public class Fire : MapValues
                         if (structureToRemove.GetComponent<Structure>().type == 0) // tree
                         {
                         
-                            structureToRemove.GetComponent<SpriteRenderer>().sprite = FireStructureSprites[Random.Range(0, 3)];
+                            structureToRemove.GetComponent<SpriteRenderer>().sprite = FireStructureSprites[Random.Range(0, FireStructureSprites.Count)];
                             Debug.Log("Assigned fire structure sprite");
                         }
                     }
