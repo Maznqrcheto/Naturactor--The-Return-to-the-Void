@@ -12,30 +12,29 @@ public class ShadowManager : MonoBehaviour
     public void CreateShadowForEveryObject()
     {
         structrureGrid = genMap.structureGrid;
-        CreateShadowForTrees();
-    }
-    public void CreateShadowForTrees()
-    {
 
-        for(int i = 0; i < genMap.x; i++)
+        for (int i = 0; i < genMap.x; i++)
         {
             for(int j = 0; j < genMap.y; j++)
             {
-                GameObject currentTree = structrureGrid[i, j];
+                GameObject currentObject = structrureGrid[i, j];
 
-                if(currentTree != null)
+                if(currentObject != null)
                 {
-                    GameObject treeShadow = new GameObject(currentTree.name);
+                    GameObject objectShadow = new GameObject(currentObject.name);
 
-                    treeShadow.AddComponent<SpriteRenderer>();
-                    treeShadow.GetComponent<SpriteRenderer>().sprite = currentTree.GetComponent<SpriteRenderer>().sprite;
-                    treeShadow.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0.4f);
-                    treeShadow.GetComponent<SpriteRenderer>().sortingOrder = 1;
+                    objectShadow.AddComponent<SpriteRenderer>();
+                    objectShadow.GetComponent<SpriteRenderer>().sprite = currentObject.GetComponent<SpriteRenderer>().sprite;
+                    objectShadow.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0.4f);
+                    objectShadow.GetComponent<SpriteRenderer>().sortingOrder = 1;
 
-                    treeShadow.transform.position = new Vector2(currentTree.transform.position.x, currentTree.transform.position.y - 1);
-                    treeShadow.transform.localScale = new Vector3(1, -0.4f, 1);
+                    Vector2 shadowPosition = currentObject.transform.position;
+                    shadowPosition.y = shadowPosition.y - (currentObject.GetComponent<SpriteRenderer>().sprite.texture.height / 32) / 1.8f;
 
-                    currentTree.GetComponent<Structure>().associatedShadow = treeShadow;
+                    objectShadow.transform.position = shadowPosition;
+                    objectShadow.transform.localScale = new Vector3(1, -0.3f, 1);
+
+                    currentObject.GetComponent<Structure>().associatedShadow = objectShadow;
                 }
                 
             }
