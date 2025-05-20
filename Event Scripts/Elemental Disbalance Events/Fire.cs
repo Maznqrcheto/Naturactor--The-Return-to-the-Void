@@ -19,12 +19,13 @@ public class Fire : MapValues
         TileSprites = mapGenerator.TileSprites;
         grid = mapGenerator.grid;
         structureGrid = mapGenerator.structureGrid;
+        StructureSprites = mapGenerator.StructureSprites;
     }
     IEnumerator<object> TickFire()
     {
         while (true)
         {
-            if (fireIsActive && counter == Random.Range(960, 1440)) //960, 1440, 4-6 minutes, because tickLength = 0.25 seconds
+            if (fireIsActive && counter == Random.Range(30, 50)) //960, 1440, 4-6 minutes, because tickLength = 0.25 seconds
             {
                 RevertFire();
                 counter = 1;
@@ -57,46 +58,181 @@ public class Fire : MapValues
         fireIsActive = true;
         StartCoroutine(TickFire());
 
-        CheckAllGrassTiles();
-        CheckAllStructures();
-        
+        List<GameObject> fireTilesFullGrass = GetFireTilesFullGrass();
+        List<GameObject> fireTilesPartGrass = GetFireTilesPartGrass();
+
+        AssignFireFullGrassTileSprite(fireTilesFullGrass);
+        AssignFirePartGrassTileSprite(fireTilesPartGrass);
+
+        List<GameObject> structuresToSetOnFire = GetFireStructures();
+        AssignFireOnStructures(structuresToSetOnFire);
+
         fireOccured = true;
     }
     public void RevertFire()
     {
+        List<GameObject> revertFireTilesFullGrass = GetRevertFireTilesFullGrass();
+        AssignRevertFireTilesFullGrassSprite(revertFireTilesFullGrass);
+
+        List<GameObject> revertFireTilesPartGrass = GetRevertFireTilesPartGrass();
+        AssignRevertFireTilesPartGrassSprite(revertFireTilesPartGrass);
+
+        List<GameObject> structuresSetOnFire = GetRevertFireStructures();
+        List<GameObject> structuresToBeDestroyed = CheckSetOnFireStructures(structuresSetOnFire);
+        DestroyStructuresOnFire(structuresToBeDestroyed);
 
         Debug.Log("Fire ended!");
         fireIsActive = false;
         StartCoroutine(TickFireCooldown());
     }
-    public void CheckAllGrassTiles()
+    List<GameObject> GetFireTilesFullGrass()
     {
-        Debug.Log("CheckAllGrassTiles");
+        List<GameObject> tiles = new List<GameObject>();
+        for (int i = 0; i < mapGenerator.x; i++)
+        {
+            for (int j = 0; j < mapGenerator.y; j++)
+            {
+                // GameObject currentTileOfGrass = (grid[i, j].GetComponent<Tile>().type == 1)
+                if (grid[i, j].GetComponent<Tile>().type == 1)
+                {
+                    tiles.Add(grid[i, j]);
+                }
+            }
+        }
+        return tiles;
+    }
+    List<GameObject> GetFireTilesPartGrass()
+    {
+        List<GameObject> tiles = new List<GameObject>();
         for (int i = 0; i < mapGenerator.x; i++)
         {
             for (int j = 0; j < mapGenerator.y; j++)
             {
                 if (grid[i, j].GetComponent<Tile>().type == 1)
                 {
-                    //TO DO add list with grass sprites and fire grass sprites => Randomize the sprites for tile generation
-                    if (grid[i, j] == null) continue;
                     if (j > 0 && grid[i, j - 1] != null && grid[i, j - 1].GetComponent<Tile>().type == 0) //sprite za voda
                     {
-                        grid[i, j].GetComponent<SpriteRenderer>().sprite = FireTileSprites[Random.Range(0, 2)];
-                    }
-                    else
-                    {
-                        grid[i, j].GetComponent<SpriteRenderer>().sprite = FireTileSprites[Random.Range(2, FireTileSprites.Count)];
-                        grid[i, j].GetComponent<Tile>().isOnFire = true;
+                        tiles.Add(grid[i, j]);
                     }
                 }
             }
         }
-        Debug.Log("CheckAllGrassTiles end");
+        return tiles;
     }
-    public void CheckAllStructures()
+
+    public void AssignFireFullGrassTileSprite(List<GameObject> tiles)
     {
-        Debug.Log("CheckAllStructures");
+        foreach (GameObject tile in tiles)
+        {
+            tile.GetComponent<SpriteRenderer>().sprite = FireTileSprites[Random.Range(2, FireTileSprites.Count)];
+            tile.GetComponent<Tile>().isOnFire = true;
+        }
+    }
+    public void AssignFirePartGrassTileSprite(List<GameObject> tiles)
+    {
+        foreach (GameObject tile in tiles)
+        {
+            tile.GetComponent<SpriteRenderer>().sprite = FireTileSprites[Random.Range(0, 2)];
+            tile.GetComponent<Tile>().isOnFire = true;
+        }
+    }
+
+    List<GameObject> GetFireStructures()
+    {
+        List<GameObject> structures = new List<GameObject>();
+        for (int i = 0; i < mapGenerator.x; i++)
+        {
+            for (int j = 0; j < mapGenerator.y; j++)
+            {
+                try
+                {
+                    GameObject structureToBeSetOnFire = mapGenerator.structureGrid[(int)structureGrid[i, j].transform.position.x, (int)structureGrid[i, j].transform.position.y];
+                    if (structureToBeSetOnFire.GetComponent<Structure>() != null)
+                    {
+                        if (structureToBeSetOnFire.GetComponent<Structure>().type == 0) // tree
+                        {
+                            structures.Add(structureToBeSetOnFire);
+                        }
+                    }
+                }
+                catch
+                {
+                    //Debug.Log("No structure to remove");
+                }
+            }
+        }
+        return structures;
+    }
+
+    public void AssignFireOnStructures(List<GameObject> structures)
+    {
+        foreach (GameObject structure in structures)
+        {
+            int fireIndex = Random.Range(0, FireStructureSprites.Count);
+            structure.GetComponent<SpriteRenderer>().sprite = FireStructureSprites[fireIndex];
+
+            if (fireIndex >= FireStructureSprites.Count / 2 && fireIndex <= FireStructureSprites.Count - 1)
+            {
+                structure.AddComponent<MarkedForDestruction>();
+            }
+        }
+    }
+
+    List<GameObject> GetRevertFireTilesFullGrass()
+    {
+        List<GameObject> tiles = new List<GameObject>();
+        for (int i = 0; i < mapGenerator.x; i++)
+        {
+            for (int j = 0; j < mapGenerator.y; j++)
+            {
+                // GameObject currentTileOfGrass = (grid[i, j].GetComponent<Tile>().type == 1)
+                if (grid[i, j].GetComponent<Tile>().type == 1)
+                {
+                    tiles.Add(grid[i, j]);
+                }
+            }
+        }
+        return tiles;
+    }
+    List<GameObject> GetRevertFireTilesPartGrass()
+    {
+        List<GameObject> tiles = new List<GameObject>();
+        for (int i = 0; i < mapGenerator.x; i++)
+        {
+            for (int j = 0; j < mapGenerator.y; j++)
+            {
+                if (grid[i, j].GetComponent<Tile>().type == 1)
+                {
+                    if (j > 0 && grid[i, j - 1] != null && grid[i, j - 1].GetComponent<Tile>().type == 0) //sprite za voda
+                    {
+                        tiles.Add(grid[i, j]);
+                    }
+                }
+            }
+        }
+        return tiles;
+    }
+
+    public void AssignRevertFireTilesFullGrassSprite(List<GameObject> tiles)
+    {
+        foreach (GameObject tile in tiles)
+        {
+            tile.GetComponent<SpriteRenderer>().sprite = TileSprites[Random.Range(1, 4)];
+            tile.GetComponent<Tile>().isOnFire = false;
+        }
+    }
+    public void AssignRevertFireTilesPartGrassSprite(List<GameObject> tiles)
+    {
+        foreach (GameObject tile in tiles)
+        {
+            tile.GetComponent<SpriteRenderer>().sprite = TileSprites[4];
+            tile.GetComponent<Tile>().isOnFire = false;
+        }
+    }
+
+    List<GameObject> GetRevertFireStructures()
+    {
+        List<GameObject> structures = new List<GameObject>();
         for (int i = 0; i < mapGenerator.x; i++)
         {
             for (int j = 0; j < mapGenerator.y; j++)
@@ -106,22 +242,45 @@ public class Fire : MapValues
                     GameObject structureToRemove = mapGenerator.structureGrid[(int)structureGrid[i, j].transform.position.x, (int)structureGrid[i, j].transform.position.y];
                     if (structureToRemove.GetComponent<Structure>() != null)
                     {
-                        Debug.Log("CheckedGetComponent<Structure>() != null");
                         if (structureToRemove.GetComponent<Structure>().type == 0) // tree
                         {
-                        
-                            structureToRemove.GetComponent<SpriteRenderer>().sprite = FireStructureSprites[Random.Range(0, FireStructureSprites.Count)];
-                            Debug.Log("Assigned fire structure sprite");
+                            structures.Add(structureToRemove);
                         }
                     }
                 }
                 catch
                 {
                     //Debug.Log("No structure to remove");
-                }              
+                }
             }
         }
-        Debug.Log("CheckAllStructures end");
+        return structures;
     }
+    List<GameObject> CheckSetOnFireStructures(List<GameObject> structures)
+    {
+        List<GameObject> structuresToBeDestroyed = new List<GameObject>();
+        foreach (GameObject structure in structures)
+        {
+            if (structure.GetComponent<MarkedForDestruction>() != null)
+            {
+                structuresToBeDestroyed.Add(structure);
+            }
+        }
+        return structuresToBeDestroyed;
+    }
+    public void DestroyStructuresOnFire(List<GameObject> structures)
+    {
+        foreach (GameObject structure in structures)
+        {
+            Destroy(structure);
+            int x = (int)structure.transform.position.x;
+            int y = (int)structure.transform.position.y;
+            mapGenerator.structureGrid[x, y] = null;
+        }
+    }
+}
 
+public class MarkedForDestruction : MonoBehaviour
+{
+    // This class is used to mark structures that are set on fire and should be destroyed
 }

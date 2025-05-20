@@ -237,8 +237,4 @@ public class Flood : MapValues
             tile.GetComponent<SpriteRenderer>().sprite = TileSprites[4];
         }
     }
-    void DestroyStructuresOnWater()
-    {
-
-    }
 }
