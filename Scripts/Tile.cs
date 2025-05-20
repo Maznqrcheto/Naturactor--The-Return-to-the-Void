@@ -8,6 +8,7 @@ public class Tile : MonoBehaviour
     //3 - iron
     //4 - copper
     public int type = 0;
+    public bool isOnFire = false;
 
     public string GetName()
     {

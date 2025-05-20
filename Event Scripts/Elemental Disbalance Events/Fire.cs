@@ -82,11 +82,12 @@ public class Fire : MapValues
                     if (grid[i, j] == null) continue;
                     if (j > 0 && grid[i, j - 1] != null && grid[i, j - 1].GetComponent<Tile>().type == 0) //sprite za voda
                     {
-                        grid[i, j].GetComponent<SpriteRenderer>().sprite = FireTileSprites[3];
+                        grid[i, j].GetComponent<SpriteRenderer>().sprite = FireTileSprites[Random.Range(0, 2)];
                     }
                     else
                     {
-                        grid[i, j].GetComponent<SpriteRenderer>().sprite = FireTileSprites[Random.Range(0, 3)];
+                        grid[i, j].GetComponent<SpriteRenderer>().sprite = FireTileSprites[Random.Range(2, FireTileSprites.Count)];
+                        grid[i, j].GetComponent<Tile>().isOnFire = true;
                     }
                 }
             }
@@ -95,22 +96,30 @@ public class Fire : MapValues
     }
     public void CheckAllStructures()
     {
+        
         Debug.Log("CheckAllStructures");
         for (int i = 0; i < mapGenerator.x; i++)
         {
             for (int j = 0; j < mapGenerator.y; j++)
             {
-                    if (grid[i, j] == null) continue;
-                    if (grid[i, j].GetComponent<Structure>() != null)
+                try
+                {
+                    GameObject structureToRemove = mapGenerator.structureGrid[(int)structureGrid[i, j].transform.position.x, (int)structureGrid[i, j].transform.position.y];
+                    if (structureToRemove.GetComponent<Structure>() != null)
                     {
                         Debug.Log("CheckedGetComponent<Structure>() != null");
-                        if (grid[i, j].GetComponent<Structure>().type == 0) // tree
+                        if (structureToRemove.GetComponent<Structure>().type == 0) // tree
                         {
-                            //TO DO add list with tree sprites and fire tree sprites => Randomize the sprites for structureTileTrees generation
-                            grid[i, j].GetComponent<SpriteRenderer>().sprite = FireStructureSprites[Random.Range(0, 3)];
+                        
+                            structureToRemove.GetComponent<SpriteRenderer>().sprite = FireStructureSprites[Random.Range(0, 3)];
                             Debug.Log("Assigned fire structure sprite");
                         }
                     }
+                }
+                catch
+                {
+                    //Debug.Log("No structure to remove");
+                }              
             }
         }
         Debug.Log("CheckAllStructures end");

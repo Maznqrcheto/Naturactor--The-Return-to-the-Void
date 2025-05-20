@@ -86,7 +86,6 @@ public class Drought : MapValues
         {
             for (int j = 0; j < mapGenerator.y; j++)
             {
-                if (grid[i, j] == null) continue;
                 if (grid[i, j].GetComponent<Tile>().type == 1)
                 {
                     if (i > 0 && grid[i - 1, j] != null && (grid[i - 1, j].GetComponent<Tile>().type == 0 || grid[i - 1, j].GetComponent<SpriteRenderer>().sprite == TileSprites[4]))
@@ -118,7 +117,6 @@ public class Drought : MapValues
         {
             for (int j = 0; j < mapGenerator.y; j++)
             {
-                if (grid[i, j] == null) continue;
                 if (grid[i, j].GetComponent<Tile>().type == 1)
                 {
                     if (j > 0 && grid[i, j - 1] != null && grid[i, j - 1].GetComponent<Tile>().type == 0)

@@ -87,7 +87,6 @@ public class Flood : MapValues
         {
             for(int j = 0; j < mapGenerator.y; j++)
             {
-                if (grid[i, j] == null) continue;
                 if (grid[i, j].GetComponent<Tile>().type == 1)
                 {
                     if (grid[i, j].GetComponent<SpriteRenderer>().sprite == TileSprites[4])
@@ -123,7 +122,6 @@ public class Flood : MapValues
         {
             for(int j = 0; j < mapGenerator.y; j++)
             {
-                if (grid[i, j] == null) continue;
                 if (grid[i, j].GetComponent<Tile>().type == 1)
                 {
                     //FloodTilesPartGrass
@@ -159,7 +157,7 @@ public class Flood : MapValues
             try
             {
                 GameObject structureToRemove = mapGenerator.structureGrid[(int)tile.transform.position.x, (int)tile.transform.position.y];
-                Destroy(mapGenerator.structureGrid[(int)tile.transform.position.x, (int)tile.transform.position.y]);
+                Destroy(structureToRemove);
             }
             catch
             {
