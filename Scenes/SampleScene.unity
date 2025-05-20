@@ -2355,6 +2355,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 341875655}
   m_CullTransparentMesh: 1
+--- !u!1 &362124507
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 362124508}
+  m_Layer: 0
+  m_Name: SpritesManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &362124508
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 362124507}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 68.46567, y: 78.540436, z: -0.58411855}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 637184282}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &362462029
 GameObject:
   m_ObjectHideFlags: 0
@@ -3742,6 +3774,98 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &637184281
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 637184282}
+  - component: {fileID: 637184283}
+  m_Layer: 0
+  m_Name: Sprites
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &637184282
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 637184281}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 362124508}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &637184283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 637184281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 400dce23864d8ea4ea15e678cca7edf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GrassSprites:
+  - {fileID: 3435491804879947130, guid: a46e293fe5983b44db0484807f061de4, type: 3}
+  - {fileID: -427610096721032119, guid: 75311d9638d0d0d41a3fef78a8385f64, type: 3}
+  - {fileID: 5864190604192253700, guid: c67119555fb5c3843868bab95ea99608, type: 3}
+  GrassCliff:
+  - {fileID: 6579724798270529873, guid: d3b8a03017a401544a38342420ebd65c, type: 3}
+  WaterSprites:
+  - {fileID: -9041787662252013088, guid: 8a80d5616082f8c4ba056277313e7737, type: 3}
+  CoalSprites:
+  - {fileID: -211774847955004860, guid: 93e483cf6d0662c4d9b30f0c4808cd48, type: 3}
+  IronSprites:
+  - {fileID: 7005946037892912416, guid: c33674dc3e32e0a49bd7138e5d45f878, type: 3}
+  CopperSprites:
+  - {fileID: -8720911746964142427, guid: 2ccb5da3808984e45a696e8e45b9ec41, type: 3}
+  TreeSprites:
+  - {fileID: 6853316077166303748, guid: 2a18597eff2cb8249b155467aa486332, type: 3}
+  - {fileID: 5354429476588687777, guid: e4385da7baffa4342bd8837d5e612c19, type: 3}
+  - {fileID: 5490517706564299302, guid: da085199294d10245b94667a65d21ed5, type: 3}
+  NaturactorSprites:
+  - {fileID: -1087313768900113465, guid: 6c074fce33e392942abcc6eb2b34031a, type: 3}
+  VolcanoSprites:
+  - {fileID: -1309091486694266011, guid: a25b0237ee0feaa4bba0f5ca1bc9d1dd, type: 3}
+  DrillSprites:
+  - {fileID: -3010401151903113755, guid: 682e44e162aa01943b60d1d5931bb6df, type: 3}
+  RefinerySprites:
+  - {fileID: -2996734555212572362, guid: 7b6ad7515c04a554e8da31769388bb8c, type: 3}
+  ConveyorSprites:
+  - {fileID: -2171869769579782635, guid: 4295c873a2269d24e8cd66b580c7290c, type: 3}
+  GeneratorSprites:
+  - {fileID: -8011775145534436228, guid: 068935a7dc14c9c46aa980e954bc233c, type: 3}
+  CrafterSprites:
+  - {fileID: 8974037035073900864, guid: 8887ca8adcca2004ab85729f289fdc3a, type: 3}
+  StorageContainerSprites:
+  - {fileID: 3184906931786229180, guid: e5299220fdad9b443901c6638df42e42, type: 3}
+  LumberCampSprites:
+  - {fileID: 4750005657245273193, guid: 9f3dad00a7109874081f0cc4cdfe41c3, type: 3}
+  SmelterSprites:
+  - {fileID: -1554214871758326463, guid: a00494c48366f674e8ecaee7f0dc2e4a, type: 3}
+  FireTreeSprites:
+  - {fileID: 6853316077166303748, guid: 656a94d8507131645827255441150055, type: 3}
+  - {fileID: 5354429476588687777, guid: 8419553de3e80f8458bc608e710861e0, type: 3}
+  - {fileID: 5490517706564299302, guid: 33077314b5d9dda4fa7291497c3bf9b9, type: 3}
+  FireGrassSprites:
+  - {fileID: 3435491804879947130, guid: 5241f5684afc26b47864105b500765b3, type: 3}
+  - {fileID: -427610096721032119, guid: ac51577ba1930dc44b8f0d758c5303c5, type: 3}
+  - {fileID: 5864190604192253700, guid: 75177eff21b7e4b42a0ed94e269e8417, type: 3}
+  FireGrassCliffSprites:
+  - {fileID: 6579724798270529873, guid: d928d22fa4721eb4a963384bb57a3c4f, type: 3}
 --- !u!1 &647065735
 GameObject:
   m_ObjectHideFlags: 0
@@ -4451,6 +4575,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapGenerator: {fileID: 1562538648}
+  sprites: {fileID: 0}
   droughtIsActive: 0
   droughtOccured: 0
   TileSprites: []
@@ -4471,6 +4596,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapGenerator: {fileID: 1562538648}
+  sprites: {fileID: 0}
   floodIsActive: 0
   floodOccured: 0
   TileSprites: []
@@ -4526,6 +4652,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapGenerator: {fileID: 1562538648}
+  sprites: {fileID: 0}
   fireIsActive: 0
   fireOccured: 0
   TileSprites: []
@@ -10480,3 +10607,4 @@ SceneRoots:
   - {fileID: 757809378}
   - {fileID: 202821595}
   - {fileID: 781445728}
+  - {fileID: 362124508}

@@ -11,6 +11,7 @@ public class Structure : MonoBehaviour
     public int type = 0;
     public Vector2 position;
     public Vector2 originPosition;
+    bool toBeDestroyed = false;
 
     public GameObject associatedShadow;
     private void Start()
