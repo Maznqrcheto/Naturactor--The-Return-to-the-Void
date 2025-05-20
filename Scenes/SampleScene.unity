@@ -4531,17 +4531,24 @@ MonoBehaviour:
   TileSprites: []
   StructureSprites: []
   FireTileSprites:
+  - {fileID: -5033312578003247746, guid: 817f783c815295e4d8ad604ce50aa2df, type: 3}
+  - {fileID: 6579724798270529873, guid: d928d22fa4721eb4a963384bb57a3c4f, type: 3}
+  - {fileID: -194406060388643476, guid: 9fa9291f3773f8d46b7981dfa6982857, type: 3}
   - {fileID: 3435491804879947130, guid: 5241f5684afc26b47864105b500765b3, type: 3}
   - {fileID: -427610096721032119, guid: ac51577ba1930dc44b8f0d758c5303c5, type: 3}
   - {fileID: 5864190604192253700, guid: 75177eff21b7e4b42a0ed94e269e8417, type: 3}
-  - {fileID: 6579724798270529873, guid: d928d22fa4721eb4a963384bb57a3c4f, type: 3}
+  - {fileID: 1104938842298883442, guid: 5b4dcd8647528474788ad35f4771158c, type: 3}
+  - {fileID: 1168342960953048296, guid: 5a2818451434ec24fbfc12d72fbacfc5, type: 3}
   FireStructureSprites:
   - {fileID: 6853316077166303748, guid: 656a94d8507131645827255441150055, type: 3}
   - {fileID: 5354429476588687777, guid: 8419553de3e80f8458bc608e710861e0, type: 3}
   - {fileID: 5490517706564299302, guid: 33077314b5d9dda4fa7291497c3bf9b9, type: 3}
+  - {fileID: 3256692913002675606, guid: 3e0b51a3ddaadbc4c8e85ead2be0fed6, type: 3}
+  - {fileID: 3415445302262339743, guid: 0256a52dcec6bea418f1c52a3e4e98dc, type: 3}
+  - {fileID: 8082850792823721277, guid: 573fc5ac1e64cd644a176e07fdc0832e, type: 3}
   tickSystem: {fileID: 1562538652}
   counter: 1
-  counterTickLength: 0
+  counterTickLength: 0.25
   fireCooldown: 2400
 --- !u!1 &784706771
 GameObject:
