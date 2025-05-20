@@ -8500,6 +8500,7 @@ GameObject:
   - component: {fileID: 1562538653}
   - component: {fileID: 1562538655}
   - component: {fileID: 1562538656}
+  - component: {fileID: 1562538657}
   m_Layer: 0
   m_Name: GlobalEvent
   m_TagString: Untagged
@@ -8737,6 +8738,19 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 922a6bceea9efad48bc1bf3dc9f77beb, type: 3}
   - {fileID: 8300000, guid: 6dc94a507e15f1f4fbc8f2ff147fe798, type: 3}
   soundFXObject: {fileID: 6196708846668672133, guid: 1bcb17a210e688f4381017bf7fc87901, type: 3}
+--- !u!114 &1562538657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562538647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8430bce7b9d49e8498001dce128d938a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  genMap: {fileID: 1562538648}
 --- !u!1 &1568527570
 GameObject:
   m_ObjectHideFlags: 0

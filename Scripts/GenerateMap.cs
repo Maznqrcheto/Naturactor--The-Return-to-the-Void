@@ -269,6 +269,8 @@ public class GenerateMap : MonoBehaviour
         GenerateVolcanoes();
 
         GenerateReactor();
+
+        GetComponent<ShadowManager>().CreateShadowForEveryObject();
     }
     void GenerateForestStructure()
     {

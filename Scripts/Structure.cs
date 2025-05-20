@@ -11,6 +11,8 @@ public class Structure : MonoBehaviour
     public int type = 0;
     public Vector2 position;
     public Vector2 originPosition;
+
+    public GameObject associatedShadow;
     private void Start()
     {
         Texture spriteTexture = GetComponent<SpriteRenderer>().sprite.texture;
@@ -58,5 +60,9 @@ public class Structure : MonoBehaviour
         }
 
         return "No Description";
+    }
+    private void OnDestroy()
+    {
+        Destroy(associatedShadow);
     }
 }
