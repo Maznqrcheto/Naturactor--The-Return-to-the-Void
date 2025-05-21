@@ -6,10 +6,6 @@ public class Fire : MapValues
 {
     public bool fireIsActive = false;
     public bool fireOccured = false;
-    public List<Sprite> TileSprites;
-    public List<Sprite> StructureSprites;
-    public List<Sprite> FireTileSprites;
-    public List<Sprite> FireStructureSprites;
     public TickSystem tickSystem;
     public int counter = 1;
     public float counterTickLength;
@@ -17,15 +13,45 @@ public class Fire : MapValues
 
     public List<Sprite> GrassSprites;
     public List<Sprite> GrassCliffSprites;
+    public List<Sprite> TreeSprites;
+    public List<Sprite> FireTreeSprites;
+    public List<Sprite> FireGrassSprites;
+    public List<Sprite> FireGrassCliffSprites;
+
+    public List<Sprite> FireAndNormalGrassSprites = new List<Sprite>();
+    public List<Sprite> FireAndNormalGrassCliffSprites = new List<Sprite>();
+    public List<Sprite> FireAndNormalTreeSprites = new List<Sprite>();
     public void Initialize()
     {
-        TileSprites = mapGenerator.TileSprites;
+        SetMap();
+        SetSpritesForUse();
+        AddSpriteListsToComplexLists();    
+    }
+
+    void SetMap()
+    {
         grid = mapGenerator.grid;
         structureGrid = mapGenerator.structureGrid;
-
+    }
+    void SetSpritesForUse()
+    {
         GrassSprites = spritesGetter.GrassSprites;
         GrassCliffSprites = spritesGetter.GrassCliffSprites;
+        TreeSprites = spritesGetter.TreeSprites;
+        FireTreeSprites = spritesGetter.FireTreeSprites;
+        FireGrassSprites = spritesGetter.FireGrassSprites;
+        FireGrassCliffSprites = spritesGetter.FireGrassCliffSprites;
     }
+    void AddSpriteListsToComplexLists()
+    {
+        FireAndNormalGrassSprites.AddRange(GrassSprites);
+        FireAndNormalGrassSprites.AddRange(FireGrassSprites);
+        FireAndNormalGrassCliffSprites.AddRange(GrassCliffSprites);
+        FireAndNormalGrassCliffSprites.AddRange(FireGrassCliffSprites);
+        FireAndNormalTreeSprites.AddRange(TreeSprites);
+        FireAndNormalTreeSprites.AddRange(FireTreeSprites);
+    }
+
     IEnumerator<object> TickFire()
     {
         while (true)
@@ -129,7 +155,7 @@ public class Fire : MapValues
     {
         foreach (GameObject tile in tiles)
         {
-            tile.GetComponent<SpriteRenderer>().sprite = FireTileSprites[Random.Range(2, FireTileSprites.Count)];
+            tile.GetComponent<SpriteRenderer>().sprite = FireAndNormalGrassSprites[Random.Range(0, FireAndNormalGrassSprites.Count)];
             tile.GetComponent<Tile>().isOnFire = true;
         }
     }
@@ -137,7 +163,8 @@ public class Fire : MapValues
     {
         foreach (GameObject tile in tiles)
         {
-            tile.GetComponent<SpriteRenderer>().sprite = FireTileSprites[Random.Range(0, 2)];
+            int fireRandomIndex = Random.Range(0, FireAndNormalGrassCliffSprites.Count);
+            tile.GetComponent<SpriteRenderer>().sprite = FireAndNormalGrassCliffSprites[fireRandomIndex];
             tile.GetComponent<Tile>().isOnFire = true;
         }
     }
@@ -173,16 +200,12 @@ public class Fire : MapValues
     {
         foreach (GameObject structure in structures)
         {
-            int fireIndex = Random.Range(0, FireStructureSprites.Count);
-            structure.GetComponent<SpriteRenderer>().sprite = FireStructureSprites[fireIndex];
+            int fireRandomIndex = Random.Range(0, FireAndNormalTreeSprites.Count);
+            structure.GetComponent<SpriteRenderer>().sprite = FireAndNormalTreeSprites[fireRandomIndex];
 
-            if (fireIndex >= FireStructureSprites.Count / 2 && fireIndex <= FireStructureSprites.Count - 1)
-            {
-                structure.AddComponent<MarkedForDestruction>();
-            }
+            CheckIfAStructureMustBeDestroyed(structure);  
         }
     }
-
     List<GameObject> GetRevertFireTilesFullGrass()
     {
         List<GameObject> tiles = new List<GameObject>();
@@ -222,7 +245,8 @@ public class Fire : MapValues
     {
         foreach (GameObject tile in tiles)
         {
-            tile.GetComponent<SpriteRenderer>().sprite = TileSprites[Random.Range(1, 4)];
+            int grassRandomIndex = Random.Range(0, GrassSprites.Count);
+            tile.GetComponent<SpriteRenderer>().sprite = GrassSprites[grassRandomIndex];
             tile.GetComponent<Tile>().isOnFire = false;
         }
     }
@@ -230,7 +254,8 @@ public class Fire : MapValues
     {
         foreach (GameObject tile in tiles)
         {
-            tile.GetComponent<SpriteRenderer>().sprite = TileSprites[4];
+            int grassCliffRandomIndex = Random.Range(0, GrassCliffSprites.Count);
+            tile.GetComponent<SpriteRenderer>().sprite = GrassCliffSprites[grassCliffRandomIndex];
             tile.GetComponent<Tile>().isOnFire = false;
         }
     }
@@ -273,19 +298,23 @@ public class Fire : MapValues
         }
         return structuresToBeDestroyed;
     }
+    void CheckIfAStructureMustBeDestroyed(GameObject structure)
+    {
+        if (FireTreeSprites.Contains(structure.GetComponent<SpriteRenderer>().sprite))
+        {
+            structure.AddComponent<MarkedForDestruction>();
+        }
+    }
     public void DestroyStructuresOnFire(List<GameObject> structures)
     {
         foreach (GameObject structure in structures)
         {
             Destroy(structure);
-            int x = (int)structure.transform.position.x;
-            int y = (int)structure.transform.position.y;
-            mapGenerator.structureGrid[x, y] = null;
         }
     }
 }
 
 public class MarkedForDestruction : MonoBehaviour
 {
-    // This class is used to mark structures that are set on fire and should be destroyed
+
 }
