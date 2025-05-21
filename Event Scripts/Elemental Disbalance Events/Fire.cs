@@ -139,11 +139,22 @@ public class Fire : MapValues
         {
             for (int j = 0; j < mapGenerator.y; j++)
             {
-                if (grid[i, j].GetComponent<Tile>().type == 1)
+                GameObject currentTile = grid[i, j];
+
+                if (currentTile.GetComponent<Tile>().type == 1)
                 {
-                    if (j > 0 && grid[i, j - 1] != null && grid[i, j - 1].GetComponent<Tile>().type == 0) //sprite za voda
+                    try
                     {
-                        tiles.Add(grid[i, j]);
+                        GameObject tileOnBottom = grid[i, j - 1];
+
+                        if (j > 0 && tileOnBottom != null && tileOnBottom.GetComponent<Tile>().type == 0) //sprite za voda
+                        {
+                            tiles.Add(currentTile);
+                        }
+                    }
+                    catch (System.IndexOutOfRangeException)
+                    {
+                        continue;
                     }
                 }
             }
@@ -213,10 +224,11 @@ public class Fire : MapValues
         {
             for (int j = 0; j < mapGenerator.y; j++)
             {
-                // GameObject currentTileOfGrass = (grid[i, j].GetComponent<Tile>().type == 1)
-                if (grid[i, j].GetComponent<Tile>().type == 1)
+                GameObject currentTile = grid[i, j];
+                bool currentTileOfGrass = (grid[i, j].GetComponent<Tile>().type == 1);
+                if (currentTileOfGrass)
                 {
-                    tiles.Add(grid[i, j]);
+                    tiles.Add(currentTile);
                 }
             }
         }
@@ -229,11 +241,20 @@ public class Fire : MapValues
         {
             for (int j = 0; j < mapGenerator.y; j++)
             {
-                if (grid[i, j].GetComponent<Tile>().type == 1)
+                GameObject currentTile = grid[i, j];
+                if (currentTile.GetComponent<Tile>().type == 1)
                 {
-                    if (j > 0 && grid[i, j - 1] != null && grid[i, j - 1].GetComponent<Tile>().type == 0) //sprite za voda
+                    try
                     {
-                        tiles.Add(grid[i, j]);
+                        GameObject tileOnBottom = grid[i, j - 1];
+                        if (j > 0 && tileOnBottom != null && tileOnBottom.GetComponent<Tile>().type == 0) //sprite za voda
+                        {
+                            tiles.Add(currentTile);
+                        }
+                    }
+                    catch (System.IndexOutOfRangeException)
+                    {
+                        continue;
                     }
                 }
             }
