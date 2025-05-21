@@ -56,7 +56,7 @@ public class Fire : MapValues
     {
         while (true)
         {
-            if (fireIsActive && counter == Random.Range(30, 50)) //960, 1440, 4-6 minutes, because tickLength = 0.25 seconds
+            if (fireIsActive && counter == Random.Range(960, 1440)) //960, 1440, 4-6 minutes, because tickLength = 0.25 seconds
             {
                 RevertFire();
                 counter = 1;
