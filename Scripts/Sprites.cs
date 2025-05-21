@@ -3,8 +3,9 @@ using System.Collections.Generic;
 
 public class Sprites : MonoBehaviour
 {
+    [Header("Map Sprites")]
     public List<Sprite> GrassSprites = new List<Sprite>();
-    public List<Sprite> GrassCliff = new List<Sprite>();
+    public List<Sprite> GrassCliffSprites = new List<Sprite>();
     public List<Sprite> WaterSprites = new List<Sprite>();
     public List<Sprite> CoalSprites = new List<Sprite>();
     public List<Sprite> IronSprites = new List<Sprite>();
@@ -13,6 +14,7 @@ public class Sprites : MonoBehaviour
     public List<Sprite> NaturactorSprites = new List<Sprite>();
     public List<Sprite> VolcanoSprites = new List<Sprite>();
 
+    [Header("Machine Sprites")]
     public List<Sprite> DrillSprites = new List<Sprite>();
     public List<Sprite> RefinerySprites = new List<Sprite>();
     public List<Sprite> ConveyorSprites = new List<Sprite>();
@@ -22,6 +24,7 @@ public class Sprites : MonoBehaviour
     public List<Sprite> LumberCampSprites = new List<Sprite>();
     public List<Sprite> SmelterSprites = new List<Sprite>();
 
+    [Header("Event Sprites")]
     public List<Sprite> FireTreeSprites = new List<Sprite>();
     public List<Sprite> FireGrassSprites = new List<Sprite>();
     public List<Sprite> FireGrassCliffSprites = new List<Sprite>();

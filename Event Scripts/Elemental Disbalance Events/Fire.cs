@@ -14,12 +14,17 @@ public class Fire : MapValues
     public int counter = 1;
     public float counterTickLength;
     public int fireCooldown = 2400; //2400 = 10 minutes
+
+    public List<Sprite> GrassSprites;
+    public List<Sprite> GrassCliffSprites;
     public void Initialize()
     {
         TileSprites = mapGenerator.TileSprites;
         grid = mapGenerator.grid;
         structureGrid = mapGenerator.structureGrid;
-        StructureSprites = mapGenerator.StructureSprites;
+
+        GrassSprites = spritesGetter.GrassSprites;
+        GrassCliffSprites = spritesGetter.GrassCliffSprites;
     }
     IEnumerator<object> TickFire()
     {
