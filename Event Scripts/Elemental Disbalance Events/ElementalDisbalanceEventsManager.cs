@@ -46,5 +46,4 @@ public class MapValues : MonoBehaviour
     public GenerateMap mapGenerator;
     public GameObject[,] grid;
     public GameObject[,] structureGrid;
-    public Sprites sprites;
 }

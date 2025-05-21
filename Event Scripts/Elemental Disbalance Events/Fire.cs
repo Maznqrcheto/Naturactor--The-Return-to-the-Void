@@ -19,14 +19,13 @@ public class Fire : MapValues
         TileSprites = mapGenerator.TileSprites;
         grid = mapGenerator.grid;
         structureGrid = mapGenerator.structureGrid;
-        // public List<Sprite> GrassSprites = sprites.GrassSprites;
-        // public List<Sprite> GrassCliff = sprites.GrassCliff;
+        StructureSprites = mapGenerator.StructureSprites;
     }
     IEnumerator<object> TickFire()
     {
         while (true)
         {
-            if (fireIsActive && counter == Random.Range(960, 1440)) //960, 1440, 4-6 minutes, because tickLength = 0.25 seconds
+            if (fireIsActive && counter == Random.Range(30, 50)) //960, 1440, 4-6 minutes, because tickLength = 0.25 seconds
             {
                 RevertFire();
                 counter = 1;
@@ -172,8 +171,7 @@ public class Fire : MapValues
             int fireIndex = Random.Range(0, FireStructureSprites.Count);
             structure.GetComponent<SpriteRenderer>().sprite = FireStructureSprites[fireIndex];
 
-            bool checkIfCurrentStructureIsOnFire = (fireIndex >= 0 && fireIndex < FireStructureSprites.Count / 2);
-            if (checkIfCurrentStructureIsOnFire)
+            if (fireIndex >= FireStructureSprites.Count / 2 && fireIndex <= FireStructureSprites.Count - 1)
             {
                 structure.AddComponent<MarkedForDestruction>();
             }
@@ -187,8 +185,8 @@ public class Fire : MapValues
         {
             for (int j = 0; j < mapGenerator.y; j++)
             {
-                bool currentTileOfGrass = (grid[i, j].GetComponent<Tile>().type == 1);
-                if (currentTileOfGrass)
+                // GameObject currentTileOfGrass = (grid[i, j].GetComponent<Tile>().type == 1)
+                if (grid[i, j].GetComponent<Tile>().type == 1)
                 {
                     tiles.Add(grid[i, j]);
                 }
@@ -275,6 +273,9 @@ public class Fire : MapValues
         foreach (GameObject structure in structures)
         {
             Destroy(structure);
+            int x = (int)structure.transform.position.x;
+            int y = (int)structure.transform.position.y;
+            mapGenerator.structureGrid[x, y] = null;
         }
     }
 }
