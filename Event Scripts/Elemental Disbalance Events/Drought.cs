@@ -37,7 +37,7 @@ public class Drought : MapValues
     {
         while (true)
         {
-            if (droughtIsActive && counter == Random.Range(20, 30)) // 960, 1440
+            if (droughtIsActive && counter == Random.Range(960, 1440)) //960, 1440, 4-6 minutes, because tickLength = 0.25 seconds
             {
                 RevertDrought();
                 counter = 1;
