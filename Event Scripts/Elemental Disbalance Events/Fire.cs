@@ -147,7 +147,7 @@ public class Fire : MapValues
                     {
                         GameObject tileOnBottom = grid[i, j - 1];
 
-                        if (j > 0 && tileOnBottom != null && tileOnBottom.GetComponent<Tile>().type == 0) //sprite za voda
+                        if (j > 0 && tileOnBottom.GetComponent<Tile>().type == 0) //sprite za voda
                         {
                             tiles.Add(currentTile);
                         }
@@ -247,7 +247,7 @@ public class Fire : MapValues
                     try
                     {
                         GameObject tileOnBottom = grid[i, j - 1];
-                        if (j > 0 && tileOnBottom != null && tileOnBottom.GetComponent<Tile>().type == 0) //sprite za voda
+                        if (j > 0 && tileOnBottom.GetComponent<Tile>().type == 0) //sprite za voda
                         {
                             tiles.Add(currentTile);
                         }

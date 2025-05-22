@@ -6,7 +6,6 @@ public class Flood : MapValues
 {
     public bool floodIsActive = false;
     public bool floodOccured = false;
-    public List<Sprite> TileSprites;
     public TickSystem tickSystem;
     public int counter = 1;
     public float counterTickLength;
@@ -37,7 +36,7 @@ public class Flood : MapValues
     {
         while (true)
         {
-            if (floodIsActive && counter == Random.Range(20, 30)) //960, 1440, 4-6 minutes, because tickLength = 0.25 seconds
+            if (floodIsActive && counter == Random.Range(960, 1440)) //960, 1440, 4-6 minutes, because tickLength = 0.25 seconds
             {
                 RevertFlood();
                 counter = 1;
@@ -114,19 +113,19 @@ public class Flood : MapValues
                         GameObject tileOnTop = grid[i, j + 1];
                         GameObject tileOnBottom = grid[i, j - 1];
 
-                        if (i > 0 && tileOnLeft != null && tileOnLeft.GetComponent<Tile>().type == 0) //tileOnLeft
+                        if (i > 0 && tileOnLeft.GetComponent<Tile>().type == 0) //tileOnLeft
                         {
                             list.Add(currentTile);
                         }
-                        if (i < mapGenerator.x - 1 && tileOnRight != null && tileOnRight.GetComponent<Tile>().type == 0)//tile on right
+                        if (i < mapGenerator.x - 1 && tileOnRight.GetComponent<Tile>().type == 0)//tile on right
                         {
                             list.Add(currentTile);
                         }
-                        if (j > 0 && tileOnBottom != null && tileOnBottom.GetComponent<Tile>().type == 0)//tile on bottom
+                        if (j > 0 && tileOnBottom.GetComponent<Tile>().type == 0)//tile on bottom
                         {
                             list.Add(currentTile);
                         }
-                        if (j < mapGenerator.y - 1 && tileOnTop != null && tileOnTop.GetComponent<Tile>().type == 0) //tileOnTOp
+                        if (j < mapGenerator.y - 1 && tileOnTop.GetComponent<Tile>().type == 0) //tileOnTOp
                         {
                             list.Add(currentTile);
                         }
@@ -153,9 +152,9 @@ public class Flood : MapValues
                 {
                     try
                     {
-                        GameObject tileOnLeft = grid[i - 1, j];
+                        GameObject tileOnBottom = grid[i, j - 1];
 
-                        if (j > 0 && tileOnLeft != null && tileOnLeft.GetComponent<Tile>().type == 0)
+                        if (j > 0 && tileOnBottom.GetComponent<Tile>().type == 0)
                         {
                             list.Add(currentTile);
                         }
@@ -223,22 +222,22 @@ public class Flood : MapValues
                         GameObject tileOnTop = grid[i, j + 1];
                         GameObject tileOnBottom = grid[i, j - 1];
 
-                        if (i > 0 && tileOnLeft != null && (tileOnLeft.GetComponent<Tile>().type == 0 ||
+                        if (i > 0 && (tileOnLeft.GetComponent<Tile>().type == 0 ||
                         GrassCliffSprites.Contains(tileOnLeft.GetComponent<SpriteRenderer>().sprite)))
                         {
                             list.Add(tileOnLeft);
                         }
-                        if (i < mapGenerator.x - 1 && tileOnRight != null && (tileOnRight.GetComponent<Tile>().type == 0 ||
+                        if (i < mapGenerator.x - 1 && (tileOnRight.GetComponent<Tile>().type == 0 ||
                         GrassCliffSprites.Contains(tileOnRight.GetComponent<SpriteRenderer>().sprite)))
                         {
                             list.Add(tileOnRight);
                         }
-                        if (j > 0 && tileOnBottom != null && (tileOnBottom.GetComponent<Tile>().type == 0 ||
+                        if (j > 0 && (tileOnBottom.GetComponent<Tile>().type == 0 ||
                         GrassCliffSprites.Contains(tileOnBottom.GetComponent<SpriteRenderer>().sprite)))
                         {
                             list.Add(tileOnBottom);
                         }
-                        if (j < mapGenerator.y - 1 && tileOnTop != null && (tileOnTop.GetComponent<Tile>().type == 0 ||
+                        if (j < mapGenerator.y - 1 && (tileOnTop.GetComponent<Tile>().type == 0 ||
                         GrassCliffSprites.Contains(tileOnTop.GetComponent<SpriteRenderer>().sprite)))
                         {
                             list.Add(tileOnTop);
@@ -269,7 +268,7 @@ public class Flood : MapValues
                     {
                         GameObject tileOnBottom = grid[i, j - 1];
 
-                        if (j > 0 && tileOnBottom != null && tileOnBottom.GetComponent<Tile>().type == 0)
+                        if (j > 0 && tileOnBottom.GetComponent<Tile>().type == 0)
                         {
                             list.Add(currentTile);
                         }
