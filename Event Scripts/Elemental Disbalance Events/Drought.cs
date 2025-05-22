@@ -6,7 +6,6 @@ public class Drought : MapValues
 {
     public bool droughtIsActive = false;
     public bool droughtOccured = false;
-    public List<Sprite> TileSprites;
     public TickSystem tickSystem;
     public int counter = 1;
     public float counterTickLength;
@@ -101,7 +100,9 @@ public class Drought : MapValues
         {
             for (int j = 0; j < mapGenerator.y; j++)
             {
-                if (grid[i, j].GetComponent<Tile>().type == 1)
+                GameObject currentTile = grid[i, j];
+
+                if (currentTile.GetComponent<Tile>().type == 1)
                 {
                     try
                     {
@@ -110,32 +111,32 @@ public class Drought : MapValues
                         GameObject tileOnTop = grid[i, j + 1];
                         GameObject tileOnBottom = grid[i, j - 1];
 
-                        if (i > 0 && tileOnLeft != null && (tileOnLeft.GetComponent<Tile>().type == 0 ||
+                        if (i > 0 && (tileOnLeft.GetComponent<Tile>().type == 0 ||
                         GrassCliffSprites.Contains(tileOnLeft.GetComponent<SpriteRenderer>().sprite)))
                         {
                             list.Add(tileOnLeft);
                         }
-                        if (i < mapGenerator.x - 1 && tileOnRight != null && (tileOnRight.GetComponent<Tile>().type == 0 ||
+                        if (i < mapGenerator.x - 1 && (tileOnRight.GetComponent<Tile>().type == 0 ||
                         GrassCliffSprites.Contains(tileOnRight.GetComponent<SpriteRenderer>().sprite)))
                         {
                             list.Add(tileOnRight);
                         }
-                        if (j > 0 && tileOnBottom != null && (tileOnBottom.GetComponent<Tile>().type == 0 ||
+                        if (j > 0 && (tileOnBottom.GetComponent<Tile>().type == 0 ||
                         GrassCliffSprites.Contains(tileOnBottom.GetComponent<SpriteRenderer>().sprite)))
                         {
                             list.Add(tileOnBottom);
                         }
-                        if (j < mapGenerator.y - 1 && tileOnTop != null && (tileOnTop.GetComponent<Tile>().type == 0 ||
+                        if (j < mapGenerator.y - 1 && (tileOnTop.GetComponent<Tile>().type == 0 ||
                         GrassCliffSprites.Contains(tileOnTop.GetComponent<SpriteRenderer>().sprite)))
                         {
                             list.Add(tileOnTop);
-                        }   
+                        }
                     }
                     catch (System.IndexOutOfRangeException)
                     {
                         continue;
                     }
-                         
+
                 }
             }
         }
@@ -149,13 +150,15 @@ public class Drought : MapValues
         {
             for (int j = 0; j < mapGenerator.y; j++)
             {
-                if (grid[i, j].GetComponent<Tile>().type == 1)
+                GameObject currentTile = grid[i, j];
+
+                if (currentTile.GetComponent<Tile>().type == 1)
                 {
                     try
                     {
                         GameObject tileOnBottom = grid[i, j - 1];
-                        GameObject currentTile = grid[i, j];
-                        if (j > 0 && tileOnBottom != null && tileOnBottom.GetComponent<Tile>().type == 0)
+
+                        if (j > 0 && tileOnBottom.GetComponent<Tile>().type == 0)
                         {
                             list.Add(currentTile);
                         }
@@ -196,7 +199,9 @@ public class Drought : MapValues
         {
             for (int j = 0; j < mapGenerator.y; j++)
             {
-                if (grid[i, j].GetComponent<Tile>().type == 0)
+                GameObject currentTile = grid[i, j];
+
+                if (currentTile.GetComponent<Tile>().type == 0)
                 {
                     try
                     {
@@ -204,20 +209,20 @@ public class Drought : MapValues
                         GameObject tileOnRight = grid[i + 1, j];
                         GameObject tileOnTop = grid[i, j + 1];
                         GameObject tileOnBottom = grid[i, j - 1];
-                        
-                        if (i > 0 && tileOnLeft != null && tileOnLeft.GetComponent<Tile>().type == 1)
+
+                        if (i > 0 && tileOnLeft.GetComponent<Tile>().type == 1)
                         {
                             list.Add(tileOnLeft);
-                        }                        
-                        if (i < mapGenerator.x - 1 && tileOnRight != null && tileOnRight.GetComponent<Tile>().type == 1)
+                        }
+                        if (i < mapGenerator.x - 1 && tileOnRight.GetComponent<Tile>().type == 1)
                         {
                             list.Add(tileOnRight);
-                        }                       
-                        if (j > 0 && tileOnBottom != null && tileOnBottom.GetComponent<Tile>().type == 1)
+                        }
+                        if (j > 0 && tileOnBottom.GetComponent<Tile>().type == 1)
                         {
                             list.Add(tileOnBottom);
-                        }      
-                        if (j < mapGenerator.y - 1 && tileOnTop != null && tileOnTop.GetComponent<Tile>().type == 1)
+                        }
+                        if (j < mapGenerator.y - 1 && tileOnTop.GetComponent<Tile>().type == 1)
                         {
                             list.Add(tileOnTop);
                         }
@@ -227,7 +232,7 @@ public class Drought : MapValues
                         continue;
                     }
 
-                    
+
                 }
             }
         }
@@ -241,13 +246,15 @@ public class Drought : MapValues
         {
             for (int j = 0; j < mapGenerator.y; j++)
             {
-                if (grid[i, j].GetComponent<Tile>().type == 0)
+                GameObject currentTile = grid[i, j];
+
+                if (currentTile.GetComponent<Tile>().type == 0)
                 {
                     try
                     {
                         GameObject tileOnTop = grid[i, j + 1];
-                        
-                        if (j < mapGenerator.y - 1 && tileOnTop != null && tileOnTop.GetComponent<Tile>().type == 1)
+
+                        if (j < mapGenerator.y - 1 && tileOnTop.GetComponent<Tile>().type == 1)
                         {
                             list.Add(tileOnTop);
                         }

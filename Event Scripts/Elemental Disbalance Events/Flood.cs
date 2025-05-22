@@ -6,17 +6,30 @@ public class Flood : MapValues
 {
     public bool floodIsActive = false;
     public bool floodOccured = false;
-    public List<Sprite> TileSprites;
-    public List<Sprite> StructureSprites;
     public TickSystem tickSystem;
     public int counter = 1;
     public float counterTickLength;
     public int floodCooldown = 2400; //2400 = 10 minutes
 
+    public List<Sprite> GrassSprites;
+    public List<Sprite> GrassCliffSprites;
+    public List<Sprite> WaterSprites;
+
     public void Initialize()
     {
-        TileSprites = mapGenerator.TileSprites;
+        SetMap();
+        SetSpritesForUse();
+    }
+    void SetMap()
+    {
         grid = mapGenerator.grid;
+        structureGrid = mapGenerator.structureGrid;
+    }
+    void SetSpritesForUse()
+    {
+        GrassSprites = spritesGetter.GrassSprites;
+        GrassCliffSprites = spritesGetter.GrassCliffSprites;
+        WaterSprites = spritesGetter.WaterSprites;
     }
 
     IEnumerator<object> TickFlood()
@@ -38,7 +51,7 @@ public class Flood : MapValues
     {
         while (true)
         {
-            if(floodOccured && floodCooldown > 0)
+            if (floodOccured && floodCooldown > 0)
             {
                 floodCooldown--;
             }
@@ -64,7 +77,7 @@ public class Flood : MapValues
 
         List<GameObject> floodTilesPartGrass = GetFloodTilesPartGrass();
         AssignFloodTilesPartGrassSprite(floodTilesPartGrass);
-        
+
         floodOccured = true;
     }
     public void RevertFlood()
@@ -74,7 +87,7 @@ public class Flood : MapValues
 
         List<GameObject> revertFloodTilesPartGrass = GetRevertFloodTilesPartGrass();
         AssignRevertFloodTilesPartGrassSprite(revertFloodTilesPartGrass);
-    
+
         Debug.Log("Flood ended!");
         floodIsActive = false;
         StartCoroutine(TickFloodCooldown());
@@ -83,51 +96,72 @@ public class Flood : MapValues
     List<GameObject> GetFloodTilesFullGrass()
     {
         List<GameObject> list = new List<GameObject>();
-        for(int i = 0; i < mapGenerator.x; i++)
+        for (int i = 0; i < mapGenerator.x; i++)
         {
-            for(int j = 0; j < mapGenerator.y; j++)
+            for (int j = 0; j < mapGenerator.y; j++)
             {
-                if (grid[i, j].GetComponent<Tile>().type == 1)
+                GameObject currentTile = grid[i, j];
+
+                if (currentTile.GetComponent<Tile>().type == 1)
                 {
-                    if (grid[i, j].GetComponent<SpriteRenderer>().sprite == TileSprites[4])
+                    RevertGrassCliffToGrass(currentTile);
+
+                    try
                     {
-                        grid[i, j].GetComponent<SpriteRenderer>().sprite = TileSprites[Random.Range(1, 4)];
+                        GameObject tileOnLeft = grid[i - 1, j];
+                        GameObject tileOnRight = grid[i + 1, j];
+                        GameObject tileOnTop = grid[i, j + 1];
+                        GameObject tileOnBottom = grid[i, j - 1];
+
+                        if (i > 0 && tileOnLeft.GetComponent<Tile>().type == 0) //tileOnLeft
+                        {
+                            list.Add(currentTile);
+                        }
+                        if (i < mapGenerator.x - 1 && tileOnRight.GetComponent<Tile>().type == 0)//tile on right
+                        {
+                            list.Add(currentTile);
+                        }
+                        if (j > 0 && tileOnBottom.GetComponent<Tile>().type == 0)//tile on bottom
+                        {
+                            list.Add(currentTile);
+                        }
+                        if (j < mapGenerator.y - 1 && tileOnTop.GetComponent<Tile>().type == 0) //tileOnTOp
+                        {
+                            list.Add(currentTile);
+                        }
                     }
-                    //FloodTilesFullGrass
-                    if(i > 0 && grid[i - 1, j] != null && grid[i - 1, j].GetComponent<Tile>().type == 0) //tileOnLeft
+                    catch (System.IndexOutOfRangeException)
                     {
-                        list.Add(grid[i, j]);  
-                    }
-                    if(i < mapGenerator.x - 1 && grid[i + 1, j] != null && grid[i + 1, j].GetComponent<Tile>().type == 0)//tile on right
-                    {
-                        list.Add(grid[i, j]);                 
-                    }
-                    if(j > 0 && grid[i, j - 1] != null && grid[i, j - 1].GetComponent<Tile>().type == 0)//tile on bottom
-                    {
-                        list.Add(grid[i, j]);                 
-                    }
-                    if(j < mapGenerator.y - 1 && grid[i, j + 1] != null && grid[i, j + 1].GetComponent<Tile>().type == 0) //tileOnTOp
-                    {        
-                        list.Add(grid[i, j]);                 
-                    }
+                        continue;
+                    }           
                 }
             }
         }
-        return list;    
+        return list;
     }
     List<GameObject> GetFloodTilesPartGrass()
     {
         List<GameObject> list = new List<GameObject>();
-        for(int i = 0; i < mapGenerator.x; i++)
+        for (int i = 0; i < mapGenerator.x; i++)
         {
-            for(int j = 0; j < mapGenerator.y; j++)
+            for (int j = 0; j < mapGenerator.y; j++)
             {
-                if (grid[i, j].GetComponent<Tile>().type == 1)
+                GameObject currentTile = grid[i, j];
+
+                if (currentTile.GetComponent<Tile>().type == 1)
                 {
-                    //FloodTilesPartGrass
-                    if(j > 0 && grid[i, j - 1] != null && grid[i, j - 1].GetComponent<Tile>().type == 0)//tile on bottom
+                    try
                     {
-                        list.Add(grid[i, j]);                 
+                        GameObject tileOnBottom = grid[i, j - 1];
+
+                        if (j > 0 && tileOnBottom.GetComponent<Tile>().type == 0)
+                        {
+                            list.Add(currentTile);
+                        }
+                    }
+                    catch (System.IndexOutOfRangeException)
+                    {
+                        continue;
                     }
                 }
             }
@@ -136,32 +170,34 @@ public class Flood : MapValues
     }
     void AssignFloodTilesFullGrassSprite(List<GameObject> tiles)
     {
-        foreach(GameObject tile in tiles)
+        foreach (GameObject tile in tiles)
         {
             tile.GetComponent<Tile>().type = 0;
-            tile.GetComponent<SpriteRenderer>().sprite = TileSprites[0];
+            int randomWaterIndex = Random.Range(0, WaterSprites.Count);
+            tile.GetComponent<SpriteRenderer>().sprite = WaterSprites[randomWaterIndex];
         }
     }
     void AssignFloodTilesPartGrassSprite(List<GameObject> tiles)
     {
-        foreach(GameObject tile in tiles)
+        foreach (GameObject tile in tiles)
         {
-            tile.GetComponent<SpriteRenderer>().sprite = TileSprites[4];
+            int randomGrassCliffIndex = Random.Range(0, GrassCliffSprites.Count);
+            tile.GetComponent<SpriteRenderer>().sprite = GrassCliffSprites[randomGrassCliffIndex];
         }
     }
 
     void DestroyStructuresOnWater(List<GameObject> tiles)
     {
-        foreach(GameObject tile in tiles)
+        foreach (GameObject tile in tiles)
         {
             try
             {
                 GameObject structureToRemove = mapGenerator.structureGrid[(int)tile.transform.position.x, (int)tile.transform.position.y];
                 Destroy(structureToRemove);
             }
-            catch
+            catch (System.NullReferenceException)
             {
-                //structure does not exist
+                continue;
             }
         }
     }
@@ -169,53 +205,78 @@ public class Flood : MapValues
     List<GameObject> GetRevertFloodTilesFullGrass()
     {
         List<GameObject> list = new List<GameObject>();
-        for(int i = 0; i < mapGenerator.x; i++)
+        for (int i = 0; i < mapGenerator.x; i++)
         {
-            for(int j = 0; j < mapGenerator.y; j++)
+            for (int j = 0; j < mapGenerator.y; j++)
             {
-                if (grid[i, j].GetComponent<Tile>().type == 1)
+                GameObject currentTile = grid[i, j];
+
+                if (currentTile.GetComponent<Tile>().type == 1)
                 {
-                    if (grid[i, j].GetComponent<SpriteRenderer>().sprite == TileSprites[4])
+                    RevertGrassCliffToGrass(currentTile);
+
+                    try
                     {
-                        grid[i, j].GetComponent<SpriteRenderer>().sprite = TileSprites[Random.Range(1, 4)];
+                        GameObject tileOnLeft = grid[i - 1, j];
+                        GameObject tileOnRight = grid[i + 1, j];
+                        GameObject tileOnTop = grid[i, j + 1];
+                        GameObject tileOnBottom = grid[i, j - 1];
+
+                        if (i > 0 && (tileOnLeft.GetComponent<Tile>().type == 0 ||
+                        GrassCliffSprites.Contains(tileOnLeft.GetComponent<SpriteRenderer>().sprite)))
+                        {
+                            list.Add(tileOnLeft);
+                        }
+                        if (i < mapGenerator.x - 1 && (tileOnRight.GetComponent<Tile>().type == 0 ||
+                        GrassCliffSprites.Contains(tileOnRight.GetComponent<SpriteRenderer>().sprite)))
+                        {
+                            list.Add(tileOnRight);
+                        }
+                        if (j > 0 && (tileOnBottom.GetComponent<Tile>().type == 0 ||
+                        GrassCliffSprites.Contains(tileOnBottom.GetComponent<SpriteRenderer>().sprite)))
+                        {
+                            list.Add(tileOnBottom);
+                        }
+                        if (j < mapGenerator.y - 1 && (tileOnTop.GetComponent<Tile>().type == 0 ||
+                        GrassCliffSprites.Contains(tileOnTop.GetComponent<SpriteRenderer>().sprite)))
+                        {
+                            list.Add(tileOnTop);
+                        }
                     }
-                    //RevertFloodTilesFullGrass
-                    if(i > 0 && grid[i - 1, j] != null && (grid[i - 1, j].GetComponent<Tile>().type == 0 || grid[i - 1, j].GetComponent<SpriteRenderer>().sprite == TileSprites[4])) //tileOnLeft
+                    catch (System.IndexOutOfRangeException)
                     {
-                        list.Add(grid[i - 1, j]);
-                    }
-                    if(i < mapGenerator.x - 1 && grid[i + 1, j] != null && (grid[i + 1, j].GetComponent<Tile>().type == 0 || grid[i + 1, j].GetComponent<SpriteRenderer>().sprite == TileSprites[4]))//tile on right
-                    {
-                        list.Add(grid[i + 1, j]);
-                    }
-                    if(j > 0 && grid[i, j - 1] != null && (grid[i, j - 1].GetComponent<Tile>().type == 0 || grid[i, j - 1].GetComponent<SpriteRenderer>().sprite == TileSprites[4]))//tile on bottom
-                    {
-                        list.Add(grid[i, j - 1]);
-                    }
-                    if(j < mapGenerator.y - 1 && grid[i, j + 1] != null && (grid[i, j + 1].GetComponent<Tile>().type == 0 || grid[i, j + 1].GetComponent<SpriteRenderer>().sprite == TileSprites[4])) //tileOnTOp
-                    {       
-                        list.Add(grid[i, j + 1]);
+                        continue;
                     }
                 }
             }
         }
-        return list;    
+        return list;
     }
 
     List<GameObject> GetRevertFloodTilesPartGrass()
     {
         List<GameObject> list = new List<GameObject>();
-        for(int i = 0; i < mapGenerator.x; i++)
+        for (int i = 0; i < mapGenerator.x; i++)
         {
-            for(int j = 0; j < mapGenerator.y; j++)
+            for (int j = 0; j < mapGenerator.y; j++)
             {
-                if (grid[i, j].GetComponent<Tile>().type == 1)
+                GameObject currentTile = grid[i, j];
+
+                if (currentTile.GetComponent<Tile>().type == 1)
                 {
-                    //RevertFloodTilesPartGrass
-                    if(j > 0 && grid[i, j - 1] != null && grid[i, j - 1].GetComponent<Tile>().type == 0)
+                    try
                     {
-                        list.Add(grid[i, j]);
+                        GameObject tileOnBottom = grid[i, j - 1];
+
+                        if (j > 0 && tileOnBottom.GetComponent<Tile>().type == 0)
+                        {
+                            list.Add(currentTile);
+                        }
                     }
+                    catch (System.IndexOutOfRangeException)
+                    {
+                        continue;
+                    }  
                 }
             }
         }
@@ -223,18 +284,28 @@ public class Flood : MapValues
     }
     void AssignRevertFloodTilesFullGrassSprite(List<GameObject> tiles)
     {
-        foreach(GameObject tile in tiles)
+        foreach (GameObject tile in tiles)
         {
             tile.GetComponent<Tile>().type = 1;
-            tile.GetComponent<SpriteRenderer>().sprite = TileSprites[Random.Range(1, 4)];
+            int randomGrassIndex = Random.Range(0, GrassSprites.Count);
+            tile.GetComponent<SpriteRenderer>().sprite = GrassSprites[randomGrassIndex];
         }
     }
 
     void AssignRevertFloodTilesPartGrassSprite(List<GameObject> tiles)
     {
-        foreach(GameObject tile in tiles)
+        foreach (GameObject tile in tiles)
         {
-            tile.GetComponent<SpriteRenderer>().sprite = TileSprites[4];
+            int randomGrassCliffIndex = Random.Range(0, GrassCliffSprites.Count);
+            tile.GetComponent<SpriteRenderer>().sprite = GrassCliffSprites[randomGrassCliffIndex];
+        }
+    }
+    void RevertGrassCliffToGrass(GameObject currentTile)
+    {
+        if (GrassCliffSprites.Contains(currentTile.GetComponent<SpriteRenderer>().sprite))
+        {   
+            int randomGrassIndex = Random.Range(0, GrassSprites.Count);
+            currentTile.GetComponent<SpriteRenderer>().sprite = GrassSprites[randomGrassIndex];
         }
     }
 }
