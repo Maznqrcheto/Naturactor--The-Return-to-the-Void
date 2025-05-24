@@ -3,6 +3,7 @@ using UnityEngine;
 public class EventManagerComponents : MonoBehaviour
 {
     public ElementalDisbalanceEventManager elementalDisbalanceEventManager;
+    public VoidConnectedEventsManager voidConnectedEventsManager;
     
     [Header("Slide bars")]
     [SerializeField] ProgressBarController fireBar;

@@ -28,6 +28,7 @@ public class Sprites : MonoBehaviour
     public List<Sprite> FireTreeSprites = new List<Sprite>();
     public List<Sprite> FireGrassSprites = new List<Sprite>();
     public List<Sprite> FireGrassCliffSprites = new List<Sprite>();
+    public List<Sprite> DoppelgangerSprites = new List<Sprite>();
     
     
     // public List<Sprite> ItemSprites;  -> mn e zle trqq sa pomisli
