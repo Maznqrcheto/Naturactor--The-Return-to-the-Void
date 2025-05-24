@@ -4385,6 +4385,8 @@ GameObject:
   - component: {fileID: 781445731}
   - component: {fileID: 781445732}
   - component: {fileID: 781445733}
+  - component: {fileID: 781445735}
+  - component: {fileID: 781445734}
   m_Layer: 0
   m_Name: EventManager
   m_TagString: Untagged
@@ -4420,6 +4422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementalDisbalanceEventManager: {fileID: 781445732}
+  voidConnectedEventsManager: {fileID: 781445735}
   fireBar: {fileID: 1123327510}
   waterBar: {fileID: 1267850169}
   airBar: {fileID: 434134257}
@@ -4454,11 +4457,13 @@ MonoBehaviour:
   spritesGetter: {fileID: 2116023143}
   droughtIsActive: 0
   droughtOccured: 0
-  TileSprites: []
   tickSystem: {fileID: 1562538652}
   counter: 0
   counterTickLength: 0.25
   droughtCooldown: 2400
+  GrassSprites: []
+  GrassCliffSprites: []
+  WaterSprites: []
 --- !u!114 &781445731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4475,12 +4480,13 @@ MonoBehaviour:
   spritesGetter: {fileID: 2116023143}
   floodIsActive: 0
   floodOccured: 0
-  TileSprites: []
-  StructureSprites: []
   tickSystem: {fileID: 1562538652}
   counter: 1
   counterTickLength: 0.25
   floodCooldown: 2400
+  GrassSprites: []
+  GrassCliffSprites: []
+  WaterSprites: []
 --- !u!114 &781445732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4494,6 +4500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementalDisbalanceEventManager: {fileID: 781445732}
+  voidConnectedEventsManager: {fileID: 781445735}
   fireBar: {fileID: 1123327510}
   waterBar: {fileID: 1267850169}
   airBar: {fileID: 434134257}
@@ -4531,30 +4538,64 @@ MonoBehaviour:
   spritesGetter: {fileID: 2116023143}
   fireIsActive: 0
   fireOccured: 0
-  TileSprites: []
-  StructureSprites: []
-  FireTileSprites:
-  - {fileID: -5033312578003247746, guid: 817f783c815295e4d8ad604ce50aa2df, type: 3}
-  - {fileID: 6579724798270529873, guid: d928d22fa4721eb4a963384bb57a3c4f, type: 3}
-  - {fileID: -194406060388643476, guid: 9fa9291f3773f8d46b7981dfa6982857, type: 3}
-  - {fileID: 3435491804879947130, guid: 5241f5684afc26b47864105b500765b3, type: 3}
-  - {fileID: -427610096721032119, guid: ac51577ba1930dc44b8f0d758c5303c5, type: 3}
-  - {fileID: 5864190604192253700, guid: 75177eff21b7e4b42a0ed94e269e8417, type: 3}
-  - {fileID: 1104938842298883442, guid: 5b4dcd8647528474788ad35f4771158c, type: 3}
-  - {fileID: 1168342960953048296, guid: 5a2818451434ec24fbfc12d72fbacfc5, type: 3}
-  FireStructureSprites:
-  - {fileID: 6853316077166303748, guid: 656a94d8507131645827255441150055, type: 3}
-  - {fileID: 5354429476588687777, guid: 8419553de3e80f8458bc608e710861e0, type: 3}
-  - {fileID: 5490517706564299302, guid: 33077314b5d9dda4fa7291497c3bf9b9, type: 3}
-  - {fileID: 3256692913002675606, guid: 3e0b51a3ddaadbc4c8e85ead2be0fed6, type: 3}
-  - {fileID: 3415445302262339743, guid: 0256a52dcec6bea418f1c52a3e4e98dc, type: 3}
-  - {fileID: 8082850792823721277, guid: 573fc5ac1e64cd644a176e07fdc0832e, type: 3}
   tickSystem: {fileID: 1562538652}
   counter: 1
   counterTickLength: 0.25
   fireCooldown: 2400
   GrassSprites: []
   GrassCliffSprites: []
+  TreeSprites: []
+  FireTreeSprites: []
+  FireGrassSprites: []
+  FireGrassCliffSprites: []
+  FireAndNormalGrassSprites: []
+  FireAndNormalGrassCliffSprites: []
+  FireAndNormalTreeSprites: []
+--- !u!114 &781445734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 781445727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab4249711345950469dddb192f4b9a80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &781445735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 781445727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d992b4635a1c8224cb80c1f304c39e5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementalDisbalanceEventManager: {fileID: 781445732}
+  voidConnectedEventsManager: {fileID: 781445735}
+  fireBar: {fileID: 1123327510}
+  waterBar: {fileID: 1267850169}
+  airBar: {fileID: 434134257}
+  earthBar: {fileID: 441166808}
+  happinessBar: {fileID: 1568527572}
+  fireLevel: 0
+  waterLevel: 0
+  airLevel: 0
+  earthLevel: 0
+  happinessLevel: 0
+  fireChange: 0
+  waterChange: 0
+  airChange: 0
+  earthChange: 0
+  happinessChange: 0
+  ticksToChange: 0
+  tickSystem: {fileID: 1562538652}
+  mapGenerator: {fileID: 1562538648}
+  doppelgangerEvent: {fileID: 781445734}
 --- !u!1 &784706771
 GameObject:
   m_ObjectHideFlags: 0
@@ -10520,6 +10561,7 @@ MonoBehaviour:
   - {fileID: 5864190604192253700, guid: 75177eff21b7e4b42a0ed94e269e8417, type: 3}
   FireGrassCliffSprites:
   - {fileID: 6579724798270529873, guid: d928d22fa4721eb4a963384bb57a3c4f, type: 3}
+  DoppelgangerSprites: []
 --- !u!1 &2123877444
 GameObject:
   m_ObjectHideFlags: 0

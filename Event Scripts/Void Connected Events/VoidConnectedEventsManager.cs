@@ -4,11 +4,11 @@ public class VoidConnectedEventsManager : EventManagerComponents, IEventTickMana
 {
     public Doppelganger doppelgangerEvent;
 
-    // public void SetMapValuesForEvent(MapValues eventInstance)
-    // {
-    //     eventInstance.mapGenerator = mapGenerator;
-    //     eventInstance.grid = grid;
-    // }
+    public void SetMapValuesForEvent(MapValues eventInstance)
+    {
+        eventInstance.mapGenerator = mapGenerator;
+        eventInstance.grid = grid;
+    }
 
     public void CheckEvents(ulong tick)
     {
@@ -20,7 +20,7 @@ public class VoidConnectedEventsManager : EventManagerComponents, IEventTickMana
 
     void Start()
     {
-        // SetMapValuesForEvent(doppelgangerEvent);
+        SetMapValuesForEvent(doppelgangerEvent);
     }
 }
 // public class MapValues : MonoBehaviour
