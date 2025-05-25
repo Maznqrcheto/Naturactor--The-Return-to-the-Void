@@ -7,8 +7,31 @@ public class GenerateMap : MonoBehaviour
 {
     public int x;
     public int y;
-    public List<Sprite> TileSprites = new List<Sprite>();
-    public List<Sprite> StructureSprites = new List<Sprite>();
+
+    [Space(10)]
+    [Header("Sprites")]
+    [Space(10)]
+    public Sprites spritesGetter;
+    public List<Sprite> GrassSprites;
+    public List<Sprite> GrassCliffSprites;
+    public List<Sprite> WaterSprites;
+    public List<Sprite> CoalSprites;
+    public List<Sprite> IronSprites;
+    public List<Sprite> CopperSprites;
+    public List<Sprite> TreeSprites;
+    public List<Sprite> NaturactorSprites;
+    public List<Sprite> VolcanoSprites;
+    public List<Sprite> FlowerSprites;
+    public List<Sprite> MushroomSprites;
+    public List<Sprite> FishSprites;
+    public List<Sprite> FishArisingSprites;
+    public List<Sprite> SandSprites;
+    public List<Sprite> SandWithWaveOnTopSprites;
+    public List<Sprite> SandWithWaveOnBottomSprites;
+    public List<Sprite> SandWithWaveOnLeftSprites;
+    public List<Sprite> SandWithWaveOnRightSprites;
+
+    public List<Sprite> GrassyVegetationSprites;
 
     [Space(10)]
     [Header("Lake Generation")]
@@ -71,6 +94,8 @@ public class GenerateMap : MonoBehaviour
     private void Awake()
     {
         structureGrid = new GameObject[x, y];
+        SetSprites();
+        AddSpriteListsToComplexLists();
     }
     void Start()
     {
@@ -83,6 +108,47 @@ public class GenerateMap : MonoBehaviour
         UpdateSortingOrderForStructures();
     }
 
+    void SetSprites()
+    {
+        GrassSprites = spritesGetter.GrassSprites;
+        GrassCliffSprites = spritesGetter.GrassCliffSprites;
+        WaterSprites = spritesGetter.WaterSprites;
+        CoalSprites = spritesGetter.CoalSprites;
+        IronSprites = spritesGetter.IronSprites;
+        CopperSprites = spritesGetter.CopperSprites;
+        TreeSprites = spritesGetter.TreeSprites;
+        NaturactorSprites = spritesGetter.NaturactorSprites;
+        VolcanoSprites = spritesGetter.VolcanoSprites;
+        FlowerSprites = spritesGetter.FlowerSprites;
+        MushroomSprites = spritesGetter.MushroomSprites;
+        FishSprites = spritesGetter.FishSprites;
+        FishArisingSprites = spritesGetter.FishArisingSprites;
+        SandSprites = spritesGetter.SandSprites;
+        SandWithWaveOnTopSprites = spritesGetter.SandWithWaveOnTopSprites;
+        SandWithWaveOnBottomSprites = spritesGetter.SandWithWaveOnBottomSprites;
+        SandWithWaveOnLeftSprites = spritesGetter.SandWithWaveOnLeftSprites;
+        SandWithWaveOnRightSprites = spritesGetter.SandWithWaveOnRightSprites;
+    }
+    void AddSpriteListsToComplexLists()
+    {
+        GrassyVegetationSprites.AddRange(GrassSprites);
+        GrassyVegetationSprites.AddRange(GrassSprites);
+        GrassyVegetationSprites.AddRange(GrassSprites);
+        GrassyVegetationSprites.AddRange(GrassSprites);
+        GrassyVegetationSprites.AddRange(GrassSprites);
+        GrassyVegetationSprites.AddRange(GrassSprites);
+        GrassyVegetationSprites.AddRange(GrassSprites);
+        GrassyVegetationSprites.AddRange(GrassSprites);
+        GrassyVegetationSprites.AddRange(GrassSprites);
+        GrassyVegetationSprites.AddRange(GrassSprites);
+        GrassyVegetationSprites.AddRange(GrassSprites);
+        GrassyVegetationSprites.AddRange(GrassSprites);
+        GrassyVegetationSprites.AddRange(GrassSprites);
+        GrassyVegetationSprites.AddRange(GrassSprites);
+        GrassyVegetationSprites.AddRange(GrassSprites);
+        GrassyVegetationSprites.AddRange(FlowerSprites);
+        GrassyVegetationSprites.AddRange(MushroomSprites);
+    }
     void GenerateMapTiles()
     {
         //Create tiles
@@ -115,7 +181,7 @@ public class GenerateMap : MonoBehaviour
                 currentTile.name = $"{i},{j}";
 
                 currentTile.GetComponent<Tile>().type = 1;
-                currentTile.GetComponent<SpriteRenderer>().sprite = TileSprites[Random.Range(1, 4)];
+                currentTile.GetComponent<SpriteRenderer>().sprite = GrassyVegetationSprites[Random.Range(0, GrassyVegetationSprites.Count)];
                 currentGrid[i, j] = currentTile;
             }
         }
@@ -126,15 +192,15 @@ public class GenerateMap : MonoBehaviour
     {
         //Coal generation
         for (int i = 0; i < Random.Range(coalCountMin, coalCountMax); i++)
-            GenerateVeinAlgorithm(Random.Range(coalLengthMin, coalLenghtMax), coalWidthMin, coalWidthMax, TileSprites[5], 2);
+            GenerateVeinAlgorithm(Random.Range(coalLengthMin, coalLenghtMax), coalWidthMin, coalWidthMax, CoalSprites[Random.Range(0, CoalSprites.Count)], 2);
 
         //Iron generation
         for (int i = 0; i < Random.Range(ironCountMin, ironCountMax); i++)
-            GenerateVeinAlgorithm(Random.Range(ironLengthMin, ironLenghtMax), ironWidthMin, ironWidthMax, TileSprites[6], 3);
+            GenerateVeinAlgorithm(Random.Range(ironLengthMin, ironLenghtMax), ironWidthMin, ironWidthMax, IronSprites[Random.Range(0, IronSprites.Count)], 3);
 
         //Copper generation
         for (int i = 0; i < Random.Range(copperCountMin, copperCountMax); i++)
-            GenerateVeinAlgorithm(Random.Range(copperLengthMin, copperLenghtMax), copperWidthMin, copperWidthMax, TileSprites[7], 4);
+            GenerateVeinAlgorithm(Random.Range(copperLengthMin, copperLenghtMax), copperWidthMin, copperWidthMax, CopperSprites[Random.Range(0, CopperSprites.Count)], 4);
     }
     void GenerateVeinAlgorithm(int length, int widthMin, int widthMax, Sprite sprite, int type)
     {
@@ -220,12 +286,12 @@ public class GenerateMap : MonoBehaviour
 
                         if (currentTile != null)
                         {
-                            currentTile.GetComponent<SpriteRenderer>().sprite = TileSprites[0];
+                            currentTile.GetComponent<SpriteRenderer>().sprite = WaterSprites[Random.Range(0, WaterSprites.Count)];
                             currentTile.GetComponent<Tile>().type = 0;
                         }
                         if (currentPos.y < y - 1 && grid[(int)currentPos.x, (int)currentPos.y + 1].GetComponent<Tile>().type == 1)
                         {
-                            grid[(int)currentPos.x, (int)currentPos.y + 1].GetComponent<SpriteRenderer>().sprite = TileSprites[4];
+                            grid[(int)currentPos.x, (int)currentPos.y + 1].GetComponent<SpriteRenderer>().sprite = GrassCliffSprites[Random.Range(0, GrassCliffSprites.Count)];
                         }
                     }
                     catch
@@ -249,13 +315,18 @@ public class GenerateMap : MonoBehaviour
             {
                 if (grid[i, j].GetComponent<Tile>().type == 1)
                 {
-                    if (grid[i, j + 1].GetComponent<Tile>().type == 0
-                    && grid[i, j - 1].GetComponent<Tile>().type == 0
-                    && grid[i + 1, j].GetComponent<Tile>().type == 0
-                    && grid[i - 1, j].GetComponent<Tile>().type == 0)
+                    GameObject currentTile = grid[i, j];
+                    GameObject leftTile = grid[i - 1, j];
+                    GameObject rightTile = grid[i + 1, j];
+                    GameObject upTile = grid[i, j + 1];
+                    GameObject downTile = grid[i, j - 1];
+                    if (upTile.GetComponent<Tile>().type == 0
+                    && downTile.GetComponent<Tile>().type == 0
+                    && rightTile.GetComponent<Tile>().type == 0
+                    && leftTile.GetComponent<Tile>().type == 0)
                     {
-                        grid[i, j].GetComponent<Tile>().type = 0;
-                        grid[i, j].GetComponent<SpriteRenderer>().sprite = TileSprites[0];
+                        currentTile.GetComponent<Tile>().type = 0;
+                        currentTile.GetComponent<SpriteRenderer>().sprite = WaterSprites[Random.Range(0, WaterSprites.Count)];
                     }
                 }
             }
@@ -307,7 +378,7 @@ public class GenerateMap : MonoBehaviour
                             
                             currentTree.GetComponent<Structure>().type = 0;
                             currentTree.GetComponent<Structure>().position = new Vector2(currentPos.x, currentPos.y);
-                            currentTree.GetComponent<SpriteRenderer>().sprite = StructureSprites[Random.Range(0, 3)];
+                            currentTree.GetComponent<SpriteRenderer>().sprite = TreeSprites[Random.Range(0, TreeSprites.Count)];
                             structureGrid[(int)currentPos.x, (int)currentPos.y] = currentTree;
                         }
                     }
@@ -342,7 +413,7 @@ public class GenerateMap : MonoBehaviour
             volcano.AddComponent<Structure>();
             volcano.GetComponent<Structure>().type = 5;
             volcano.GetComponent<Structure>().position = new Vector2(volcanoPosition.x, volcanoPosition.y);
-            volcano.GetComponent<SpriteRenderer>().sprite = StructureSprites[4];
+            volcano.GetComponent<SpriteRenderer>().sprite = VolcanoSprites[Random.Range(0, VolcanoSprites.Count)];
             volcano.transform.position = new Vector2(volcanoPosition.x + 0.5f, volcanoPosition.y + 0.5f);
             for(int j = (int)volcanoPosition.x - 5; j <= (int)volcanoPosition.x + 5; j++)
             {
@@ -371,7 +442,7 @@ public class GenerateMap : MonoBehaviour
         reactor.GetComponent<Machine>().UpdateInventorySize();
 
         reactor.AddComponent<SpriteRenderer>();
-        reactor.GetComponent<SpriteRenderer>().sprite = StructureSprites[3];
+        reactor.GetComponent<SpriteRenderer>().sprite = NaturactorSprites[Random.Range(0, NaturactorSprites.Count)];
 
         reactor.AddComponent<Structure>();
         reactor.GetComponent<Structure>().type = 1;

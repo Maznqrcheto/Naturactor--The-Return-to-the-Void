@@ -1086,6 +1086,115 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 108926606}
   m_CullTransparentMesh: 1
+--- !u!1 &127969982
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 127969984}
+  - component: {fileID: 127969983}
+  - component: {fileID: 127969985}
+  m_Layer: 0
+  m_Name: FishPrefab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &127969983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 127969982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb74769fd3869994fa5adb2ea68e6882, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapGenerator: {fileID: 1562538648}
+  spritesGetter: {fileID: 2116023143}
+  fishPrefab: {fileID: 127969982}
+  fishArisingPrefab: {fileID: 2000765093}
+  FishSprites: []
+  FishArisingSprites: []
+  WaterSprites: []
+  minSpawnDelay: 1
+  maxSpawnDelay: 3
+--- !u!4 &127969984
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 127969982}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 89.59801, y: 64.14882, z: -0.19428903}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &127969985
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 127969982}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &152017426
 GameObject:
   m_ObjectHideFlags: 0
@@ -4563,8 +4672,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab4249711345950469dddb192f4b9a80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapGenerator: {fileID: 0}
-  spritesGetter: {fileID: 0}
+  mapGenerator: {fileID: 1562538648}
+  spritesGetter: {fileID: 2116023143}
   GrassSprites: []
   GrassCliffSprites: []
   TreeSprites: []
@@ -8559,6 +8668,7 @@ GameObject:
   - component: {fileID: 1562538655}
   - component: {fileID: 1562538656}
   - component: {fileID: 1562538657}
+  - component: {fileID: 1562538658}
   m_Layer: 0
   m_Name: GlobalEvent
   m_TagString: Untagged
@@ -8580,21 +8690,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   x: 192
   y: 192
-  TileSprites:
-  - {fileID: -9041787662252013088, guid: 8a80d5616082f8c4ba056277313e7737, type: 3}
-  - {fileID: 3435491804879947130, guid: a46e293fe5983b44db0484807f061de4, type: 3}
-  - {fileID: -427610096721032119, guid: 75311d9638d0d0d41a3fef78a8385f64, type: 3}
-  - {fileID: 5864190604192253700, guid: c67119555fb5c3843868bab95ea99608, type: 3}
-  - {fileID: 6579724798270529873, guid: d3b8a03017a401544a38342420ebd65c, type: 3}
-  - {fileID: -211774847955004860, guid: 93e483cf6d0662c4d9b30f0c4808cd48, type: 3}
-  - {fileID: 7005946037892912416, guid: c33674dc3e32e0a49bd7138e5d45f878, type: 3}
-  - {fileID: -8720911746964142427, guid: 2ccb5da3808984e45a696e8e45b9ec41, type: 3}
-  StructureSprites:
-  - {fileID: 6853316077166303748, guid: 2a18597eff2cb8249b155467aa486332, type: 3}
-  - {fileID: 5354429476588687777, guid: e4385da7baffa4342bd8837d5e612c19, type: 3}
-  - {fileID: 5490517706564299302, guid: da085199294d10245b94667a65d21ed5, type: 3}
-  - {fileID: -1087313768900113465, guid: 6c074fce33e392942abcc6eb2b34031a, type: 3}
-  - {fileID: -1309091486694266011, guid: a25b0237ee0feaa4bba0f5ca1bc9d1dd, type: 3}
+  spritesGetter: {fileID: 2116023143}
+  GrassSprites: []
+  GrassCliffSprites: []
+  WaterSprites: []
+  CoalSprites: []
+  IronSprites: []
+  CopperSprites: []
+  TreeSprites: []
+  NaturactorSprites: []
+  VolcanoSprites: []
+  FlowerSprites: []
+  MushroomSprites: []
+  FishSprites: []
+  FishArisingSprites: []
+  SandSprites: []
+  SandWithWaveOnTopSprites: []
+  SandWithWaveOnBottomSprites: []
+  SandWithWaveOnLeftSprites: []
+  SandWithWaveOnRightSprites: []
+  GrassyVegetationSprites: []
   lakeCountMin: 2
   lakeCountMax: 16
   lakeIntensityMin: 190
@@ -8809,6 +8924,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   genMap: {fileID: 1562538648}
+--- !u!114 &1562538658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562538647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb74769fd3869994fa5adb2ea68e6882, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapGenerator: {fileID: 1562538648}
+  spritesGetter: {fileID: 2116023143}
+  fishPrefab: {fileID: 127969982}
+  fishArisingPrefab: {fileID: 2000765093}
+  FishSprites: []
+  FishArisingSprites: []
+  WaterSprites: []
+  minSpawnDelay: 1
+  maxSpawnDelay: 3
 --- !u!1 &1568527570
 GameObject:
   m_ObjectHideFlags: 0
@@ -10062,6 +10198,115 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1998398675}
   m_CullTransparentMesh: 1
+--- !u!1 &2000765093
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2000765095}
+  - component: {fileID: 2000765094}
+  - component: {fileID: 2000765096}
+  m_Layer: 0
+  m_Name: FishArisingPrefab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2000765094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2000765093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb74769fd3869994fa5adb2ea68e6882, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapGenerator: {fileID: 1562538648}
+  spritesGetter: {fileID: 2116023143}
+  fishPrefab: {fileID: 127969982}
+  fishArisingPrefab: {fileID: 2000765093}
+  FishSprites: []
+  FishArisingSprites: []
+  WaterSprites: []
+  minSpawnDelay: 1
+  maxSpawnDelay: 3
+--- !u!4 &2000765095
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2000765093}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 89.59801, y: 64.14882, z: -0.19428903}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &2000765096
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2000765093}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &2005465241
 GameObject:
   m_ObjectHideFlags: 0
@@ -10690,3 +10935,5 @@ SceneRoots:
   - {fileID: 202821595}
   - {fileID: 781445728}
   - {fileID: 2076490375}
+  - {fileID: 127969984}
+  - {fileID: 2000765095}
