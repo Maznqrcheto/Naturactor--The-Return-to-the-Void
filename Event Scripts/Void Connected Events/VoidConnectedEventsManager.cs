@@ -20,6 +20,7 @@ public class VoidConnectedEventsManager : EventManagerComponents, IEventTickMana
 
     void Start()
     {
+        doppelgangerEvent.Initialize();
         SetMapValuesForEvent(doppelgangerEvent);
     }
 }

@@ -14,6 +14,17 @@ public class Sprites : MonoBehaviour
     public List<Sprite> NaturactorSprites = new List<Sprite>();
     public List<Sprite> VolcanoSprites = new List<Sprite>();
 
+    public List<Sprite> FlowerSprites = new List<Sprite>();
+    public List<Sprite> MushroomSprites = new List<Sprite>();
+    public List<Sprite> FishSprites = new List<Sprite>();
+    public List<Sprite> FishArisingSprites = new List<Sprite>();
+    public List<Sprite> SandSprites = new List<Sprite>();
+    public List<Sprite> SandWithWaveOnTopSprites = new List<Sprite>();
+    public List<Sprite> SandWithWaveOnBottomSprites = new List<Sprite>();
+    public List<Sprite> SandWithWaveOnLeftSprites = new List<Sprite>();
+    public List<Sprite> SandWithWaveOnRightSprites = new List<Sprite>();
+
+
     [Header("Machine Sprites")]
     public List<Sprite> DrillSprites = new List<Sprite>();
     public List<Sprite> RefinerySprites = new List<Sprite>();

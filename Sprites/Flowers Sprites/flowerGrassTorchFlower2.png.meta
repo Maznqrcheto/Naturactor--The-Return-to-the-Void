@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: be3982403cf567c439231914d86044da
+guid: 851c06d10ece1b1458df78fe3a3be955
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4822712030375501093
-    second: NaturactorHappy_0
+      213: -2142383430129885679
+    second: flowerGrassTorchFlower2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: NaturactorHappy_0
+      name: flowerGrassTorchFlower2_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 3
-        width: 50
-        height: 47
+        x: 0
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bd2277fc5f8421db0800000000000000
-      internalID: -4822712030375501093
+      spriteID: 11edc620f99b442e0800000000000000
+      internalID: -2142383430129885679
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      NaturactorHappy_0: -4822712030375501093
+      flowerGrassTorchFlower2_0: -2142383430129885679
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

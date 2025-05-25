@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      NaturactorShocked_0: 2897470604913602299
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

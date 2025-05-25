@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      NaturactorSweatSmile_0: 988789084557927385
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
