@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      sand2WaveLeft_0: 2077455447411409224
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

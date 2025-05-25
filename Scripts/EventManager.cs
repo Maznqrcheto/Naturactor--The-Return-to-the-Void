@@ -12,4 +12,12 @@ public class EventManager : EventManagerComponents, IEventTickManager
     {
         SetElementalProgress(100f);
     }
+
+}
+public class MapValues : MonoBehaviour
+{
+    public GenerateMap mapGenerator;
+    public GameObject[,] grid;
+    public GameObject[,] structureGrid;
+    public Sprites spritesGetter;
 }
