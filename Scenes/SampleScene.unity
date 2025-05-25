@@ -4563,6 +4563,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab4249711345950469dddb192f4b9a80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapGenerator: {fileID: 0}
+  spritesGetter: {fileID: 0}
+  GrassSprites: []
+  GrassCliffSprites: []
+  TreeSprites: []
 --- !u!114 &781445735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10535,6 +10540,38 @@ MonoBehaviour:
   - {fileID: -1087313768900113465, guid: 6c074fce33e392942abcc6eb2b34031a, type: 3}
   VolcanoSprites:
   - {fileID: -1309091486694266011, guid: a25b0237ee0feaa4bba0f5ca1bc9d1dd, type: 3}
+  FlowerSprites:
+  - {fileID: -2238509331291350686, guid: 6ad8b9bbf54836e458f21333b0f99661, type: 3}
+  - {fileID: -3443848153707155319, guid: 4e882c2596c88074a9f0cdd0b7eb2c78, type: 3}
+  - {fileID: 4055666656057314709, guid: de49181335bd50c4097fec7ef817cb88, type: 3}
+  - {fileID: -2142383430129885679, guid: 851c06d10ece1b1458df78fe3a3be955, type: 3}
+  - {fileID: 879087987282117692, guid: b69990e8663dacb4e831eb1fe279f8f1, type: 3}
+  - {fileID: 5697752748388675422, guid: 21f7f420c0b86584ca901139a25ea651, type: 3}
+  MushroomSprites:
+  - {fileID: 4315506946141470425, guid: 88d7a353d988f214eab45e36720217fa, type: 3}
+  - {fileID: 4962024169938401870, guid: 556bb0a28eb3f7d4f853ad668125e08e, type: 3}
+  - {fileID: 7822420182341974051, guid: 0e141c4f135d8cc418fb94bbc4f93fa2, type: 3}
+  FishSprites:
+  - {fileID: 7514552017311010156, guid: 80dd625dfedbc7443a0b244d106a541f, type: 3}
+  - {fileID: -785323062598923442, guid: 2d3bcd36817914240ac4a5c232903468, type: 3}
+  - {fileID: -2358747992520836700, guid: 7ed5bbe9b3f389141a5a55fc64650fcf, type: 3}
+  FishArisingSprites:
+  - {fileID: 5264866914884578355, guid: 712c55c900742be4cb7e03d313f65723, type: 3}
+  SandSprites:
+  - {fileID: 4515345014635656613, guid: 816e0ce4a5c1aaf49b4ef18616d0241b, type: 3}
+  - {fileID: -6711598216978553943, guid: 9b9db43f2dc499445a81581319c0937c, type: 3}
+  SandWithWaveOnTopSprites:
+  - {fileID: 2619781532805729039, guid: f8046087e1595cb47b5f8a73e9079b38, type: 3}
+  - {fileID: -5381238450559012407, guid: 89841135453e39b43af7bf20594a0e74, type: 3}
+  SandWithWaveOnBottomSprites:
+  - {fileID: -3677043606401913845, guid: 31b5a7c59f36e8147bb61802df2dcda3, type: 3}
+  - {fileID: -5529072428003018053, guid: 95fb840bb80dfc84bb1517cbdc94ba92, type: 3}
+  SandWithWaveOnLeftSprites:
+  - {fileID: 1501462254732740686, guid: b3fc624956981754a90a98fad1e59545, type: 3}
+  - {fileID: 2077455447411409224, guid: ddd38c3d18d36b24b8281de305323909, type: 3}
+  SandWithWaveOnRightSprites:
+  - {fileID: -2838297004542194487, guid: b7e36a1c617f45749bcdae2a8a246952, type: 3}
+  - {fileID: -2020467917801162841, guid: 5729cdd89a8606a4381740dd87b784cd, type: 3}
   DrillSprites:
   - {fileID: -3010401151903113755, guid: 682e44e162aa01943b60d1d5931bb6df, type: 3}
   RefinerySprites:
@@ -10561,7 +10598,8 @@ MonoBehaviour:
   - {fileID: 5864190604192253700, guid: 75177eff21b7e4b42a0ed94e269e8417, type: 3}
   FireGrassCliffSprites:
   - {fileID: 6579724798270529873, guid: d928d22fa4721eb4a963384bb57a3c4f, type: 3}
-  DoppelgangerSprites: []
+  DoppelgangerSprites:
+  - {fileID: 1820733821122021697, guid: 4738e8f63271d7c4987f24d0736d15a1, type: 3}
 --- !u!1 &2123877444
 GameObject:
   m_ObjectHideFlags: 0
