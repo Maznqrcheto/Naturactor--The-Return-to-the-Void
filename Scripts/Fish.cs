@@ -16,7 +16,7 @@ public class Fish : MonoBehaviour
     public float minSpawnDelay = 1f;
     public float maxSpawnDelay = 3f;
 
-    private float tileSize = 1f; // Adjust if your tile size is not 1 Unity unit
+    private float tileSize = 1f;
 
     private List<Vector2Int> waterTiles = new List<Vector2Int>();
 
@@ -27,7 +27,7 @@ public class Fish : MonoBehaviour
 
     IEnumerator Start()
     {   
-        yield return new WaitForSeconds(5f); // Ensure map is generated before accessing it
+        yield return new WaitForSeconds(5f);
         SetMap();
         CollectWaterTiles();
         StartCoroutine(SpawnFishLoop());
