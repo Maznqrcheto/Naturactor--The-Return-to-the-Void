@@ -10797,9 +10797,9 @@ MonoBehaviour:
   - {fileID: 4962024169938401870, guid: 556bb0a28eb3f7d4f853ad668125e08e, type: 3}
   - {fileID: 7822420182341974051, guid: 0e141c4f135d8cc418fb94bbc4f93fa2, type: 3}
   FishSprites:
-  - {fileID: 7514552017311010156, guid: 80dd625dfedbc7443a0b244d106a541f, type: 3}
   - {fileID: -785323062598923442, guid: 2d3bcd36817914240ac4a5c232903468, type: 3}
   - {fileID: -2358747992520836700, guid: 7ed5bbe9b3f389141a5a55fc64650fcf, type: 3}
+  - {fileID: 7514552017311010156, guid: 80dd625dfedbc7443a0b244d106a541f, type: 3}
   FishArisingSprites:
   - {fileID: 5264866914884578355, guid: 712c55c900742be4cb7e03d313f65723, type: 3}
   SandSprites:
