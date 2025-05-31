@@ -1,13 +1,14 @@
 using UnityEngine;
 
-public class VoidConnectedEventsManager : EventManagerComponents, IEventTickManager
+public class VoidConnectedEventsManager : MonoBehaviour, IEventTickManager
 {
+    public EventManagerComponents components;
     public Doppelganger doppelgangerEvent;
 
     public void SetMapValuesForEvent(MapValues eventInstance)
     {
-        eventInstance.mapGenerator = mapGenerator;
-        eventInstance.grid = grid;
+        eventInstance.mapGenerator = components.mapGenerator;
+        eventInstance.grid = components.grid;
     }
 
     public void CheckEvents(ulong tick)

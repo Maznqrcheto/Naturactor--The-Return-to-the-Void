@@ -4489,12 +4489,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 781445728}
+  - component: {fileID: 781445736}
   - component: {fileID: 781445729}
+  - component: {fileID: 781445732}
+  - component: {fileID: 781445735}
   - component: {fileID: 781445730}
   - component: {fileID: 781445731}
-  - component: {fileID: 781445732}
   - component: {fileID: 781445733}
-  - component: {fileID: 781445735}
   - component: {fileID: 781445734}
   m_Layer: 0
   m_Name: EventManager
@@ -4532,24 +4533,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementalDisbalanceEventManager: {fileID: 781445732}
   voidConnectedEventsManager: {fileID: 781445735}
-  fireBar: {fileID: 1123327510}
-  waterBar: {fileID: 1267850169}
-  airBar: {fileID: 434134257}
-  earthBar: {fileID: 441166808}
-  happinessBar: {fileID: 1568527572}
-  fireLevel: 0
-  waterLevel: 0
-  airLevel: 0
-  earthLevel: 0
-  happinessLevel: 0
-  fireChange: 0
-  waterChange: 0
-  airChange: 0
-  earthChange: 0
-  happinessChange: 0
-  ticksToChange: 0
-  tickSystem: {fileID: 1562538652}
-  mapGenerator: {fileID: 1562538648}
+  components: {fileID: 781445736}
 --- !u!114 &781445730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4608,26 +4592,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae5f131a21e85fe48b9a070a002d8248, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementalDisbalanceEventManager: {fileID: 781445732}
-  voidConnectedEventsManager: {fileID: 781445735}
-  fireBar: {fileID: 1123327510}
-  waterBar: {fileID: 1267850169}
-  airBar: {fileID: 434134257}
-  earthBar: {fileID: 441166808}
-  happinessBar: {fileID: 1568527572}
-  fireLevel: 0
-  waterLevel: 0
-  airLevel: 0
-  earthLevel: 0
-  happinessLevel: 0
-  fireChange: 0
-  waterChange: 0
-  airChange: 0
-  earthChange: 0
-  happinessChange: 0
-  ticksToChange: 0
-  tickSystem: {fileID: 1562538652}
-  mapGenerator: {fileID: 1562538648}
+  components: {fileID: 781445736}
   floodEvent: {fileID: 781445731}
   droughtEvent: {fileID: 781445730}
   fireEvent: {fileID: 781445733}
@@ -4689,8 +4654,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d992b4635a1c8224cb80c1f304c39e5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementalDisbalanceEventManager: {fileID: 781445732}
-  voidConnectedEventsManager: {fileID: 781445735}
+  components: {fileID: 781445736}
+  doppelgangerEvent: {fileID: 781445734}
+--- !u!114 &781445736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 781445727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 798a7dab0aba9ca428a39f0a905a0d2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   fireBar: {fileID: 1123327510}
   waterBar: {fileID: 1267850169}
   airBar: {fileID: 434134257}
@@ -4709,7 +4686,6 @@ MonoBehaviour:
   ticksToChange: 0
   tickSystem: {fileID: 1562538652}
   mapGenerator: {fileID: 1562538648}
-  doppelgangerEvent: {fileID: 781445734}
 --- !u!1 &784706771
 GameObject:
   m_ObjectHideFlags: 0

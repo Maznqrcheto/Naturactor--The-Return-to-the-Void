@@ -88,17 +88,17 @@ public class Fish : MonoBehaviour
     IEnumerator FishArise(Vector3 position)
 {
     GameObject splash = Instantiate(fishArisingPrefab, position, Quaternion.identity);
-    Debug.Log("Splash instantiated at " + position);
+    // Debug.Log("Splash instantiated at " + position);
 
     SpriteRenderer splashRenderer = splash.GetComponentInChildren<SpriteRenderer>();
     if (splashRenderer != null && FishArisingSprites.Count > 0)
     {
         splashRenderer.sprite = FishArisingSprites[Random.Range(0, FishArisingSprites.Count)];
-        Debug.Log("Splash sprite assigned");
+        // Debug.Log("Splash sprite assigned");
     }
     else
     {
-        Debug.LogWarning("Splash SpriteRenderer missing or FishArisingSprites empty");
+        // Debug.LogWarning("Splash SpriteRenderer missing or FishArisingSprites empty");
     }
 
     yield return new WaitForSeconds(1f);
@@ -106,17 +106,17 @@ public class Fish : MonoBehaviour
     Destroy(splash);
 
     GameObject fish = Instantiate(fishPrefab, position, Quaternion.identity);
-    Debug.Log("Fish instantiated at " + position);
+    // Debug.Log("Fish instantiated at " + position);
 
     SpriteRenderer fishRenderer = fish.GetComponentInChildren<SpriteRenderer>();
     if (fishRenderer != null && FishSprites.Count > 0)
     {
         fishRenderer.sprite = FishSprites[Random.Range(0, FishSprites.Count)];
-        Debug.Log("Fish sprite assigned");
+        // Debug.Log("Fish sprite assigned");
     }
     else
     {
-        Debug.LogWarning("Fish SpriteRenderer missing or FishSprites empty");
+        // Debug.LogWarning("Fish SpriteRenderer missing or FishSprites empty");
     }
 
     Vector2 direction = Random.value < 0.5f ? Vector2.left : Vector2.right;

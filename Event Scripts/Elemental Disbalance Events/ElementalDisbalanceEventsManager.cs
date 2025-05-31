@@ -1,19 +1,24 @@
 using UnityEngine;
-public class ElementalDisbalanceEventManager : EventManagerComponents, IEventTickManager
+public class ElementalDisbalanceEventManager : MonoBehaviour, IEventTickManager
 {
+    public EventManagerComponents components;
     public Flood floodEvent;
     public Drought droughtEvent;
     public Fire fireEvent;
 
     public void SetMapValuesForEvent(MapValues eventInstance)
     {
-        eventInstance.mapGenerator = mapGenerator;
-        eventInstance.grid = grid;
+        eventInstance.mapGenerator = components.mapGenerator;
+        eventInstance.grid = components.grid;
     }
 
-    public void CheckEvents(ulong tick) // tuk sa usloviqta za vseki edin event v igrata, a v samite scriptove NQMA usloviq za protichane, tam e samo kvo se sluchva
+    public void CheckEvents(ulong tick)
     {
-        GetElementalProgress();
+        float fireLevel = components.fireLevel;
+        float waterLevel = components.waterLevel;
+        float airLevel = components.airLevel;
+        float earthLevel = components.earthLevel;
+
         bool droughtCanOccur = (fireLevel - waterLevel > 20f && !droughtEvent.droughtOccured && droughtEvent.droughtCooldown == 2400);
         bool floodCanOccur = (waterLevel - fireLevel > 20f && !floodEvent.floodOccured && floodEvent.floodCooldown == 2400);
         bool fireCanOccur = (fireLevel - airLevel > 20f && !fireEvent.fireOccured && fireEvent.fireCooldown == 2400);

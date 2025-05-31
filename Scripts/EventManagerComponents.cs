@@ -2,15 +2,13 @@ using UnityEngine;
 
 public class EventManagerComponents : MonoBehaviour
 {
-    public ElementalDisbalanceEventManager elementalDisbalanceEventManager;
-    public VoidConnectedEventsManager voidConnectedEventsManager;
-    
+
     [Header("Slide bars")]
-    [SerializeField] ProgressBarController fireBar;
-    [SerializeField] ProgressBarController waterBar;
-    [SerializeField] ProgressBarController airBar;
-    [SerializeField] ProgressBarController earthBar;
-    [SerializeField] ProgressBarController happinessBar;
+    public ProgressBarController fireBar;
+    public ProgressBarController waterBar;
+    public ProgressBarController airBar;
+    public ProgressBarController earthBar;
+    public ProgressBarController happinessBar;
 
     [Header("Element levels")]
     public float fireLevel;
@@ -19,20 +17,20 @@ public class EventManagerComponents : MonoBehaviour
     public float earthLevel;
 
     [Header("Happiness level")]
-    [SerializeField] float happinessLevel;
+    public float happinessLevel;
 
     [Header("Element changes")]
-    [SerializeField] float fireChange;
-    [SerializeField] float waterChange;
-    [SerializeField] float airChange;
-    [SerializeField] float earthChange;
+    [SerializeField] public float fireChange;
+    [SerializeField] public float waterChange;
+    [SerializeField] public float airChange;
+    [SerializeField] public float earthChange;
 
     [Header("Happiness change")]
-    [SerializeField] float happinessChange;
+    [SerializeField] public float happinessChange;
 
     [Header("Tick system")]
-    [SerializeField] ulong ticksToChange = 0;
-    [SerializeField] TickSystem tickSystem;
+    public ulong ticksToChange = 0;
+    public TickSystem tickSystem;
 
     public GenerateMap mapGenerator;
     public GameObject[,] grid;
@@ -70,6 +68,11 @@ public class EventManagerComponents : MonoBehaviour
         airBar.SetProgress(value);
         earthBar.SetProgress(value);
         happinessBar.SetProgress(value);
+        fireLevel = value;
+        waterLevel = value;
+        airLevel = value;
+        earthLevel = value;
+        happinessLevel = value;
     }
     public void GetElementalProgress()
     {
