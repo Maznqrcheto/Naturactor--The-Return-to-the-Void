@@ -4639,9 +4639,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapGenerator: {fileID: 1562538648}
   spritesGetter: {fileID: 2116023143}
+  components: {fileID: 0}
+  placeMachine: {fileID: 1562538650}
   GrassSprites: []
   GrassCliffSprites: []
   TreeSprites: []
+  DoppelgangerSprites: []
+  canSpawnDoppelganger: 1
+  doppelgangerIsActive: 0
+  doppelgangerOccured: 0
+  tickSystem: {fileID: 1562538652}
+  counter: 1
+  counterTickLength: 0.25
+  doppelgangerCooldown: 2400
+  counterForSpawn: 0
+  doppelganger: {fileID: 0}
 --- !u!114 &781445735
 MonoBehaviour:
   m_ObjectHideFlags: 0

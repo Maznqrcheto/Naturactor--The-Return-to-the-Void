@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class Doppelganger : MapValues
 {
+    public EventManagerComponents components;
     public PlaceMachine placeMachine;
     public List<Sprite> GrassSprites;
     public List<Sprite> GrassCliffSprites;
