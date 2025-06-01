@@ -13,10 +13,10 @@ public class VoidConnectedEventsManager : MonoBehaviour, IEventTickManager
 
     public void CheckEvents(ulong tick)
     {
-        // if (doppelgangerEvent.CanSpawnDoppelganger(tick))
-        // {
-        //     doppelgangerEvent.SpawnDoppelganger();
-        // }
+        if (doppelgangerEvent.CanSpawnDoppelganger(tick) && !doppelgangerEvent.doppelgangerOccured && doppelgangerEvent.doppelgangerCooldown == 2400)
+        {
+            doppelgangerEvent.SpawnDoppelganger();
+        }
     }
 
     void Start()
