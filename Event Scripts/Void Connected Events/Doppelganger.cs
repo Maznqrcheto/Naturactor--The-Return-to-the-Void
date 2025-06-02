@@ -14,6 +14,7 @@ public class Doppelganger : MapValues
     public bool canSpawnDoppelganger = true; // this needs to be set to false ! for test purposes, it's set to true. This variable is dependent on value of Inspiration!
     public bool doppelgangerIsActive = false;
     public bool doppelgangerOccured = false;
+    public bool doppelgangerInterrupted = false;
     public TickSystem tickSystem;
     public int counter = 1;
     public float counterTickLength;
@@ -43,13 +44,24 @@ public class Doppelganger : MapValues
     {
         while (true)
         {
-            if (doppelgangerIsActive && counter == Random.Range(100, 120)) //960, 1440, 4-6 minutes, because tickLength = 0.25 seconds
+            if (doppelgangerIsActive && (counter == ChooseRandomCounter() || counter == 0)) //960, 1440, 4-6 minutes, because tickLength = 0.25 seconds
+            {
+                RevertDoppelganger();
+                counter = 1;
+                yield break;
+            }
+            if (!doppelgangerIsActive)
+            {
+                yield break;
+            }
+            if (doppelgangerInterrupted)
             {
                 RevertDoppelganger();
                 counter = 1;
                 yield break;
             }
             counter++;
+            DoppelgangerEatHappiness();
             yield return new WaitForSeconds(counterTickLength);
         }
     }
@@ -70,30 +82,34 @@ public class Doppelganger : MapValues
             yield return new WaitForSeconds(counterTickLength);
         }
     }
+    public int ChooseRandomCounter()
+    {
+        int randomCounter = Random.Range(100, 120); // 4-6 minutes, because tickLength = 0.25 seconds
+        return randomCounter;
+    }
 
     public bool CanSpawnDoppelganger(ulong tick)
     {
-        // if (canSpawnDoppelganger)
-        // {
-        //     if (counterForSpawn % 120 == 0) // every 30 seconds, because tickLength = 0.25 seconds
-        //     {
-        //         spawnChance += 0.5f;
-        //     }
-        //     counterForSpawn++;
-        //     if (Random.Range(0f, 100f) < spawnChance)
-        //     {
-        //         return true;
-        //     }
-        //     else
-        //     {
-        //         return false;
-        //     }
-        // }
-        // else
-        // {
-        //     return false;
-        // }
-        return true;
+        if (canSpawnDoppelganger)
+        {
+            if (counterForSpawn % 120 == 0) // every 30 seconds, because tickLength = 0.25 seconds
+            {
+                spawnChance += 0.5f;
+            }
+            counterForSpawn++;
+            if (Random.Range(0f, 100f) < spawnChance)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
     public void SpawnDoppelganger()
     {
@@ -137,12 +153,16 @@ public class Doppelganger : MapValues
         // mapGenerator.UpdateSortingOrderForStructures();
     }
 
-    public void EatHappiness(ulong tick)
+    public void DoppelgangerEatHappiness()
     {
-        if (doppelgangerIsActive)
+        if (components.happinessLevel <= 0f)
         {
-            
-            components.happinessLevel -= 0.1f;
+            RevertDoppelganger();
+            counter = 0;
+        }
+        else
+        {
+            components.happinessLevel -= 0.01f;
             Debug.Log("Doppelganger ate happiness!");
         }
     }
